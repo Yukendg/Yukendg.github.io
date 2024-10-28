@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Моё мини-приложение</title>
+    <style>
+        /* немного стилей, чтобы страница выглядела лучше */
+        body { font-family: Arial, sans-serif; display: flex; align-items: center; justify-content: center; min-height: 100vh; margin: 0; background-color: #f4f4f9; }
+        .container { text-align: center; }
+        h1 { color: #333; }
+        button { padding: 10px 20px; font-size: 16px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Привет! Это моё мини-приложение для телеграмм</h1>
+        <p>Нажми кнопку ниже, чтобы начать!</p>
+        <button onclick="startApp()">Начать</button>
+    </div>
+
+    <script>
+        function startApp() {
+            alert("Мини-приложение запущено!");
+        }
+    </script>
+</body>
+</html>
