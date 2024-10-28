@@ -49,24 +49,6 @@
             margin: 20px 0;
             display: block; /* Показывать счетчик монет с самого начала */
         }
-        button {
-            background-color: #4CAF50; /* Зеленая кнопка */
-            color: white;
-            padding: 15px 32px;
-            text-align: center;
-            text-decoration: none;
-            display: inline-block;
-            font-size: 16px;
-            margin: 4px 2px;
-            cursor: pointer;
-            border: none;
-            border-radius: 5px; /* Закругленные края */
-            transition: background-color 0.3s, transform 0.3s;
-        }
-        button:hover {
-            background-color: #45a049; /* Темнее при наведении */
-            transform: scale(1.05); /* Увеличение при наведении */
-        }
         footer {
             margin-top: 50px;
             font-size: 0.8em;
@@ -78,7 +60,7 @@
         <h1>Добро пожаловать в Ron!</h1>
         <p>Нажимайте на монету, чтобы зарабатывать!</p>
         <div id="coin-container">
-            <img src="coin.png" alt="Монета" id="coin" onclick="incrementCoins()">
+            <img src="coin.png" alt="Монета" id="coin" draggable="false" onclick="incrementCoins()">
         </div>
         <h2 id="coin-count">Монеты: 0</h2>
         <footer>
