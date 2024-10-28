@@ -1,27 +1,108 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Моё мини-приложение</title>
+    <title>Ron - Игра Тапалка</title>
     <style>
-        /* немного стилей, чтобы страница выглядела лучше */
-        body { font-family: Arial, sans-serif; display: flex; align-items: center; justify-content: center; min-height: 100vh; margin: 0; background-color: #f4f4f9; }
-        .container { text-align: center; }
-        h1 { color: #333; }
-        button { padding: 10px 20px; font-size: 16px; }
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+            font-family: 'Arial', sans-serif;
+        }
+        h1 {
+            font-size: 48px;
+            color: #333;
+        }
+        .score {
+            font-size: 24px;
+            margin: 20px;
+        }
+        .play-button {
+            padding: 20px 40px;
+            font-size: 24px;
+            color: white;
+            background-color: #28a745;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .play-button:hover {
+            background-color: #218838;
+        }
+        .timer {
+            font-size: 20px;
+            color: #ff0000;
+            margin-top: 20px;
+        }
+        .game-over {
+            display: none;
+            font-size: 36px;
+            color: #ff0000;
+            margin-top: 20px;
+        }
+        .hidden {
+            display: none;
+        }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Привет! Это моё мини-приложение для телеграмм</h1>
-        <p>Нажми кнопку ниже, чтобы начать!</p>
-        <button onclick="startApp()">Начать</button>
-    </div>
+    <h1>Ron - Игра Тапалка</h1>
+    <div class="score">Счет: <span id="score">0</span></div>
+    <button id="tapButton" class="play-button">Тапни меня!</button>
+    <div class="timer">Осталось времени: <span id="time">30</span> секунд</div>
+    <div id="gameOver" class="game-over">Игра окончена! Ваш счет: <span id="finalScore">0</span></div>
 
     <script>
-        function startApp() {
-            alert("Мини-приложение запущено!");
+        let score = 0;
+        let timeLeft = 30;
+        let gameActive = false;
+
+        const scoreDisplay = document.getElementById('score');
+        const timeDisplay = document.getElementById('time');
+        const tapButton = document.getElementById('tapButton');
+        const gameOverDisplay = document.getElementById('gameOver');
+        const finalScoreDisplay = document.getElementById('finalScore');
+
+        tapButton.addEventListener('click', () => {
+            if (!gameActive) {
+                startGame();
+            }
+            score++;
+            scoreDisplay.textContent = score;
+        });
+
+        function startGame() {
+            gameActive = true;
+            score = 0;
+            timeLeft = 30;
+            scoreDisplay.textContent = score;
+            timeDisplay.textContent = timeLeft;
+            tapButton.classList.remove('hidden');
+            gameOverDisplay.classList.add('hidden');
+
+            const timer = setInterval(() => {
+                timeLeft--;
+                timeDisplay.textContent = timeLeft;
+
+                if (timeLeft <= 0) {
+                    clearInterval(timer);
+                    endGame();
+                }
+            }, 1000);
+        }
+
+        function endGame() {
+            gameActive = false;
+            tapButton.classList.add('hidden');
+            finalScoreDisplay.textContent = score;
+            gameOverDisplay.classList.remove('hidden');
         }
     </script>
 </body>
