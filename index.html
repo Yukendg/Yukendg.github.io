@@ -31,6 +31,8 @@
             border-radius: 15px;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
             text-align: center;
+            position: relative; /* Установка относительного позиционирования для центрирования */
+            overflow: hidden;
         }
         .score {
             font-size: 24px;
@@ -43,25 +45,16 @@
             width: 50px;
             margin-left: 10px;
         }
-        .play-button {
-            padding: 20px 40px;
-            font-size: 24px;
-            color: #fff;
-            background-color: #28a745;
-            border: none;
-            border-radius: 10px;
+        .coin {
+            width: 100px;
+            height: 100px;
+            background: url('coin.png') no-repeat center center / contain;
             cursor: pointer;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-            margin-top: 20px;
-        }
-        .play-button:hover {
-            background-color: #218838;
-            transform: translateY(-2px);
-        }
-        .play-button:active {
-            transform: translateY(2px);
+            position: absolute; /* Позиционирование монеты */
+            top: 50%; /* Центрируем по вертикали */
+            left: 50%; /* Центрируем по горизонтали */
+            transform: translate(-50%, -50%); /* Сдвигаем на половину ширины и высоты */
+            animation: bounce 0.5s infinite;
         }
         .timer {
             font-size: 20px;
@@ -74,30 +67,20 @@
             color: #ff0000;
             margin-top: 20px;
         }
-        .coin {
-            width: 100px;
-            height: 100px;
-            background: url('coin.png') no-repeat center center / contain;
-            cursor: pointer;
-            animation: bounce 0.5s infinite;
-        }
         @keyframes bounce {
             0%, 100% {
-                transform: translateY(0);
+                transform: translate(-50%, -50%) translateY(0);
             }
             50% {
-                transform: translateY(-10px);
+                transform: translate(-50%, -50%) translateY(-10px);
             }
-        }
-        .hidden {
-            display: none;
         }
     </style>
 </head>
 <body>
     <div class="menu">
         <h1>Ron - Игра Тапалка</h1>
-        <div class="score">Счет: <span id="score">0</span><img src="https://www.pngitem.com/middle/hJmmbx_coin-icon-png-coin-icon-png-transparent-png.png" alt="coin icon"></div>
+        <div class="score">Счет: <span id="score">0</span></div>
         <div class="coin" id="coin"></div>
         <div class="timer">Осталось времени: <span id="time">30</span> секунд</div>
         <div id="gameOver" class="game-over">Игра окончена! Ваш счет: <span id="finalScore">0</span></div>
