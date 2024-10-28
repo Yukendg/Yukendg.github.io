@@ -25,6 +25,7 @@
             margin: 20px auto;
             width: 200px; /* Размер контейнера */
             position: relative;
+            display: none; /* Скрыть контейнер монеты */
         }
         #coin {
             width: 100%; /* Ширина изображения монеты */
@@ -76,21 +77,35 @@
     <div class="container">
         <h1>Добро пожаловать в Ron!</h1>
         <p>Нажимайте на монету, чтобы зарабатывать!</p>
+        <button id="play-button" onclick="startGame()">Играть</button>
         <div id="coin-container">
             <img src="coin.png" alt="Монета" id="coin" onclick="incrementCoins()">
         </div>
         <h2 id="coin-count">Монеты: 0</h2>
-        <button id="play-button" onclick="window.location.href='https://yukendg.github.io/'">Играть</button>
         <footer>
             <p>© 2024 Ron. Все права защищены.</p>
         </footer>
     </div>
 
     <script>
-        let coinCount = 0;
+        let coinCount = localStorage.getItem('coinCount') ? parseInt(localStorage.getItem('coinCount')) : 0;
 
+        // Функция для начала игры
+        function startGame() {
+            document.getElementById('play-button').style.display = 'none'; // Скрыть кнопку "Играть"
+            document.getElementById('coin-container').style.display = 'block'; // Показать контейнер с монетой
+            updateCoinCount(); // Обновить отображаемое количество монет
+        }
+
+        // Функция для увеличения количества монет
         function incrementCoins() {
             coinCount++;
+            localStorage.setItem('coinCount', coinCount); // Сохранить количество монет в localStorage
+            updateCoinCount();
+        }
+
+        // Функция для обновления отображения количества монет
+        function updateCoinCount() {
             document.getElementById('coin-count').innerText = 'Монеты: ' + coinCount;
         }
     </script>
