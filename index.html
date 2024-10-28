@@ -23,6 +23,7 @@
         h1 {
             font-size: 48px;
             text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5);
+            margin-bottom: 10px;
         }
         .menu {
             background-color: rgba(255, 255, 255, 0.1);
@@ -39,7 +40,7 @@
             justify-content: center;
         }
         .score img {
-            width: 40px;
+            width: 50px;
             margin-left: 10px;
         }
         .play-button {
@@ -53,6 +54,7 @@
             transition: all 0.3s ease;
             position: relative;
             overflow: hidden;
+            margin-top: 20px;
         }
         .play-button:hover {
             background-color: #218838;
@@ -72,6 +74,21 @@
             color: #ff0000;
             margin-top: 20px;
         }
+        .coin {
+            width: 100px;
+            height: 100px;
+            background: url('coin.png') no-repeat center center / contain;
+            cursor: pointer;
+            animation: bounce 0.5s infinite;
+        }
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
         .hidden {
             display: none;
         }
@@ -81,7 +98,7 @@
     <div class="menu">
         <h1>Ron - Игра Тапалка</h1>
         <div class="score">Счет: <span id="score">0</span><img src="https://www.pngitem.com/middle/hJmmbx_coin-icon-png-coin-icon-png-transparent-png.png" alt="coin icon"></div>
-        <button id="tapButton" class="play-button">Тапни меня!</button>
+        <div class="coin" id="coin"></div>
         <div class="timer">Осталось времени: <span id="time">30</span> секунд</div>
         <div id="gameOver" class="game-over">Игра окончена! Ваш счет: <span id="finalScore">0</span></div>
     </div>
@@ -96,13 +113,13 @@
 
         const scoreDisplay = document.getElementById('score');
         const timeDisplay = document.getElementById('time');
-        const tapButton = document.getElementById('tapButton');
+        const coin = document.getElementById('coin');
         const gameOverDisplay = document.getElementById('gameOver');
         const finalScoreDisplay = document.getElementById('finalScore');
         const tapSound = document.getElementById('tapSound');
         const gameOverSound = document.getElementById('gameOverSound');
 
-        tapButton.addEventListener('click', () => {
+        coin.addEventListener('click', () => {
             if (!gameActive) {
                 startGame();
             }
@@ -118,7 +135,6 @@
             timeLeft = 30;
             scoreDisplay.textContent = score;
             timeDisplay.textContent = timeLeft;
-            tapButton.classList.remove('hidden');
             gameOverDisplay.classList.add('hidden');
 
             const timer = setInterval(() => {
@@ -134,7 +150,6 @@
 
         function endGame() {
             gameActive = false;
-            tapButton.classList.add('hidden');
             finalScoreDisplay.textContent = score;
             gameOverDisplay.classList.remove('hidden');
             gameOverSound.play();
