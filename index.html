@@ -166,15 +166,15 @@
 
     <!-- Меню -->
     <div id="menu">
-        <div class="menu-item active" onclick="toggleActive(this)">
+        <div class="menu-item active" id="home" onclick="toggleActive(this)">
             <img src="home_blue.png" alt="Главная">
             Главная
         </div>
-        <div class="menu-item" onclick="toggleActive(this)">
+        <div class="menu-item" id="upgrade" onclick="toggleActive(this)">
             <img src="upgrade_blue.png" alt="Улучшения">
             Улучшения
         </div>
-        <div class="menu-item" onclick="toggleActive(this)">
+        <div class="menu-item" id="wallet" onclick="toggleActive(this)">
             <img src="wallet_blue.png" alt="Кошелёк">
             Кошелёк
         </div>
@@ -262,6 +262,30 @@
             });
             element.classList.add('active');
         }
+
+        // Функция для замены иконок на синие при активной странице и обычные при неактивной
+        function updateMenuIcons(isActive) {
+            document.getElementById('home').querySelector('img').src = isActive ? 'home_blue.png' : 'home.png';
+            document.getElementById('upgrade').querySelector('img').src = isActive ? 'upgrade_blue.png' : 'upgrade.png';
+            document.getElementById('wallet').querySelector('img').src = isActive ? 'wallet_blue.png' : 'wallet.png';
+        }
+
+        // Обработка смены видимости страницы
+        document.addEventListener('visibilitychange', function() {
+            if (document.visibilityState === 'visible') {
+                updateMenuIcons(true);
+                lastUpdateTime = Date.now();
+                restoreEnergy();
+            } else {
+                updateMenuIcons(false);
+                localStorage.setItem('lastUpdateTime', Date.now());
+            }
+        });
+
+        // Инициализация иконок при загрузке страницы
+        document.addEventListener('DOMContentLoaded', function() {
+            updateMenuIcons(document.visibilityState === 'visible');
+        });
     </script>
 </body>
 </html>
