@@ -121,7 +121,7 @@
             display: flex;
             justify-content: space-around;
             background-color: #444;
-            padding: 5px 0; 
+            padding: 5px 0;  
             position: absolute;
             bottom: 0;
             width: 100%;
@@ -130,30 +130,31 @@
         .menu-item {
             color: #ffffff;
             text-decoration: none;
+            padding: 5px 10px; 
+            border-radius: 5px;
+            background-color: rgba(255, 255, 255, 0.2);
+            pointer-events: none; 
             display: flex; 
             flex-direction: column; 
             align-items: center; 
-            pointer-events: none; 
             opacity: 0.7; 
         }
         .menu-item img {
             width: 25px; 
             margin-bottom: 5px; 
         }
-        .menu-item span {
-            color: #ffffff; /* цвет текста */
-        }
-        .menu-item:hover img,
-        .menu-item:hover span {
-            color: #ffffff; /* подсвечиваем текст и иконку белым при наведении */
-        }
         .menu-item:hover {
-            background-color: transparent; /* убираем фоновый цвет при наведении */
+            background-color: rgba(255, 255, 255, 0.3);
+        }
+        /* Стили для выделения названия и иконки */
+        .highlight {
+            color: white; 
         }
     </style>
 </head>
 <body>
     <div id="balance-container">
+        <span class="highlight">Монеты</span>
         <img src="https://raw.githubusercontent.com/yukendg/yukendg.github.io/main/coin.png" alt="Монета" width="60" draggable="false" style="user-select: none; pointer-events: none;">
         <span id="coin-balance">0</span>
     </div>
@@ -164,24 +165,23 @@
 
     <div id="energy-bar-container">
         <div style="display: flex; align-items: center;">
-            <div id="energy-icon">⚡</div>
-            <div id="energy-status">1000/1000</div>
+            <span class="highlight" id="energy-icon">⚡</span>
+            <span class="highlight" id="energy-status">1000/1000</span>
         </div>
         <div id="energy-bar">
             <div id="energy-fill"></div>
         </div>
     </div>
 
-    <!-- Меню -->
     <div id="menu">
         <a href="#" class="menu-item">
-            <img src="home.png" alt="Главная"> <span>Главная</span>
+            <img src="home.png" alt="Главная"> <span class="highlight">Главная</span>
         </a>
         <a href="#" class="menu-item">
-            <img src="upgrade.png" alt="Улучшения"> <span>Улучшения</span>
+            <img src="upgrade.png" alt="Улучшения"> <span class="highlight">Улучшения</span>
         </a>
         <a href="#" class="menu-item">
-            <img src="wallet.png" alt="Кошелёк"> <span>Кошелёк</span>
+            <img src="wallet.png" alt="Кошелёк"> <span class="highlight">Кошелёк</span>
         </a>
     </div>
 
@@ -249,156 +249,25 @@
 
         updateCoinBalance();
         updateEnergyBar();
-
-        document.getElementById('coin-container').addEventListener('touchstart', function(event) {
-            for (let touch of event.touches) {
-                incrementCoins({clientX: touch.clientX, clientY: touch.clientY});
-            }
-            event.preventDefault();
-        });
-
-        document.getElementById('coin-container').addEventListener('mousedown', function(event) {
-            incrementCoins({client.menu-item {
-            color: #ffffff; /* Устанавливаем белый цвет текста */
-            text-decoration: none;
-            padding: 5px 10px; /* Уменьшены отступы */
-            border-radius: 5px;
-            background-color: rgba(255, 255, 255, 0.2); /* Прозрачный фон */
-            pointer-events: none; /* Делаем кнопки неактивными */
-            display: flex; 
-            flex-direction: column; /* Вертикальная ориентация */
-            align-items: center; 
-            opacity: 0.7; /* Прозрачность для неактивных кнопок */
-        }
-        .menu-item img {
-            width: 25px; /* Уменьшен размер иконок */
-            margin-bottom: 5px; /* Отступ между иконкой и текстом */
-            filter: brightness(0) invert(1); /* Делаем иконки белыми */
-        }
-        .menu-item:hover {
-            background-color: rgba(255, 255, 255, 0.3); /* Более светлый фон при наведении */
-        }
-
-        /* Стили для выделения названий */
-        #menu-title {
-            color: #ffffff; /* Белый цвет для заголовка меню */
-            font-size: 1.5em; /* Размер шрифта для заголовка */
-            margin-bottom: 10px; /* Отступ снизу */
-        }
-    </style>
-</head>
-<body>
-    <div id="balance-container">
-        <img src="https://raw.githubusercontent.com/yukendg/yukendg.github.io/main/coin.png" alt="Монета" width="60" draggable="false" style="user-select: none; pointer-events: none;">
-        <span id="coin-balance">0</span>
-    </div>
-
-    <div id="coin-container" onclick="incrementCoins(event)">
-        <img src="https://raw.githubusercontent.com/yukendg/yukendg.github.io/main/coin.png" alt="Монета" id="coin" draggable="false">
-    </div>
-
-    <div id="energy-bar-container">
-        <div style="display: flex; align-items: center;">
-            <div id="energy-icon">⚡</div>
-            <div id="energy-status">1000/1000</div>
-        </div>
-        <div id="energy-bar">
-            <div id="energy-fill"></div>
-        </div>
-    </div>
-
-    <!-- Заголовок меню -->
-    <div id="menu-title">Меню</div>
-
-    <!-- Меню -->
-    <div id="menu">
-        <a href="#" class="menu-item">
-            <img src="home.png" alt="Главная"> Главная
-        </a>
-        <a href="#" class="menu-item">
-            <img src="upgrade.png" alt="Улучшения"> Улучшения
-        </a>
-        <a href="#" class="menu-item">
-            <img src="wallet.png" alt="Кошелёк"> Кошелёк
-        </a>
-    </div>
-
-    <script>
-        let coinCount = localStorage.getItem('coinCount') ? parseInt(localStorage.getItem('coinCount')) : 0;
-        let energy = localStorage.getItem('energy') ? parseInt(localStorage.getItem('energy')) : 1000;
-        let lastUpdateTime = localStorage.getItem('lastUpdateTime') ? parseInt(localStorage.getItem('lastUpdateTime')) : Date.now();
-        const ENERGY_MAX = 1000;
-
-        function restoreEnergy() {
-            const currentTime = Date.now();
-            const elapsedSeconds = Math.floor((currentTime - lastUpdateTime) / 1000);
-            if (elapsedSeconds >= 5 && energy < ENERGY_MAX) {
-                const energyGained = Math.min(30, ENERGY_MAX - energy); 
-                energy += energyGained;
-                localStorage.setItem('energy', energy);
-                updateEnergyBar();
-                lastUpdateTime = currentTime; 
-                localStorage.setItem('lastUpdateTime', lastUpdateTime);
-            }
-        }
-
-        function incrementCoins(event) {
-            if (energy >= 5) {
-                coinCount++;
-                energy -= 5;
-                localStorage.setItem('coinCount', coinCount);
-                localStorage.setItem('energy', energy);
-                updateCoinBalance();
-                updateEnergyBar();
-                showFloatingText(event.clientX, event.clientY);
-            }
-        }
-
-        function updateCoinBalance() {
-            document.getElementById('coin-balance').innerText = coinCount;
-        }
-
-        function updateEnergyBar() {
-            const energyFill = document.getElementById('energy-fill');
-            energyFill.style.width = (energy / ENERGY_MAX) * 100 + '%';
-            energyFill.style.backgroundColor = energy > 0 ? '#28a745' : '#dc3545';
-            const energyStatus = document.getElementById('energy-status');
-            energyStatus.innerText = `${energy}/${ENERGY_MAX}`;
-            if (energy === 0) {
-                energyStatus.style.animation = 'blink 1s infinite';
-            } else {
-                energyStatus.style.animation = '';
-            }
-        }
-
-        setInterval(restoreEnergy, 1000); 
-
-        function showFloatingText(x, y) {
-            const floatingText = document.createElement('div');
-            floatingText.innerText = '+1';
-            floatingText.className = 'floating-text';
-            floatingText.style.left = x - 10 + 'px';
-            floatingText.style.top = y - 20 + 'px';
-            document.body.appendChild(floatingText);
-            setTimeout(() => {
-                floatingText.remove();
-            }, 1000);
-        }
-
-        updateCoinBalance();
-        updateEnergyBar();
-
-        document.getElementById('coin-container').addEventListener('touchstart', function(event) {
-            for (let touch of event.touches) {
-                incrementCoins({clientX: touch.clientX, clientY: touch.clientY});
-            }
-            // Предотвращаем стандартное поведение при касании
-            event.preventDefault();
-        });
 
         // Если нужно, можем добавить обработчик для щелчков мыши
         document.getElementById('coin-container').addEventListener('mousedown', function(event) {
             incrementCoins({clientX: event.clientX, clientY: event.clientY});
+        });
+        
+        // Добавление стилей для подсветки названия и иконки
+        const menuItems = document.querySelectorAll('.menu-item');
+        menuItems.forEach(item => {
+            const title = item.textContent;
+            const icon = item.querySelector('img').outerHTML;
+
+            // Создание нового элемента для названия
+            const titleElement = document.createElement('div');
+            titleElement.style.color = '#ffffff';  // Подсветка белым цветом
+            titleElement.textContent = title;
+            item.innerHTML = '';  // Очистка содержимого элемента
+            item.appendChild(titleElement);  // Добавление названия
+            item.innerHTML += icon;  // Добавление иконки после названия
         });
     </script>
 </body>
