@@ -116,7 +116,6 @@
                 color: #dc3545; 
             }
         }
-        /* Стили для меню */
         #menu {
             display: flex;
             justify-content: space-around;
@@ -146,29 +145,32 @@
         .menu-item:hover {
             background-color: rgba(255, 255, 255, 0.3); 
         }
-        /* Новый стиль для названия и иконки */
         .section-title {
-            color: #ffffff;
-            font-size: 1.5em;
+            color: #ffffff; 
+            font-size: 1.5em; 
+            margin-top: 20px;
         }
         .section-icon {
-            color: #ffffff;
-            font-size: 2em;
-            margin-right: 5px;
+            color: #ffffff; 
+            font-size: 2em; 
+            margin-top: 10px;
         }
     </style>
 </head>
 <body>
+    <div class="section-title">Баланс</div>
     <div id="balance-container">
         <img src="https://raw.githubusercontent.com/yukendg/yukendg.github.io/main/coin.png" alt="Монета" width="60" draggable="false" style="user-select: none; pointer-events: none;">
         <span id="coin-balance">0</span>
     </div>
 
+    <div class="section-title">Монета</div>
     <div id="coin-container" onclick="incrementCoins(event)">
         <img src="https://raw.githubusercontent.com/yukendg/yukendg.github.io/main/coin.png" alt="Монета" id="coin" draggable="false">
     </div>
 
     <div id="energy-bar-container">
+        <div class="section-title">Энергия</div>
         <div style="display: flex; align-items: center;">
             <div id="energy-icon">⚡</div>
             <div id="energy-status">1000/1000</div>
@@ -178,14 +180,16 @@
         </div>
     </div>
 
-    <div class="section-title">
-        <span class="section-icon">🏠</span> Главная
-    </div>
-    <div class="section-title">
-        <span class="section-icon">⬆️</span> Улучшения
-    </div>
-    <div class="section-title">
-        <span class="section-icon">💰</span> Кошелёк
+    <div id="menu">
+        <a href="#" class="menu-item">
+            <img src="home.png" alt="Главная"> Главная
+        </a>
+        <a href="#" class="menu-item">
+            <img src="upgrade.png" alt="Улучшения"> Улучшения
+        </a>
+        <a href="#" class="menu-item">
+            <img src="wallet.png" alt="Кошелёк"> Кошелёк
+        </a>
     </div>
 
     <script>
@@ -252,6 +256,13 @@
 
         updateCoinBalance();
         updateEnergyBar();
+
+        document.getElementById('coin-container').addEventListener('touchstart', function(event) {
+            for (let touch of event.touches) {
+                incrementCoins({clientX: touch.clientX, clientY: touch.clientY});
+            }
+            event.preventDefault();
+        });
 
         document.getElementById('coin-container').addEventListener('touchstart', function(event) {
             for (let touch of event.touches) {
