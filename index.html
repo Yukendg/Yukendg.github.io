@@ -68,15 +68,6 @@
             justify-content: center;
             margin-top: 60px; /* Увеличенный отступ сверху */
         }
-        #energy-status {
-            font-size: 2em; /* Увеличенный размер текста для шкалы энергии */
-            font-weight: bold; /* Пожирнение текста */
-            margin-top: 5px; /* Отступ между полосой энергии и текстом */
-        }
-        #energy-icon {
-            font-size: 2em; /* Увеличенный размер иконки энергии */
-            margin-right: 5px; /* Отступ между иконкой и текстом */
-        }
         #energy-bar {
             width: 300px; /* Увеличенная ширина полосы энергии */
             height: 30px; /* Увеличенная высота полосы энергии */
@@ -90,6 +81,20 @@
             height: 100%;
             background-color: #28a745;
             transition: width 0.2s ease-in-out; /* Плавный переход */
+            position: relative;
+        }
+        #energy-status {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 1.5em; /* Увеличенный размер текста для шкалы энергии */
+            font-weight: bold; /* Пожирнение текста */
+            color: #ffffff; /* Цвет текста теперь белый */
+        }
+        #energy-icon {
+            font-size: 2em; /* Увеличенный размер иконки энергии */
+            margin-right: 5px; /* Отступ между иконкой и текстом */
         }
         .floating-text {
             position: absolute;
@@ -129,12 +134,13 @@
     </div>
 
     <div id="energy-bar-container">
-        <div style="display: flex; align-items: center;"> <!-- Обёртка для иконки и текста энергии -->
+        <div style="display: flex; align-items: center;"> <!-- Обёртка для иконки энергии -->
             <div id="energy-icon">⚡</div>
-            <div id="energy-status">1000/1000</div> <!-- Текущая энергия -->
         </div>
         <div id="energy-bar">
-            <div id="energy-fill"></div>
+            <div id="energy-fill">
+                <div id="energy-status">1000/1000</div> <!-- Текущая энергия внутри бара -->
+            </div>
         </div>
     </div>
 
