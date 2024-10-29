@@ -126,12 +126,7 @@
         <span id="coin-balance">0</span>
     </div>
 
-    <div id="coin-container" 
-         ontouchstart="startTapping(event)" 
-         ontouchend="stopTapping()"
-         onmousedown="startTapping(event)" 
-         onmouseup="stopTapping()"
-         onmouseleave="stopTapping()">
+    <div id="coin-container">
         <img src="https://raw.githubusercontent.com/yukendg/yukendg.github.io/main/coin.png" alt="Монета" id="coin" draggable="false">
     </div>
 
@@ -165,33 +160,26 @@
         let coinCount = localStorage.getItem('coinCount') ? parseInt(localStorage.getItem('coinCount')) : 0;
         let energy = localStorage.getItem('energy') ? parseInt(localStorage.getItem('energy')) : 1000;
         const ENERGY_MAX = 1000;
+        const ENERGY_REGENERATION_RATE = 5; // Количество энергии, восстанавливаемое в секунду
         let activeTab = 'home';
-        let tapping = false; // Флаг для отслеживания нажатия
-        let lastClickTime = 0; // Время последнего клика
 
         function restoreEnergy() {
             const currentTime = Date.now();
             const lastUpdateTime = localStorage.getItem('lastUpdateTime') ? parseInt(localStorage.getItem('lastUpdateTime')) : currentTime;
-            
-            // Рассчитываем, сколько времени прошло с последнего обновления
             const elapsedSeconds = Math.floor((currentTime - lastUpdateTime) / 1000);
 
-            // Определяем, сколько энергии можно восстановить за прошедшее время
-            const energyGained = Math.floor(elapsedSeconds / 5) * 30; // Каждые 5 секунд восстанавливается 30 энергии
-            energy += energyGained;
-
-            // Ограничиваем максимальную энергию
-            if (energy > ENERGY_MAX) {
-                energy = ENERGY_MAX;
+            if (elapsedSeconds > 0) {
+                const energyGained = Math.min(ENERGY_REGENERATION_RATE * elapsedSeconds, ENERGY_MAX - energy);
+                energy += energyGained;
+                localStorage.setItem('energy', energy);
+                localStorage.setItem('lastUpdateTime', currentTime);
+                updateEnergyBar();
             }
-
-            // Сохраняем обновленные значения в localStorage
-            localStorage.setItem('energy', energy);
-            localStorage.setItem('lastUpdateTime', currentTime);
-            updateEnergyBar();
         }
 
-        setInterval(restoreEnergy, 1000); 
+        setInterval(() => {
+            restoreEnergy();
+        }, 1000);
 
         function setActiveTab(tab) {
             activeTab = tab;
@@ -209,24 +197,6 @@
                     item.classList.remove('active');
                 }
             });
-        }
-
-        function startTapping(event) {
-            event.preventDefault(); // Предотвращаем стандартное поведение
-            if (energy >= 5) {
-                const touches = event.touches ? event.touches.length : 1; // Количество касаний
-                const currentTime = Date.now();
-                if (currentTime - lastClickTime > 100) { // Уменьшаем задержку между кликами до 100 мс
-                    for (let i = 0; i < touches; i++) {
-                        incrementCoins(); // Увеличиваем монеты за каждое касание
-                    }
-                    lastClickTime = currentTime;
-                }
-            }
-        }
-
-        function stopTapping() {
-            // Здесь ничего не делаем, так как зажим не будет учитывать повторные нажатия
         }
 
         function incrementCoins() {
@@ -251,13 +221,11 @@
             document.getElementById('energy-status').innerText = `${energy}/${ENERGY_MAX}`;
         }
 
-        // Первоначальная установка
-        updateCoinBalance();
-        updateEnergyBar();
-        restoreEnergy(); // Восстанавливаем энергию при загрузке
-
-        // Обновляем меню при загрузке
-        updateMenuIcons();
+        document.addEventListener('DOMContentLoaded', function() {
+            updateMenuIcons();
+            updateCoinBalance();
+            updateEnergyBar();
+        });
     </script>
 </body>
 </html>
