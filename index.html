@@ -106,6 +106,14 @@
                 transform: translateY(-50px);
             }
         }
+        @keyframes blink {
+            0%, 100% {
+                color: #ffffff;
+            }
+            50% {
+                color: #dc3545; /* Красный цвет */
+            }
+        }
     </style>
 </head>
 <body>
@@ -138,12 +146,14 @@
         function restoreEnergy() {
             const currentTime = Date.now();
             const elapsedSeconds = Math.floor((currentTime - lastUpdateTime) / 1000);
-            const energyGained = Math.min(elapsedSeconds * 10, ENERGY_MAX - energy);
-            energy += energyGained;
-            lastUpdateTime += energyGained / 10 * 1000; // Обновляем время последнего обновления
-            localStorage.setItem('lastUpdateTime', lastUpdateTime);
-            localStorage.setItem('energy', energy);
-            updateEnergyBar();
+            if (energy < ENERGY_MAX) {
+                const energyGained = Math.min(elapsedSeconds * 6, ENERGY_MAX - energy); // Восстанавливаем 30 энергии каждые 5 секунд
+                energy += energyGained;
+                lastUpdateTime += energyGained / 6 * 1000; // Обновляем время последнего обновления
+                localStorage.setItem('lastUpdateTime', lastUpdateTime);
+                localStorage.setItem('energy', energy);
+                updateEnergyBar();
+            }
         }
 
         // Функция для увеличения количества монет
@@ -169,11 +179,19 @@
             const energyFill = document.getElementById('energy-fill');
             energyFill.style.width = (energy / ENERGY_MAX) * 100 + '%';
             energyFill.style.backgroundColor = energy > 0 ? '#28a745' : '#dc3545';
-            document.getElementById('energy-status').innerText = `${energy}/${ENERGY_MAX}`; // Обновление шкалы энергии
+
+            // Если энергия 0, добавляем анимацию мигания
+            const energyStatus = document.getElementById('energy-status');
+            energyStatus.innerText = `${energy}/${ENERGY_MAX}`; // Обновление шкалы энергии
+            if (energy === 0) {
+                energyStatus.style.animation = 'blink 1s infinite';
+            } else {
+                energyStatus.style.animation = '';
+            }
         }
 
-        // Восстанавливаем энергию каждые 3 секунды
-        setInterval(restoreEnergy, 3000); // Теперь восстанавливаем энергию каждые 3 секунды
+        // Восстанавливаем энергию каждые 5 секунд
+        setInterval(restoreEnergy, 5000); // Теперь восстанавливаем энергию каждые 5 секунд
 
         // Эффект вылетающего текста +1 при нажатии
         function showFloatingText(x, y) {
