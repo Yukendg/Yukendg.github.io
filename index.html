@@ -109,6 +109,9 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+            width: 100px; /* Увеличенная зона нажатия */
+            padding: 10px;
+            cursor: pointer;
         }
         .menu-item img {
             width: 25px;
@@ -141,41 +144,40 @@
 
     <!-- Меню -->
     <div id="menu">
-        <a href="#" class="menu-item" id="home" onclick="setActiveTab('home')">
+        <div class="menu-item" id="home" onclick="setActiveTab('home')">
             <img src="home.png" alt="Главная">
             Главная
-        </a>
-        <a href="#" class="menu-item" id="upgrade" onclick="setActiveTab('upgrade')">
+        </div>
+        <div class="menu-item" id="upgrade" onclick="setActiveTab('upgrade')">
             <img src="upgrade.png" alt="Улучшения">
             Улучшения
-        </a>
-        <a href="#" class="menu-item" id="wallet" onclick="setActiveTab('wallet')">
+        </div>
+        <div class="menu-item" id="wallet" onclick="setActiveTab('wallet')">
             <img src="wallet.png" alt="Кошелёк">
             Кошелёк
-        </a>
+        </div>
     </div>
 
     <script>
         let coinCount = localStorage.getItem('coinCount') ? parseInt(localStorage.getItem('coinCount')) : 0;
         let energy = localStorage.getItem('energy') ? parseInt(localStorage.getItem('energy')) : 1000;
-        let lastUpdateTime = localStorage.getItem('lastUpdateTime') ? parseInt(localStorage.getItem('lastUpdateTime')) : Date.now();
         const ENERGY_MAX = 1000;
         let activeTab = 'home';
-
+        
         function restoreEnergy() {
             const currentTime = Date.now();
+            const lastUpdateTime = localStorage.getItem('lastUpdateTime') ? parseInt(localStorage.getItem('lastUpdateTime')) : Date.now();
             const elapsedSeconds = Math.floor((currentTime - lastUpdateTime) / 1000);
             if (elapsedSeconds >= 5) {
-                const energyGained = Math.min(30, ENERGY_MAX - energy); 
+                const energyGained = Math.min(30, ENERGY_MAX - energy);
                 energy += energyGained;
-                lastUpdateTime = currentTime;
                 localStorage.setItem('energy', energy);
-                localStorage.setItem('lastUpdateTime', lastUpdateTime);
+                localStorage.setItem('lastUpdateTime', currentTime);
                 updateEnergyBar();
             }
         }
 
-        setInterval(restoreEnergy, 1000);
+        setInterval(restoreEnergy, 1000); 
 
         function setActiveTab(tab) {
             activeTab = tab;
