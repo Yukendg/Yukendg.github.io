@@ -33,18 +33,19 @@
         #coin-container {
             margin: 20px auto;
             width: 200px; /* Размер контейнера */
+            height: 200px; /* Высота контейнера */
             position: relative;
-        }
-        .coin {
-            width: 100%; /* Ширина изображения монеты */
-            cursor: pointer; /* Курсор при наведении */
-            transition: transform 0.1s; /* Эффект при нажатии */
-            position: relative;
-            animation: bounce 0.5s infinite alternate; /* Анимация */
+            cursor: pointer;
             user-select: none; /* Отключение выделения */
         }
-        .coin:hover {
-            transform: scale(1.1); /* Увеличение при наведении */
+        #coin {
+            width: 100%; /* Ширина изображения монеты */
+            position: absolute;
+            top: 0;
+            left: 0;
+            animation: bounce 0.5s infinite alternate; /* Анимация */
+            user-select: none; /* Отключение выделения */
+            pointer-events: none; /* Отключаем события мыши на изображении */
         }
         @keyframes bounce {
             from {
@@ -67,13 +68,13 @@
         
         <!-- Контейнер баланса с иконкой монеты -->
         <div id="balance-container">
-            <img src="https://raw.githubusercontent.com/yukendg/yukendg.github.io/main/coin.png" alt="Монета" width="40" draggable="false">
+            <img src="https://raw.githubusercontent.com/yukendg/yukendg.github.io/main/coin.png" alt="Монета" width="40" draggable="false" style="user-select: none; pointer-events: none;">
             <span id="coin-balance">0</span>
         </div>
 
-        <!-- Контейнер монеты -->
-        <div id="coin-container">
-            <img src="https://raw.githubusercontent.com/yukendg/yukendg.github.io/main/coin.png" alt="Монета" class="coin" onmousedown="incrementCoins(); return false;">
+        <!-- Контейнер монеты, теперь регистрирует клики -->
+        <div id="coin-container" onclick="incrementCoins()">
+            <img src="https://raw.githubusercontent.com/yukendg/yukendg.github.io/main/coin.png" alt="Монета" id="coin" draggable="false">
         </div>
 
         <footer>
