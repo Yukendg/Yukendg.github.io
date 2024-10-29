@@ -13,36 +13,38 @@
             margin: 0;
             padding: 0;
             overflow: hidden;
-            user-select: none; /* Отключаем выделение для всего документа */
         }
         h1 {
             font-size: 3em;
             margin: 20px 0;
         }
-        p {
-            font-size: 1.5em;
+        #balance-container {
+            font-size: 2em;
+            margin-top: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        #coin-balance {
+            font-family: 'Roboto', sans-serif;
+            font-size: 2em;
+            margin-left: 10px;
         }
         #coin-container {
             margin: 20px auto;
-            width: 200px;
-            height: 200px;
-            cursor: pointer;
+            width: 200px; /* Размер контейнера */
             position: relative;
-            overflow: hidden;
-            animation: bounce 0.5s infinite alternate;
-            user-select: none;
         }
-        #coin {
-            width: 100%;
-            height: 100%;
-            background-image: url("https://raw.githubusercontent.com/yukendg/yukendg.github.io/main/coin.png");
-            background-size: cover;
-            transition: transform 0.1s;
-            pointer-events: none;
-            user-select: none;
+        .coin {
+            width: 100%; /* Ширина изображения монеты */
+            cursor: pointer; /* Курсор при наведении */
+            transition: transform 0.1s; /* Эффект при нажатии */
+            position: relative;
+            animation: bounce 0.5s infinite alternate; /* Анимация */
+            user-select: none; /* Отключение выделения */
         }
-        #coin-container:active #coin {
-            transform: scale(0.95);
+        .coin:hover {
+            transform: scale(1.1); /* Увеличение при наведении */
         }
         @keyframes bounce {
             from {
@@ -52,25 +54,28 @@
                 transform: translateY(-10px);
             }
         }
-        #coin-count {
-            font-size: 2em;
-            margin: 20px 0;
-            display: block;
-        }
         footer {
             margin-top: 50px;
             font-size: 0.8em;
         }
     </style>
 </head>
-<body onmousedown="return false">
+<body>
     <div class="container">
         <h1>Добро пожаловать в Ron!</h1>
         <p>Нажимайте на монету, чтобы зарабатывать!</p>
-        <div id="coin-container" onmousedown="incrementCoins(); return false;">
-            <div id="coin"></div>
+        
+        <!-- Контейнер баланса с иконкой монеты -->
+        <div id="balance-container">
+            <img src="https://raw.githubusercontent.com/yukendg/yukendg.github.io/main/coin.png" alt="Монета" width="40" draggable="false">
+            <span id="coin-balance">0</span>
         </div>
-        <h2 id="coin-count">Монеты: 0</h2>
+
+        <!-- Контейнер монеты -->
+        <div id="coin-container">
+            <img src="https://raw.githubusercontent.com/yukendg/yukendg.github.io/main/coin.png" alt="Монета" class="coin" onmousedown="incrementCoins(); return false;">
+        </div>
+
         <footer>
             <p>© 2024 Ron. Все права защищены.</p>
         </footer>
@@ -83,16 +88,16 @@
         function incrementCoins() {
             coinCount++;
             localStorage.setItem('coinCount', coinCount); // Сохранить количество монет в localStorage
-            updateCoinCount();
+            updateCoinBalance();
         }
 
         // Функция для обновления отображения количества монет
-        function updateCoinCount() {
-            document.getElementById('coin-count').innerText = 'Монеты: ' + coinCount;
+        function updateCoinBalance() {
+            document.getElementById('coin-balance').innerText = coinCount;
         }
 
         // Обновляем счёт при загрузке страницы
-        updateCoinCount();
+        updateCoinBalance();
     </script>
 </body>
 </html>
