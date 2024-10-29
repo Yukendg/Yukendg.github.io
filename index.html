@@ -182,7 +182,9 @@
             }
         }
 
-        setInterval(restoreEnergy, 1000); 
+        setInterval(() => {
+            restoreEnergy(); // Автоматически восстанавливаем энергию каждую секунду
+        }, 1000); 
 
         function setActiveTab(tab) {
             activeTab = tab;
@@ -239,14 +241,22 @@
             const energyFill = document.getElementById('energy-fill');
             energyFill.style.width = (energy / ENERGY_MAX) * 100 + '%';
             energyFill.style.backgroundColor = energy > 0 ? '#28a745' : '#dc3545';
-            document.getElementById('energy-status').innerText = `${energy}/${ENERGY_MAX}`;
-        }
+            document.getElementById('energy-status').innerText = `${energy}/${ENERGY_MAX}`;}
 
         document.addEventListener('DOMContentLoaded', function() {
             updateMenuIcons();
             updateCoinBalance();
             updateEnergyBar();
         });
+        
+        // Функция для обновления времени последнего обновления энергии
+        window.addEventListener('beforeunload', function() {
+            localStorage.setItem('lastUpdateTime', Date.now());
+        });
+
+        // Запускаем восстановление энергии сразу после загрузки
+        restoreEnergy();
+
     </script>
 </body>
 </html>
