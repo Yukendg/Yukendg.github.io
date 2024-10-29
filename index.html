@@ -18,34 +18,34 @@
             user-select: none;
         }
         #balance-container {
-            font-size: 3em; /* Увеличенный размер текста */
-            margin-top: 150px; /* Увеличенный отступ сверху */
+            font-size: 3em;
+            margin-top: 150px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-weight: bold; /* Пожирнение текста баланса */
+            font-weight: bold;
         }
         #coin-balance {
             margin-left: 10px;
         }
         #coin-container {
             margin: 0 auto;
-            width: 250px; /* Увеличенный размер контейнера */
-            height: 250px; /* Увеличенный размер контейнера */
+            width: 250px;
+            height: 250px;
             position: relative;
             cursor: pointer;
             user-select: none;
             outline: none;
             -webkit-tap-highlight-color: transparent;
-            margin-top: 20px; /* Отступ сверху */
+            margin-top: 20px;
         }
         #coin {
-            width: 80%; /* Увеличенный размер монеты */
+            width: 80%;
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            transition: transform 0.3s ease; /* Плавный переход */
+            transition: transform 0.3s ease;
             animation: bounce 0.5s infinite alternate;
             user-select: none;
             pointer-events: none;
@@ -63,38 +63,38 @@
         }
         #energy-bar-container {
             display: flex;
-            flex-direction: column; /* Вертикальное расположение */
+            flex-direction: column;
             align-items: center;
             justify-content: center;
-            margin-top: 60px; /* Увеличенный отступ сверху */
+            margin-top: 60px;
         }
         #energy-status {
-            font-size: 2em; /* Увеличенный размер текста для шкалы энергии */
-            font-weight: bold; /* Пожирнение текста */
-            margin-top: 5px; /* Отступ между полосой энергии и текстом */
+            font-size: 2em;
+            font-weight: bold;
+            margin-top: 5px;
         }
         #energy-icon {
-            font-size: 2em; /* Увеличенный размер иконки энергии */
-            margin-right: 5px; /* Отступ между иконкой и текстом */
+            font-size: 2em;
+            margin-right: 5px;
         }
         #energy-bar {
-            width: 300px; /* Увеличенная ширина полосы энергии */
-            height: 30px; /* Увеличенная высота полосы энергии */
+            width: 300px;
+            height: 30px;
             background-color: #444;
             border-radius: 10px;
             overflow: hidden;
             position: relative;
-            margin-top: 10px; /* Отступ между иконкой и полосой энергии */
+            margin-top: 10px;
         }
         #energy-fill {
             height: 100%;
             background-color: #28a745;
-            transition: width 0.2s ease-in-out; /* Плавный переход */
+            transition: width 0.2s ease-in-out;
         }
         .floating-text {
             position: absolute;
-            font-size: 1.5em; /* Увеличенный размер текста */
-            color: #ffffff; /* Цвет текста теперь белый */
+            font-size: 1.5em;
+            color: #ffffff;
             animation: floatUp 1s forwards;
             pointer-events: none;
         }
@@ -113,14 +113,39 @@
                 color: #ffffff;
             }
             50% {
-                color: #dc3545; /* Красный цвет */
+                color: #dc3545;
             }
+        }
+        /* Стиль меню */
+        #menu {
+            display: flex;
+            justify-content: center;
+            position: fixed;
+            bottom: 20px;
+            left: 0;
+            right: 0;
+            background-color: rgba(40, 44, 52, 0.9);
+            border-radius: 10px;
+            padding: 10px 0;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+        .menu-button {
+            flex: 1;
+            padding: 15px 0;
+            font-size: 1.2em;
+            color: #ffffff;
+            text-decoration: none;
+            text-align: center;
+            transition: background-color 0.3s;
+        }
+        .menu-button:hover {
+            background-color: #555;
         }
     </style>
 </head>
 <body>
     <div id="balance-container">
-        <img src="https://raw.githubusercontent.com/yukendg/yukendg.github.io/main/coin.png" alt="Монета" width="60" draggable="false" style="user-select: none; pointer-events: none;"> <!-- Увеличенный размер монеты -->
+        <img src="https://raw.githubusercontent.com/yukendg/yukendg.github.io/main/coin.png" alt="Монета" width="60" draggable="false" style="user-select: none; pointer-events: none;">
         <span id="coin-balance">0</span>
     </div>
 
@@ -129,13 +154,20 @@
     </div>
 
     <div id="energy-bar-container">
-        <div style="display: flex; align-items: center;"> <!-- Обёртка для иконки и текста энергии -->
+        <div style="display: flex; align-items: center;">
             <div id="energy-icon">⚡</div>
-            <div id="energy-status">1000/1000</div> <!-- Текущая энергия -->
+            <div id="energy-status">1000/1000</div>
         </div>
         <div id="energy-bar">
             <div id="energy-fill"></div>
         </div>
+    </div>
+
+    <!-- Меню внизу -->
+    <div id="menu">
+        <a href="#" class="menu-button">Кошелек</a>
+        <a href="#" class="menu-button">Улучшения</a>
+        <a href="#" class="menu-button">Другие</a>
     </div>
 
     <script>
@@ -144,21 +176,19 @@
         let lastUpdateTime = localStorage.getItem('lastUpdateTime') ? parseInt(localStorage.getItem('lastUpdateTime')) : Date.now();
         const ENERGY_MAX = 1000;
 
-        // Функция для восстановления энергии
         function restoreEnergy() {
             const currentTime = Date.now();
             const elapsedSeconds = Math.floor((currentTime - lastUpdateTime) / 1000);
             if (elapsedSeconds >= 5 && energy < ENERGY_MAX) {
-                const energyGained = Math.min(30, ENERGY_MAX - energy); // Восстанавливаем 30 энергии
+                const energyGained = Math.min(30, ENERGY_MAX - energy);
                 energy += energyGained;
                 localStorage.setItem('energy', energy);
                 updateEnergyBar();
-                lastUpdateTime = currentTime; // Обновляем время последнего обновления
+                lastUpdateTime = currentTime;
                 localStorage.setItem('lastUpdateTime', lastUpdateTime);
             }
         }
 
-        // Функция для увеличения количества монет
         function incrementCoins(event) {
             if (energy >= 5) {
                 coinCount++;
@@ -171,20 +201,17 @@
             }
         }
 
-        // Функция для отображения количества монет
         function updateCoinBalance() {
             document.getElementById('coin-balance').innerText = coinCount;
         }
 
-        // Функция для обновления полосы энергии
         function updateEnergyBar() {
             const energyFill = document.getElementById('energy-fill');
             energyFill.style.width = (energy / ENERGY_MAX) * 100 + '%';
             energyFill.style.backgroundColor = energy > 0 ? '#28a745' : '#dc3545';
 
-            // Если энергия 0, добавляем анимацию мигания
             const energyStatus = document.getElementById('energy-status');
-            energyStatus.innerText = `${energy}/${ENERGY_MAX}`; // Обновление шкалы энергии
+            energyStatus.innerText = `${energy}/${ENERGY_MAX}`;
             if (energy === 0) {
                 energyStatus.style.animation = 'blink 1s infinite';
             } else {
@@ -192,10 +219,8 @@
             }
         }
 
-        // Восстанавливаем энергию каждые 5 секунд
-        setInterval(restoreEnergy, 1000); // Запускаем восстановление каждую секунду для отслеживания времени
+        setInterval(restoreEnergy, 1000);
 
-        // Эффект вылетающего текста +1 при нажатии
         function showFloatingText(x, y) {
             const floatingText = document.createElement('div');
             floatingText.innerText = '+1';
@@ -209,11 +234,9 @@
             }, 1000);
         }
 
-        // Обновляем счёт и энергию при загрузке страницы
         updateCoinBalance();
         updateEnergyBar();
 
-        // Обработка многопальцевого касания
         document.getElementById('coin-container').addEventListener('touchstart', function(event) {
             for (let touch of event.touches) {
                 incrementCoins({clientX: touch.clientX, clientY: touch.clientY});
@@ -221,8 +244,7 @@
             event.preventDefault();
         });
 
-        // Восстанавливаем энергию на загрузке страницы
-        restoreEnergy(); // Вызываем функцию восстановления энергии при загрузке
+        restoreEnergy();
     </script>
 </body>
 </html>
