@@ -167,7 +167,7 @@
         const ENERGY_MAX = 1000;
         let activeTab = 'home';
         let tapping = false;
-        let isClickRegistered = false; // Флаг для регистрации нажатия
+        let coinIncrementInterval = null; // Для хранения идентификатора таймера
 
         function restoreEnergy() {
             const currentTime = Date.now();
@@ -204,16 +204,16 @@
 
         function startTapping(event) {
             event.preventDefault(); // Предотвращаем стандартное поведение
-            if (energy >= 5 && !isClickRegistered) { // Проверка на уже зарегистрированный клик
+            if (energy >= 5 && !tapping) { // Проверка на отсутствие активного нажатия
                 tapping = true;
                 incrementCoins();
-                isClickRegistered = true; // Регистрация клика
-                setTimeout(() => isClickRegistered = false, 300); // Сбрасываем флаг через 300 мс
+                coinIncrementInterval = setInterval(incrementCoins, 100); // Запускаем таймер для увеличения монет
             }
         }
 
         function stopTapping() {
             tapping = false; // Останавливаем нажатие
+            clearInterval(coinIncrementInterval); // Останавливаем таймер
         }
 
         function incrementCoins() {
@@ -224,7 +224,6 @@
                 localStorage.setItem('energy', energy);
                 updateCoinBalance();
                 updateEnergyBar();
-                setTimeout(incrementCoins, 100); // Продолжаем увеличивать монеты каждые 100 мс, пока тапают
             }
         }
 
