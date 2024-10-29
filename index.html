@@ -129,7 +129,9 @@
         <span id="coin-balance">0</span>
     </div>
 
-    <div id="coin-container" onclick="incrementCoins(event)">
+    <div id="coin-container" 
+         ontouchstart="startTapping(event)" 
+         ontouchend="stopTapping(event)">
         <img src="https://raw.githubusercontent.com/yukendg/yukendg.github.io/main/coin.png" alt="Монета" id="coin" draggable="false">
     </div>
 
@@ -165,6 +167,7 @@
         const ENERGY_MAX = 1000;
         let activeTab = 'home';
         let tapping = false;
+        let touchCount = 0;
 
         function restoreEnergy() {
             const currentTime = Date.now();
@@ -199,27 +202,29 @@
             });
         }
 
-        function incrementCoins(event) {
+        function startTapping(event) {
+            event.preventDefault(); // Предотвращаем стандартное поведение
+            touchCount = event.touches.length;
             if (energy >= 5) {
-                // Начинаем множественное нажатие
-                if (!tapping) {
-                    tapping = true;
-                    let interval = setInterval(() => {
-                        if (energy < 5) {
-                            clearInterval(interval);
-                            tapping = false;
-                        } else {
-                            coinCount++;
-                            energy -= 5;
-                            localStorage.setItem('coinCount', coinCount);
-                            localStorage.setItem('energy', energy);
-                            updateCoinBalance();
-                            updateEnergyBar();
-                            showFloatingText(event.clientX, event.clientY);
-                        }
-                    }, 100); // Интервал между нажатиями
-                }
+                tapping = true;
+                let interval = setInterval(() => {
+                    if (touchCount === 0 || energy < 5) {
+                        clearInterval(interval);
+                        tapping = false;
+                    } else {
+                        coinCount += touchCount; // Увеличиваем монеты в зависимости от количества касаний
+                        energy -= 5 * touchCount; // Уменьшаем энергию в зависимости от количества касаний
+                        localStorage.setItem('coinCount', coinCount);
+                        localStorage.setItem('energy', energy);
+                        updateCoinBalance();
+                        updateEnergyBar();
+                    }
+                }, 100); // Интервал между нажатиями
             }
+        }
+
+        function stopTapping(event) {
+            touchCount = 0; // Сбрасываем количество касаний
         }
 
         function updateCoinBalance() {
