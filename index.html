@@ -121,7 +121,7 @@
             display: flex;
             justify-content: space-around;
             background-color: #444;
-            padding: 10px 0;
+            padding: 5px 0;  /* Уменьшен отступ */
             position: absolute;
             bottom: 0;
             width: 100%;
@@ -130,18 +130,21 @@
         .menu-item {
             color: #ffffff;
             text-decoration: none;
-            padding: 10px 20px;
+            padding: 5px 10px; /* Уменьшены отступы */
             border-radius: 5px;
-            transition: background-color 0.3s;
+            background-color: rgba(255, 255, 255, 0.2); /* Прозрачный фон */
+            pointer-events: none; /* Делаем кнопки неактивными */
             display: flex; 
+            flex-direction: column; /* Вертикальная ориентация */
             align-items: center; 
+            opacity: 0.7; /* Прозрачность для неактивных кнопок */
         }
         .menu-item img {
-            width: 30px; 
-            margin-right: 10px; 
+            width: 25px; /* Уменьшен размер иконок */
+            margin-bottom: 5px; /* Отступ между иконкой и текстом */
         }
         .menu-item:hover {
-            background-color: #555;
+            background-color: rgba(255, 255, 255, 0.3); /* Более светлый фон при наведении */
         }
     </style>
 </head>
@@ -250,7 +253,10 @@
             event.preventDefault();
         });
 
-        restoreEnergy(); 
+        // Если нужно, можем добавить обработчик для щелчков мыши
+        document.getElementById('coin-container').addEventListener('mousedown', function(event) {
+            incrementCoins({clientX: event.clientX, clientY: event.clientY});
+        });
     </script>
 </body>
 </html>
