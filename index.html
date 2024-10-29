@@ -116,6 +116,7 @@
                 color: #dc3545; 
             }
         }
+        /* Стили для меню */
         #menu {
             display: flex;
             justify-content: space-around;
@@ -145,15 +146,15 @@
         .menu-item:hover {
             background-color: rgba(255, 255, 255, 0.3); 
         }
+        /* Новый стиль для названия и иконки */
         .section-title {
             color: #ffffff;
             font-size: 1.5em;
-            margin-top: 20px;
         }
         .section-icon {
             color: #ffffff;
-            font-size: 1.5em;
-            margin-bottom: 10px;
+            font-size: 2em;
+            margin-right: 5px;
         }
     </style>
 </head>
@@ -163,18 +164,13 @@
         <span id="coin-balance">0</span>
     </div>
 
-    <div class="section-title">Баланс</div>
-    <div class="section-icon">💰</div>
-
     <div id="coin-container" onclick="incrementCoins(event)">
         <img src="https://raw.githubusercontent.com/yukendg/yukendg.github.io/main/coin.png" alt="Монета" id="coin" draggable="false">
     </div>
 
-    <div class="section-title">Энергия</div>
-    <div class="section-icon">⚡</div>
-
     <div id="energy-bar-container">
         <div style="display: flex; align-items: center;">
+            <div id="energy-icon">⚡</div>
             <div id="energy-status">1000/1000</div>
         </div>
         <div id="energy-bar">
@@ -182,16 +178,14 @@
         </div>
     </div>
 
-    <div id="menu">
-        <a href="#" class="menu-item">
-            <img src="home.png" alt="Главная"> Главная
-        </a>
-        <a href="#" class="menu-item">
-            <img src="upgrade.png" alt="Улучшения"> Улучшения
-        </a>
-        <a href="#" class="menu-item">
-            <img src="wallet.png" alt="Кошелёк"> Кошелёк
-        </a>
+    <div class="section-title">
+        <span class="section-icon">🏠</span> Главная
+    </div>
+    <div class="section-title">
+        <span class="section-icon">⬆️</span> Улучшения
+    </div>
+    <div class="section-title">
+        <span class="section-icon">💰</span> Кошелёк
     </div>
 
     <script>
@@ -266,14 +260,8 @@
             event.preventDefault();
         });
 
-        // Если нужно, можем добавить обработчик для щелчков мыши
         document.getElementById('coin-container').addEventListener('mousedown', function(event) {
             incrementCoins({clientX: event.clientX, clientY: event.clientY});
-        });
-
-        // Обработчик для удаления выделения текста
-        document.addEventListener('selectstart', function(event) {
-            event.preventDefault();
         });
     </script>
 </body>
