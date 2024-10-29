@@ -50,6 +50,9 @@
             user-select: none;
             pointer-events: none;
         }
+        #coin-container:active #coin {
+            transform: translate(-50%, -50%) scale(1.1) rotate(10deg);
+        }
         @keyframes bounce {
             from {
                 transform: translate(-50%, -50%) translateY(0);
@@ -108,11 +111,12 @@
             align-items: center;
             width: 100px; /* Увеличенная зона нажатия */
             padding: 10px;
-            cursor: pointer;
+            cursor: default; /* Делаем некликабельными */
         }
         .menu-item img {
             width: 25px;
             margin-bottom: 5px;
+            pointer-events: none; /* Сделать иконки некликабельными */
         }
         .menu-item.active {
             color: #0000ff;
@@ -125,7 +129,9 @@
         <span id="coin-balance">0</span>
     </div>
 
-    <div id="coin-container" ontouchstart="startTapping()" ontouchend="stopTapping()" onclick="incrementCoins(event)">
+    <div id="coin-container" 
+         ontouchstart="startTapping(event)" 
+         ontouchend="stopTapping()">
         <img src="https://raw.githubusercontent.com/yukendg/yukendg.github.io/main/coin.png" alt="Монета" id="coin" draggable="false">
     </div>
 
@@ -160,6 +166,7 @@
         let energy = localStorage.getItem('energy') ? parseInt(localStorage.getItem('energy')) : 1000;
         const ENERGY_MAX = 1000;
         let activeTab = 'home';
+        let tapping = false;
 
         function restoreEnergy() {
             const currentTime = Date.now();
@@ -194,47 +201,28 @@
             });
         }
 
-        let tapping = false;
-
-        function startTapping() {
-            tapping = true;
-            incrementCoins(); // Считаем как одно нажатие
-        }
-
-        function stopTapping() {
-            tapping = false; // Останавливаем отслеживание
-        }
-
-        function incrementCoins(event) {
+        function startTapping(event) {
+            event.preventDefault(); // Предотвращаем стандартное поведение
             if (energy >= 5) {
-                const clickCount = tapping ? 1 : 1; // Если удерживаем, считаем это за 1 клик
-                for (let i = 0; i < clickCount; i++) {
-                    coinCount++;
-                    energy = Math.max(0, energy - 5); // Не даем энергии уходить в минус
-                    localStorage.setItem('coinCount', coinCount);
-                    localStorage.setItem('energy', energy);
-                    updateCoinBalance();
-                    updateEnergyBar();
-                    showFloatingText(event.clientX, event.clientY); // Показ эффекта +1
-                }
+                tapping = true;
+                incrementCoins();
             }
         }
 
-        function showFloatingText(x, y) {
-            const floatingText = document.createElement('div');
-            floatingText.innerText = '+1';
-            floatingText.style.position = 'absolute';
-            floatingText.style.left = x + 'px';
-            floatingText.style.top = y + 'px';
-            floatingText.style.color = '#28a745';
-            floatingText.style.fontSize = '2em';
-            floatingText.style.pointerEvents = 'none';
-            document.body.appendChild(floatingText);
-            setTimeout(() => {
-                floatingText.style.transform = 'translateY(-50px)';
-                floatingText.style.opacity = 0;
-            }, 0);
-            setTimeout(() => floatingText.remove(), 1000); // Удаляем элемент после эффекта
+        function stopTapping() {
+            tapping = false; // Останавливаем нажатие
+        }
+
+        function incrementCoins() {
+            if (tapping && energy >= 5) {
+                coinCount++; // Увеличиваем монеты
+                energy = Math.max(0, energy - 5); // Уменьшаем энергию, не позволяя уходить в минус
+                localStorage.setItem('coinCount', coinCount);
+                localStorage.setItem('energy', energy);
+                updateCoinBalance();
+                updateEnergyBar();
+                setTimeout(incrementCoins, 100); // Продолжаем увеличивать монеты каждые 100 мс, пока тапают
+            }
         }
 
         function updateCoinBalance() {
