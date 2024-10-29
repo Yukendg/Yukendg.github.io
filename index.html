@@ -131,7 +131,7 @@
 
     <div id="coin-container" 
          ontouchstart="startTapping(event)" 
-         ontouchend="stopTapping(event)">
+         ontouchend="stopTapping()">
         <img src="https://raw.githubusercontent.com/yukendg/yukendg.github.io/main/coin.png" alt="Монета" id="coin" draggable="false">
     </div>
 
@@ -167,7 +167,6 @@
         const ENERGY_MAX = 1000;
         let activeTab = 'home';
         let tapping = false;
-        let touchCount = 0;
 
         function restoreEnergy() {
             const currentTime = Date.now();
@@ -204,27 +203,26 @@
 
         function startTapping(event) {
             event.preventDefault(); // Предотвращаем стандартное поведение
-            touchCount = event.touches.length;
             if (energy >= 5) {
                 tapping = true;
-                let interval = setInterval(() => {
-                    if (touchCount === 0 || energy < 5) {
-                        clearInterval(interval);
-                        tapping = false;
-                    } else {
-                        coinCount += touchCount; // Увеличиваем монеты в зависимости от количества касаний
-                        energy -= 5 * touchCount; // Уменьшаем энергию в зависимости от количества касаний
-                        localStorage.setItem('coinCount', coinCount);
-                        localStorage.setItem('energy', energy);
-                        updateCoinBalance();
-                        updateEnergyBar();
-                    }
-                }, 100); // Интервал между нажатиями
+                incrementCoins();
             }
         }
 
-        function stopTapping(event) {
-            touchCount = 0; // Сбрасываем количество касаний
+        function stopTapping() {
+            tapping = false; // Останавливаем нажатие
+        }
+
+        function incrementCoins() {
+            if (tapping && energy >= 5) {
+                coinCount++; // Увеличиваем монеты
+                energy = Math.max(0, energy - 5); // Уменьшаем энергию, не позволяя уходить в минус
+                localStorage.setItem('coinCount', coinCount);
+                localStorage.setItem('energy', energy);
+                updateCoinBalance();
+                updateEnergyBar();
+                setTimeout(incrementCoins, 100); // Продолжаем увеличивать монеты каждые 100 мс, пока тапают
+            }
         }
 
         function updateCoinBalance() {
