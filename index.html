@@ -86,9 +86,8 @@
         }
         #energy-fill {
             height: 100%;
-            width: 100%;
             background-color: #28a745;
-            transition: width 1s ease-in-out; /* Плавный переход */
+            transition: width 0.2s ease-in-out; /* Плавный переход */
         }
         .floating-text {
             position: absolute;
@@ -132,7 +131,6 @@
     <script>
         let coinCount = localStorage.getItem('coinCount') ? parseInt(localStorage.getItem('coinCount')) : 0;
         let energy = localStorage.getItem('energy') ? parseInt(localStorage.getItem('energy')) : 1000;
-        let energyRestoreInterval;
 
         // Функция для увеличения количества монет
         function incrementCoins(event) {
@@ -162,7 +160,7 @@
 
         // Восстанавливаем энергию каждые 3 секунды
         function startEnergyRestore() {
-            energyRestoreInterval = setInterval(() => {
+            setInterval(() => {
                 if (energy < 1000) {
                     energy += 10;
                     if (energy > 1000) energy = 1000;
@@ -190,6 +188,14 @@
         updateCoinBalance();
         updateEnergyBar();
         startEnergyRestore();
+
+        // Обработка многопальцевого касания
+        document.getElementById('coin-container').addEventListener('touchstart', function(event) {
+            for (let touch of event.touches) {
+                incrementCoins({clientX: touch.clientX, clientY: touch.clientY});
+            }
+            event.preventDefault();
+        });
     </script>
 </body>
 </html>
