@@ -42,6 +42,15 @@
             transform: translate(-50%, -50%);
             animation: bounce 0.5s infinite alternate;
         }
+        .plus-one {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 2em;
+            color: #00ff00;
+            animation: moveUp 0.6s ease-in-out forwards;
+        }
         @keyframes bounce {
             from {
                 transform: translateY(0);
@@ -49,6 +58,10 @@
             to {
                 transform: translateY(-10px);
             }
+        }
+        @keyframes moveUp {
+            0% { opacity: 1; transform: translate(-50%, -50%); }
+            100% { opacity: 0; transform: translate(-50%, -150%); }
         }
         #energy-bar-container {
             display: flex;
@@ -94,9 +107,20 @@
             padding: 10px;
             cursor: pointer;
             transition: color 0.3s;
+            position: relative;
         }
         .menu-item.active {
             color: #0000ff;
+        }
+        .menu-click-zone {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+        }
+        .menu-item img {
+            pointer-events: none;
         }
     </style>
 </head>
@@ -121,16 +145,19 @@
     </div>
 
     <div id="menu">
-        <div class="menu-item" id="home" onclick="setActiveTab('home')">
+        <div class="menu-item" id="home">
             <img src="home.png" alt="Главная">
+            <span class="menu-click-zone" onclick="setActiveTab('home')"></span>
             Главная
         </div>
-        <div class="menu-item" id="upgrade" onclick="setActiveTab('upgrade')">
+        <div class="menu-item" id="upgrade">
             <img src="upgrade.png" alt="Улучшения">
+            <span class="menu-click-zone" onclick="setActiveTab('upgrade')"></span>
             Улучшения
         </div>
-        <div class="menu-item" id="wallet" onclick="setActiveTab('wallet')">
+        <div class="menu-item" id="wallet">
             <img src="wallet.png" alt="Кошелёк">
+            <span class="menu-click-zone" onclick="setActiveTab('wallet')"></span>
             Кошелёк
         </div>
     </div>
@@ -177,6 +204,13 @@
                 localStorage.setItem('energy', energy);
                 updateCoinBalance();
                 updateEnergyBar();
+                
+                // Анимация +1
+                const plusOne = document.createElement('div');
+                plusOne.classList.add('plus-one');
+                plusOne.innerText = '+1';
+                document.body.appendChild(plusOne);
+                setTimeout(() => plusOne.remove(), 600);
             }
         }
 
