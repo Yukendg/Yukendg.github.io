@@ -50,9 +50,6 @@
             user-select: none;
             pointer-events: none;
         }
-        #coin-container:active #coin {
-            transform: translate(-50%, -50%) scale(1.1) rotate(10deg);
-        }
         @keyframes bounce {
             from {
                 transform: translate(-50%, -50%) translateY(0);
@@ -111,24 +108,14 @@
             align-items: center;
             width: 100px; /* Увеличенная зона нажатия */
             padding: 10px;
-            cursor: default; /* Делаем некликабельными */
+            cursor: pointer;
         }
         .menu-item img {
             width: 25px;
             margin-bottom: 5px;
-            pointer-events: none; /* Сделать иконки некликабельными */
         }
         .menu-item.active {
             color: #0000ff;
-        }
-        /* Стиль для эффекта +1 */
-        .floating-text {
-            position: absolute;
-            color: #ffd700;
-            font-size: 2em;
-            opacity: 1;
-            transition: opacity 1s, transform 1s;
-            pointer-events: none;
         }
     </style>
 </head>
@@ -138,10 +125,7 @@
         <span id="coin-balance">0</span>
     </div>
 
-    <div id="coin-container" 
-         ontouchstart="startTapping(event)" 
-         ontouchend="stopTapping()"
-         onclick="incrementCoins(event)">
+    <div id="coin-container" ontouchstart="startTapping()" ontouchend="stopTapping()" onclick="incrementCoins(event)">
         <img src="https://raw.githubusercontent.com/yukendg/yukendg.github.io/main/coin.png" alt="Монета" id="coin" draggable="false">
     </div>
 
@@ -176,7 +160,6 @@
         let energy = localStorage.getItem('energy') ? parseInt(localStorage.getItem('energy')) : 1000;
         const ENERGY_MAX = 1000;
         let activeTab = 'home';
-        let tapping = false;
 
         function restoreEnergy() {
             const currentTime = Date.now();
@@ -211,43 +194,47 @@
             });
         }
 
-        function startTapping(event) {
-            event.preventDefault(); // Предотвращаем стандартное поведение
-            tapping = true; // Начинаем зажатие
+        let tapping = false;
+
+        function startTapping() {
+            tapping = true;
+            incrementCoins(); // Считаем как одно нажатие
         }
 
         function stopTapping() {
-            tapping = false; // Останавливаем зажатие
+            tapping = false; // Останавливаем отслеживание
         }
 
         function incrementCoins(event) {
-            if (tapping && energy >= 5) {
-                coinCount++; // Увеличиваем монеты
-                energy = Math.max(0, energy - 5); // Уменьшаем энергию, не позволяя уходить в минус
-                localStorage.setItem('coinCount', coinCount);
-                localStorage.setItem('energy', energy);
-                updateCoinBalance();
-                updateEnergyBar();
-                showFloatingText(event.clientX, event.clientY); // Показываем эффект +1
-                setTimeout(() => { tapping = false; }, 100); // Запрещаем мультитап после первого клика
+            if (energy >= 5) {
+                const clickCount = tapping ? 1 : 1; // Если удерживаем, считаем это за 1 клик
+                for (let i = 0; i < clickCount; i++) {
+                    coinCount++;
+                    energy = Math.max(0, energy - 5); // Не даем энергии уходить в минус
+                    localStorage.setItem('coinCount', coinCount);
+                    localStorage.setItem('energy', energy);
+                    updateCoinBalance();
+                    updateEnergyBar();
+                    showFloatingText(event.clientX, event.clientY); // Показ эффекта +1
+                }
             }
         }
 
         function showFloatingText(x, y) {
             const floatingText = document.createElement('div');
-            floatingText.className = 'floating-text';
             floatingText.innerText = '+1';
-            document.body.appendChild(floatingText);
+            floatingText.style.position = 'absolute';
             floatingText.style.left = x + 'px';
             floatingText.style.top = y + 'px';
-            floatingText.style.transform = 'translate(-50%, -50%)';
-            
-            // Удаляем текст через 1 секунду
+            floatingText.style.color = '#28a745';
+            floatingText.style.fontSize = '2em';
+            floatingText.style.pointerEvents = 'none';
+            document.body.appendChild(floatingText);
             setTimeout(() => {
+                floatingText.style.transform = 'translateY(-50px)';
                 floatingText.style.opacity = 0;
-                floatingText.style.transform += ' translateY(-30px)';
-                setTimeout(() => floatingText.remove(), 1000); // Удаляем элемент после эффекта
-            }, 1000); 
+            }, 0);
+            setTimeout(() => floatingText.remove(), 1000); // Удаляем элемент после эффекта
         }
 
         function updateCoinBalance() {
