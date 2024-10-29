@@ -116,46 +116,53 @@
                 color: #dc3545; 
             }
         }
-        /* Стили для меню */
-        #menu {
+        .menu {
             display: flex;
             justify-content: space-around;
-            background-color: #444;
-            padding: 5px 0;  /* Уменьшен отступ */
-            position: absolute;
-            bottom: 0;
-            width: 100%;
-            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.5);
+            margin-top: 30px; 
         }
         .menu-item {
-            color: #ffffff;
-            text-decoration: none;
-            padding: 5px 10px; /* Уменьшены отступы */
-            border-radius: 5px;
-            background-color: rgba(255, 255, 255, 0.2); /* Прозрачный фон */
-            pointer-events: none; /* Делаем кнопки неактивными */
-            display: flex; 
-            flex-direction: column; /* Вертикальная ориентация */
-            align-items: center; 
-            opacity: 0.7; /* Прозрачность для неактивных кнопок */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none; 
+            color: #cccccc; 
+            opacity: 0.5; 
+        }
+        .menu-item.active {
+            color: #ffffff; 
+            opacity: 1; 
         }
         .menu-item img {
-            width: 25px; /* Уменьшен размер иконок */
-            margin-bottom: 5px; /* Отступ между иконкой и текстом */
-        }
-        .menu-item:hover {
-            background-color: rgba(255, 255, 255, 0.3); /* Более светлый фон при наведении */
+            width: 50px; 
+            height: 50px; 
+            margin-bottom: 5px; 
         }
     </style>
 </head>
 <body>
     <div id="balance-container">
-        <img src="https://raw.githubusercontent.com/yukendg/yukendg.github.io/main/coin.png" alt="Монета" width="60" draggable="false" style="user-select: none; pointer-events: none;">
+        <img src="https://raw.githubusercontent.com/yukendg/yukendg.github.io/main/coin.png" alt="Монета" width="60" draggable="false">
         <span id="coin-balance">0</span>
     </div>
 
     <div id="coin-container" onclick="incrementCoins(event)">
         <img src="https://raw.githubusercontent.com/yukendg/yukendg.github.io/main/coin.png" alt="Монета" id="coin" draggable="false">
+    </div>
+
+    <div class="menu">
+        <a href="#" class="menu-item active">
+            <img src="home.png" alt="Главная">
+            <span>Главная</span>
+        </a>
+        <a href="#" class="menu-item">
+            <img src="upgrade.png" alt="Улучшения">
+            <span>Улучшения</span>
+        </a>
+        <a href="#" class="menu-item">
+            <img src="wallet.png" alt="Кошелек">
+            <span>Кошелек</span>
+        </a>
     </div>
 
     <div id="energy-bar-container">
@@ -168,19 +175,6 @@
         </div>
     </div>
 
-    <!-- Меню -->
-    <div id="menu">
-        <a href="#" class="menu-item">
-            <img src="home.png" alt="Главная"> Главная
-        </a>
-        <a href="#" class="menu-item">
-            <img src="upgrade.png" alt="Улучшения"> Улучшения
-        </a>
-        <a href="#" class="menu-item">
-            <img src="wallet.png" alt="Кошелёк"> Кошелёк
-        </a>
-    </div>
-
     <script>
         let coinCount = localStorage.getItem('coinCount') ? parseInt(localStorage.getItem('coinCount')) : 0;
         let energy = localStorage.getItem('energy') ? parseInt(localStorage.getItem('energy')) : 1000;
@@ -191,7 +185,7 @@
             const currentTime = Date.now();
             const elapsedSeconds = Math.floor((currentTime - lastUpdateTime) / 1000);
             if (elapsedSeconds >= 5 && energy < ENERGY_MAX) {
-                const energyGained = Math.min(30, ENERGY_MAX - energy); 
+                const energyGained = Math.min(30, ENERGY_MAX - energy);
                 energy += energyGained;
                 localStorage.setItem('energy', energy);
                 updateEnergyBar();
@@ -221,7 +215,7 @@
             energyFill.style.width = (energy / ENERGY_MAX) * 100 + '%';
             energyFill.style.backgroundColor = energy > 0 ? '#28a745' : '#dc3545';
             const energyStatus = document.getElementById('energy-status');
-            energyStatus.innerText = `${energy}/${ENERGY_MAX}`;
+            energyStatus.innerText = `${energy}/${ENERGY_MAX}`; 
             if (energy === 0) {
                 energyStatus.style.animation = 'blink 1s infinite';
             } else {
@@ -238,6 +232,7 @@
             floatingText.style.left = x - 10 + 'px';
             floatingText.style.top = y - 20 + 'px';
             document.body.appendChild(floatingText);
+
             setTimeout(() => {
                 floatingText.remove();
             }, 1000);
@@ -246,6 +241,13 @@
         updateCoinBalance();
         updateEnergyBar();
 
+        document.querySelectorAll('.menu-item').forEach(item => {
+            item.addEventListener('click', function() {
+                document.querySelectorAll('.menu-item').forEach(i => i.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
         document.getElementById('coin-container').addEventListener('touchstart', function(event) {
             for (let touch of event.touches) {
                 incrementCoins({clientX: touch.clientX, clientY: touch.clientY});
@@ -253,10 +255,11 @@
             event.preventDefault();
         });
 
-        // Если нужно, можем добавить обработчик для щелчков мыши
         document.getElementById('coin-container').addEventListener('mousedown', function(event) {
             incrementCoins({clientX: event.clientX, clientY: event.clientY});
         });
+
+        restoreEnergy(); 
     </script>
 </body>
 </html>
