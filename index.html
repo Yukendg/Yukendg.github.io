@@ -24,17 +24,22 @@
         #coin-container {
             margin: 20px auto;
             width: 200px; /* Размер контейнера */
-            position: relative;
-        }
-        #coin {
-            width: 100%; /* Ширина изображения монеты */
+            height: 200px; /* Высота контейнера */
             cursor: pointer; /* Курсор при наведении */
-            transition: transform 0.1s; /* Эффект при нажатии */
             position: relative;
+            overflow: hidden;
             animation: bounce 0.5s infinite alternate; /* Анимация */
         }
-        #coin:hover {
-            transform: scale(1.1); /* Увеличение при наведении */
+        #coin {
+            width: 100%; /* Ширина монеты */
+            height: 100%; /* Высота монеты */
+            background-image: url("https://raw.githubusercontent.com/yukendg/yukendg.github.io/main/coin.png"); /* Фон - изображение монеты */
+            background-size: cover; /* Подгонка изображения по размеру контейнера */
+            transition: transform 0.1s; /* Эффект при нажатии */
+            pointer-events: none; /* Блокирует возможность выделения */
+        }
+        #coin-container:active #coin {
+            transform: scale(0.95); /* Уменьшение при нажатии */
         }
         @keyframes bounce {
             from {
@@ -47,7 +52,7 @@
         #coin-count {
             font-size: 2em;
             margin: 20px 0;
-            display: block; /* Показывать счетчик монет с самого начала */
+            display: block;
         }
         footer {
             margin-top: 50px;
@@ -59,8 +64,8 @@
     <div class="container">
         <h1>Добро пожаловать в Ron!</h1>
         <p>Нажимайте на монету, чтобы зарабатывать!</p>
-        <div id="coin-container">
-            <img src="https://raw.githubusercontent.com/yukendg/yukendg.github.io/main/coin.png" alt="Монета" id="coin" draggable="false" onmousedown="incrementCoins(); return false;">
+        <div id="coin-container" onmousedown="incrementCoins(); return false;">
+            <div id="coin"></div>
         </div>
         <h2 id="coin-count">Монеты: 0</h2>
         <footer>
