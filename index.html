@@ -133,6 +133,12 @@
             padding: 10px 20px;
             border-radius: 5px;
             transition: background-color 0.3s;
+            display: flex; 
+            align-items: center; 
+        }
+        .menu-item img {
+            width: 30px; 
+            margin-right: 10px; 
         }
         .menu-item:hover {
             background-color: #555;
@@ -161,9 +167,15 @@
 
     <!-- Меню -->
     <div id="menu">
-        <a href="#" class="menu-item">Кошелёк</a>
-        <a href="#" class="menu-item">Улучшения</a>
-        <a href="#" class="menu-item">Достижения</a>
+        <a href="#" class="menu-item">
+            <img src="home.png" alt="Главная"> Главная
+        </a>
+        <a href="#" class="menu-item">
+            <img src="upgrade.png" alt="Улучшения"> Улучшения
+        </a>
+        <a href="#" class="menu-item">
+            <img src="wallet.png" alt="Кошелёк"> Кошелёк
+        </a>
     </div>
 
     <script>
