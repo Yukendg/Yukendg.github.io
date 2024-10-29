@@ -146,13 +146,13 @@
         function restoreEnergy() {
             const currentTime = Date.now();
             const elapsedSeconds = Math.floor((currentTime - lastUpdateTime) / 1000);
-            if (energy < ENERGY_MAX) {
-                const energyGained = Math.min(elapsedSeconds * 6, ENERGY_MAX - energy); // Восстанавливаем 30 энергии каждые 5 секунд
+            if (elapsedSeconds >= 5 && energy < ENERGY_MAX) {
+                const energyGained = Math.min(30, ENERGY_MAX - energy); // Восстанавливаем 30 энергии
                 energy += energyGained;
-                lastUpdateTime += energyGained / 6 * 1000; // Обновляем время последнего обновления
-                localStorage.setItem('lastUpdateTime', lastUpdateTime);
                 localStorage.setItem('energy', energy);
                 updateEnergyBar();
+                lastUpdateTime = currentTime; // Обновляем время последнего обновления
+                localStorage.setItem('lastUpdateTime', lastUpdateTime);
             }
         }
 
@@ -191,7 +191,7 @@
         }
 
         // Восстанавливаем энергию каждые 5 секунд
-        setInterval(restoreEnergy, 5000); // Теперь восстанавливаем энергию каждые 5 секунд
+        setInterval(restoreEnergy, 1000); // Запускаем восстановление каждую секунду для отслеживания времени
 
         // Эффект вылетающего текста +1 при нажатии
         function showFloatingText(x, y) {
