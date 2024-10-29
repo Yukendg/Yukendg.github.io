@@ -19,7 +19,7 @@
         }
         #balance-container {
             font-size: 3em; /* Увеличенный размер текста */
-            margin-top: 80px; /* Увеличенный отступ сверху */
+            margin-top: 100px; /* Увеличенный отступ сверху */
             display: flex;
             align-items: center;
             justify-content: center;
@@ -44,7 +44,7 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            transition: transform 0.1s ease-in-out; /* Плавный переход */
+            transition: transform 0.2s ease; /* Плавный переход */
             animation: bounce 0.5s infinite alternate;
             user-select: none;
             pointer-events: none;
@@ -65,7 +65,7 @@
             flex-direction: column; /* Вертикальное расположение */
             align-items: center;
             justify-content: center;
-            margin-top: 40px; /* Увеличенный отступ сверху */
+            margin-top: 60px; /* Увеличенный отступ сверху */
         }
         #energy-status {
             font-size: 1.5em; /* Увеличенный размер текста для шкалы энергии */
@@ -122,7 +122,7 @@
     <div id="energy-bar-container">
         <div style="display: flex; align-items: center;"> <!-- Обёртка для иконки и текста энергии -->
             <div id="energy-icon">⚡</div>
-            <div id="energy-status">500/1000</div> <!-- Текущая энергия -->
+            <div id="energy-status">1000/1000</div> <!-- Текущая энергия -->
         </div>
         <div id="energy-bar">
             <div id="energy-fill"></div>
