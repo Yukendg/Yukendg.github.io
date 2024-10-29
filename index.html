@@ -18,34 +18,34 @@
             user-select: none;
         }
         #balance-container {
-            font-size: 3em;
-            margin-top: 150px;
+            font-size: 3em; 
+            margin-top: 150px; 
             display: flex;
             align-items: center;
             justify-content: center;
-            font-weight: bold;
+            font-weight: bold; 
         }
         #coin-balance {
             margin-left: 10px;
         }
         #coin-container {
             margin: 0 auto;
-            width: 250px;
-            height: 250px;
+            width: 250px; 
+            height: 250px; 
             position: relative;
             cursor: pointer;
             user-select: none;
             outline: none;
             -webkit-tap-highlight-color: transparent;
-            margin-top: 20px;
+            margin-top: 20px; 
         }
         #coin {
-            width: 80%;
+            width: 80%; 
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            transition: transform 0.3s ease;
+            transition: transform 0.3s ease; 
             animation: bounce 0.5s infinite alternate;
             user-select: none;
             pointer-events: none;
@@ -63,38 +63,38 @@
         }
         #energy-bar-container {
             display: flex;
-            flex-direction: column;
+            flex-direction: column; 
             align-items: center;
             justify-content: center;
-            margin-top: 60px;
+            margin-top: 60px; 
         }
         #energy-status {
-            font-size: 2em;
-            font-weight: bold;
-            margin-top: 5px;
+            font-size: 2em; 
+            font-weight: bold; 
+            margin-top: 5px; 
         }
         #energy-icon {
-            font-size: 2em;
-            margin-right: 5px;
+            font-size: 2em; 
+            margin-right: 5px; 
         }
         #energy-bar {
-            width: 300px;
-            height: 30px;
+            width: 300px; 
+            height: 30px; 
             background-color: #444;
             border-radius: 10px;
             overflow: hidden;
             position: relative;
-            margin-top: 10px;
+            margin-top: 10px; 
         }
         #energy-fill {
             height: 100%;
             background-color: #28a745;
-            transition: width 0.2s ease-in-out;
+            transition: width 0.2s ease-in-out; 
         }
         .floating-text {
             position: absolute;
-            font-size: 1.5em;
-            color: #ffffff;
+            font-size: 1.5em; 
+            color: #ffffff; 
             animation: floatUp 1s forwards;
             pointer-events: none;
         }
@@ -113,32 +113,28 @@
                 color: #ffffff;
             }
             50% {
-                color: #dc3545;
+                color: #dc3545; 
             }
         }
-        /* Стиль меню */
+        /* Стили для меню */
         #menu {
             display: flex;
-            justify-content: center;
-            position: fixed;
-            bottom: 20px;
-            left: 0;
-            right: 0;
-            background-color: rgba(40, 44, 52, 0.9);
-            border-radius: 10px;
+            justify-content: space-around;
+            background-color: #444;
             padding: 10px 0;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.5);
         }
-        .menu-button {
-            flex: 1;
-            padding: 15px 0;
-            font-size: 1.2em;
+        .menu-item {
             color: #ffffff;
             text-decoration: none;
-            text-align: center;
+            padding: 10px 20px;
+            border-radius: 5px;
             transition: background-color 0.3s;
         }
-        .menu-button:hover {
+        .menu-item:hover {
             background-color: #555;
         }
     </style>
@@ -163,11 +159,11 @@
         </div>
     </div>
 
-    <!-- Меню внизу -->
+    <!-- Меню -->
     <div id="menu">
-        <a href="#" class="menu-button">Кошелек</a>
-        <a href="#" class="menu-button">Улучшения</a>
-        <a href="#" class="menu-button">Другие</a>
+        <a href="#" class="menu-item">Кошелёк</a>
+        <a href="#" class="menu-item">Улучшения</a>
+        <a href="#" class="menu-item">Достижения</a>
     </div>
 
     <script>
@@ -180,11 +176,11 @@
             const currentTime = Date.now();
             const elapsedSeconds = Math.floor((currentTime - lastUpdateTime) / 1000);
             if (elapsedSeconds >= 5 && energy < ENERGY_MAX) {
-                const energyGained = Math.min(30, ENERGY_MAX - energy);
+                const energyGained = Math.min(30, ENERGY_MAX - energy); 
                 energy += energyGained;
                 localStorage.setItem('energy', energy);
                 updateEnergyBar();
-                lastUpdateTime = currentTime;
+                lastUpdateTime = currentTime; 
                 localStorage.setItem('lastUpdateTime', lastUpdateTime);
             }
         }
@@ -209,7 +205,6 @@
             const energyFill = document.getElementById('energy-fill');
             energyFill.style.width = (energy / ENERGY_MAX) * 100 + '%';
             energyFill.style.backgroundColor = energy > 0 ? '#28a745' : '#dc3545';
-
             const energyStatus = document.getElementById('energy-status');
             energyStatus.innerText = `${energy}/${ENERGY_MAX}`;
             if (energy === 0) {
@@ -219,7 +214,7 @@
             }
         }
 
-        setInterval(restoreEnergy, 1000);
+        setInterval(restoreEnergy, 1000); 
 
         function showFloatingText(x, y) {
             const floatingText = document.createElement('div');
@@ -228,7 +223,6 @@
             floatingText.style.left = x - 10 + 'px';
             floatingText.style.top = y - 20 + 'px';
             document.body.appendChild(floatingText);
-
             setTimeout(() => {
                 floatingText.remove();
             }, 1000);
@@ -244,7 +238,7 @@
             event.preventDefault();
         });
 
-        restoreEnergy();
+        restoreEnergy(); 
     </script>
 </body>
 </html>
