@@ -116,11 +116,12 @@
                 color: #dc3545; 
             }
         }
+        /* Стили для меню */
         #menu {
             display: flex;
             justify-content: space-around;
             background-color: #444;
-            padding: 5px 0;  
+            padding: 5px 0;
             position: absolute;
             bottom: 0;
             width: 100%;
@@ -129,48 +130,35 @@
         .menu-item {
             color: #ffffff;
             text-decoration: none;
-            padding: 5px 10px; 
+            padding: 5px 10px;
             border-radius: 5px;
-            background-color: rgba(255, 255, 255, 0.2); 
-            pointer-events: none; 
+            background-color: rgba(255, 255, 255, 0.2);
             display: flex; 
-            flex-direction: column; 
+            flex-direction: column;
             align-items: center; 
-            opacity: 0.7; 
+            opacity: 0.7;
         }
         .menu-item img {
-            width: 25px; 
-            margin-bottom: 5px; 
+            width: 25px;
+            margin-bottom: 5px;
         }
-        .menu-item:hover {
-            background-color: rgba(255, 255, 255, 0.3); 
-        }
-        .section-title {
-            color: #ffffff; 
-            font-size: 1.5em; 
-            margin-top: 20px;
-        }
-        .section-icon {
-            color: #ffffff; 
-            font-size: 2em; 
-            margin-top: 10px;
+        .menu-item.active {
+            color: #00aaff;
+            opacity: 1;
         }
     </style>
 </head>
 <body>
-    <div class="section-title">Баланс</div>
     <div id="balance-container">
         <img src="https://raw.githubusercontent.com/yukendg/yukendg.github.io/main/coin.png" alt="Монета" width="60" draggable="false" style="user-select: none; pointer-events: none;">
         <span id="coin-balance">0</span>
     </div>
 
-    <div class="section-title">Монета</div>
     <div id="coin-container" onclick="incrementCoins(event)">
         <img src="https://raw.githubusercontent.com/yukendg/yukendg.github.io/main/coin.png" alt="Монета" id="coin" draggable="false">
     </div>
 
     <div id="energy-bar-container">
-        <div class="section-title">Энергия</div>
         <div style="display: flex; align-items: center;">
             <div id="energy-icon">⚡</div>
             <div id="energy-status">1000/1000</div>
@@ -181,7 +169,7 @@
     </div>
 
     <div id="menu">
-        <a href="#" class="menu-item">
+        <a href="#" class="menu-item active">
             <img src="home.png" alt="Главная"> Главная
         </a>
         <a href="#" class="menu-item">
@@ -256,13 +244,6 @@
 
         updateCoinBalance();
         updateEnergyBar();
-
-        document.getElementById('coin-container').addEventListener('touchstart', function(event) {
-            for (let touch of event.touches) {
-                incrementCoins({clientX: touch.clientX, clientY: touch.clientY});
-            }
-            event.preventDefault();
-        });
 
         document.getElementById('coin-container').addEventListener('touchstart', function(event) {
             for (let touch of event.touches) {
