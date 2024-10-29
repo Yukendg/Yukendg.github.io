@@ -19,7 +19,7 @@
         }
         #balance-container {
             font-size: 3em; /* Увеличенный размер текста */
-            margin-top: 20px;
+            margin-top: 80px; /* Увеличенный отступ сверху */
             display: flex;
             align-items: center;
             justify-content: center;
@@ -36,6 +36,7 @@
             user-select: none;
             outline: none;
             -webkit-tap-highlight-color: transparent;
+            margin-top: 20px; /* Отступ сверху */
         }
         #coin {
             width: 80%; /* Увеличенный размер монеты */
@@ -43,7 +44,7 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            transition: transform 0.1s;
+            transition: transform 0.1s ease-in-out; /* Плавный переход */
             animation: bounce 0.5s infinite alternate;
             user-select: none;
             pointer-events: none;
@@ -64,11 +65,15 @@
             flex-direction: column; /* Вертикальное расположение */
             align-items: center;
             justify-content: center;
-            margin-top: 30px; /* Увеличенный отступ сверху */
+            margin-top: 40px; /* Увеличенный отступ сверху */
+        }
+        #energy-status {
+            font-size: 1.5em; /* Увеличенный размер текста для шкалы энергии */
+            margin-top: 5px; /* Отступ между полосой энергии и текстом */
         }
         #energy-icon {
             font-size: 2em; /* Увеличенный размер иконки энергии */
-            margin-bottom: 5px; /* Отступ между иконкой и полосой энергии */
+            margin-right: 5px; /* Отступ между иконкой и текстом */
         }
         #energy-bar {
             width: 200px; /* Увеличенная ширина полосы энергии */
@@ -77,12 +82,13 @@
             border-radius: 10px;
             overflow: hidden;
             position: relative;
+            margin-top: 10px; /* Отступ между иконкой и полосой энергии */
         }
         #energy-fill {
             height: 100%;
             width: 100%;
             background-color: #28a745;
-            transition: width 0.2s ease-in-out;
+            transition: width 0.5s ease-in-out; /* Плавный переход */
         }
         .floating-text {
             position: absolute;
@@ -101,10 +107,6 @@
                 transform: translateY(-50px);
             }
         }
-        #energy-status {
-            font-size: 1.2em; /* Размер текста для шкалы энергии */
-            margin-top: 5px; /* Отступ между полосой энергии и текстом */
-        }
     </style>
 </head>
 <body>
@@ -118,11 +120,13 @@
     </div>
 
     <div id="energy-bar-container">
-        <div id="energy-icon">⚡</div>
+        <div style="display: flex; align-items: center;"> <!-- Обёртка для иконки и текста энергии -->
+            <div id="energy-icon">⚡</div>
+            <div id="energy-status">500/1000</div> <!-- Текущая энергия -->
+        </div>
         <div id="energy-bar">
             <div id="energy-fill"></div>
         </div>
-        <div id="energy-status">500/1000</div> <!-- Шкала энергии -->
     </div>
 
     <script>
