@@ -112,6 +112,8 @@
             width: 100px; /* Увеличенная зона нажатия */
             padding: 10px;
             cursor: pointer;
+            /* Сделайте иконки некликабельными */
+            pointer-events: none;
         }
         .menu-item img {
             width: 25px;
@@ -119,6 +121,21 @@
         }
         .menu-item.active {
             color: #0000ff;
+        }
+        /* Стили для зоны переключения разделов */
+        .menu-item-container {
+            display: flex;
+            justify-content: space-around;
+            width: 100%;
+            height: 50px;
+            background-color: #444;
+            position: absolute;
+            bottom: 0;
+            cursor: pointer;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .menu-item-container.active {
+            background-color: #333;
         }
     </style>
 </head>
@@ -128,7 +145,7 @@
         <span id="coin-balance">0</span>
     </div>
 
-    <div id="coin-container" onclick="incrementCoins(event)">
+    <div id="coin-container" ontouchstart="startClick(event)" ontouchend="endClick(event)">
         <img src="https://raw.githubusercontent.com/yukendg/yukendg.github.io/main/coin.png" alt="Монета" id="coin" draggable="false">
     </div>
 
@@ -144,15 +161,31 @@
 
     <!-- Меню -->
     <div id="menu">
-        <div class="menu-item" id="home" onclick="setActiveTab('home')">
+        <div class="menu-item" id="home">
             <img src="home.png" alt="Главная">
             Главная
         </div>
-        <div class="menu-item" id="upgrade" onclick="setActiveTab('upgrade')">
+        <div class="menu-item" id="upgrade">
             <img src="upgrade.png" alt="Улучшения">
             Улучшения
         </div>
-        <div class="menu-item" id="wallet" onclick="setActiveTab('wallet')">
+        <div class="menu-item" id="wallet">
+            <img src="wallet.png" alt="Кошелёк">
+            Кошелёк
+        </div>
+    </div>
+
+    <!-- Зона переключения разделов -->
+    <div id="menu-container" class="menu-item-container" onclick="setActiveTab(event)">
+        <div class="menu-item" id="home-container" onclick="setActiveTab('home')">
+            <img src="home.png" alt="Главная">
+            Главная
+        </div>
+        <div class="menu-item" id="upgrade-container" onclick="setActiveTab('upgrade')">
+            <img src="upgrade.png" alt="Улучшения">
+            Улучшения
+        </div>
+        <div class="menu-item" id="wallet-container" onclick="setActiveTab('wallet')">
             <img src="wallet.png" alt="Кошелёк">
             Кошелёк
         </div>
@@ -163,7 +196,10 @@
         let energy = localStorage.getItem('energy') ? parseInt(localStorage.getItem('energy')) : 1000;
         const ENERGY_MAX = 1000;
         let activeTab = 'home';
-        
+        let isClicking = false;
+        let clickCount = 0;
+        let clickInterval;
+
         function restoreEnergy() {
             const currentTime = Date.now();
             const lastUpdateTime = localStorage.getItem('lastUpdateTime') ? parseInt(localStorage.getItem('lastUpdateTime')) : Date.now();
@@ -179,9 +215,13 @@
 
         setInterval(restoreEnergy, 1000); 
 
-        function setActiveTab(tab) {
-            activeTab = tab;
-            updateMenuIcons();
+        function setActiveTab(event) {
+            const target = event.target.closest('.menu-item');
+            if (target) {
+                activeTab = target.id.replace('-container', ''); // Убираем "-container"
+                updateMenuIcons();
+                updateMenuContainer();
+            }
         }
 
         function updateMenuIcons() {
@@ -197,7 +237,31 @@
             });
         }
 
-        function incrementCoins(event) {
+        function updateMenuContainer() {
+            // Обновление внешнего вида меню
+            const menuItems = document.querySelectorAll('.menu-item-container .menu-item');
+            menuItems.forEach(item => {
+                if (item.id === `${activeTab}-container`) {
+                    item.parentNode.classList.add('active');
+                } else {
+                    item.parentNode.classList.remove('active');
+                }
+            });
+        }
+
+        function startClick(event) {
+            isClicking = true;
+            clickCount = 0;
+            clickInterval = setInterval(incrementCoins, 100); // Уменьшаем интервал до 100 мс
+        }
+
+        function endClick() {
+            clearInterval(clickInterval);
+            isClicking = false;
+            clickCount = 0;
+        }
+
+        function incrementCoins() {
             if (energy >= 5) {
                 coinCount++;
                 energy -= 5;
@@ -205,7 +269,8 @@
                 localStorage.setItem('energy', energy);
                 updateCoinBalance();
                 updateEnergyBar();
-                showFloatingText(event.clientX, event.clientY);
+                clickCount++;
+                showFloatingText(clickCount); // Отображаем количество кликов
             }
         }
 
@@ -220,8 +285,31 @@
             document.getElementById('energy-status').innerText = `${energy}/${ENERGY_MAX}`;
         }
 
+        function showFloatingText(clickCount) {
+            // Добавление элемента с количеством кликов
+            const floatingText = document.createElement('div');
+            floatingText.textContent = clickCount;
+            floatingText.style.position = 'absolute';
+            floatingText.style.top = '50%';
+            floatingText.style.left = '50%';
+            floatingText.style.transform = 'translate(-50%, -50%)';
+            floatingText.style.fontSize = '2em';
+            floatingText.style.color = '#28a745';
+            floatingText.style.zIndex = '100';
+            floatingText.style.opacity = 1;
+            document.body.appendChild(floatingText);
+            // Анимация элемента
+            setTimeout(() => {
+                floatingText.style.opacity = 0;
+                setTimeout(() => {
+                    document.body.removeChild(floatingText);
+                }, 500);
+            }, 1000);
+        }
+
         document.addEventListener('DOMContentLoaded', function() {
             updateMenuIcons();
+            updateMenuContainer();
             updateCoinBalance();
             updateEnergyBar();
         });
