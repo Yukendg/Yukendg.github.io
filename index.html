@@ -13,6 +13,7 @@
             margin: 0;
             padding: 0;
             overflow: hidden;
+            user-select: none; /* Отключаем выделение для всего документа */
         }
         h1 {
             font-size: 3em;
@@ -29,7 +30,7 @@
             position: relative;
             overflow: hidden;
             animation: bounce 0.5s infinite alternate;
-            user-select: none; /* Отключение выделения */
+            user-select: none;
         }
         #coin {
             width: 100%;
@@ -38,7 +39,7 @@
             background-size: cover;
             transition: transform 0.1s;
             pointer-events: none;
-            user-select: none; /* Отключение выделения */
+            user-select: none;
         }
         #coin-container:active #coin {
             transform: scale(0.95);
@@ -62,7 +63,7 @@
         }
     </style>
 </head>
-<body>
+<body onmousedown="return false">
     <div class="container">
         <h1>Добро пожаловать в Ron!</h1>
         <p>Нажимайте на монету, чтобы зарабатывать!</p>
