@@ -24,7 +24,6 @@
         }
         #coin-balance {
             margin-left: 10px;
-            transition: color 0.3s ease; /* Плавный переход цвета */
         }
         #coin-container {
             margin: 0 auto;
@@ -41,10 +40,6 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            transition: transform 0.3s ease; /* Плавный переход */
-        }
-        #coin-container:active #coin {
-            transform: translate(-50%, -50%) scale(0.9) rotate(10deg); /* Уменьшение размера при нажатии */
         }
         #energy-bar-container {
             display: flex;
@@ -124,9 +119,9 @@
         function restoreEnergy() {
             const currentTime = Date.now();
             const elapsedSeconds = Math.floor((currentTime - lastUpdateTime) / 1000);
-            const energyGained = Math.min(elapsedSeconds * 10, ENERGY_MAX - energy);
+            const energyGained = Math.min(elapsedSeconds * 6, ENERGY_MAX - energy); // 30 энергии за 5 секунд = 6 за секунду
             energy += energyGained;
-            lastUpdateTime += energyGained / 10 * 1000; // Обновляем время последнего обновления
+            lastUpdateTime += energyGained / 6 * 1000; // Обновляем время последнего обновления
             localStorage.setItem('lastUpdateTime', lastUpdateTime);
             localStorage.setItem('energy', energy);
             updateEnergyBar();
@@ -142,19 +137,9 @@
                 updateCoinBalance();
                 updateEnergyBar();
                 showFloatingText(event.clientX, event.clientY);
-                animateCoin(); // Анимация монеты при нажатии
             } else {
                 highlightEnergyStatus(); // Подсветка, если энергии не хватает
             }
-        }
-
-        // Функция для анимации монеты при нажатии
-        function animateCoin() {
-            const coin = document.getElementById('coin');
-            coin.style.transform = 'translate(-50%, -50%) scale(0.9)'; // Уменьшение размера
-            setTimeout(() => {
-                coin.style.transform = 'translate(-50%, -50%) scale(1)'; // Возврат к исходному размеру
-            }, 200);
         }
 
         // Функция для подсветки энергии
