@@ -13,6 +13,8 @@
             margin: 0;
             padding: 0;
             overflow: hidden;
+            -webkit-user-select: none;
+            -ms-user-select: none;
             user-select: none;
         }
         #balance-container {
@@ -31,7 +33,9 @@
             height: 250px; /* Увеличенный размер контейнера */
             position: relative;
             cursor: pointer;
+            user-select: none;
             outline: none;
+            -webkit-tap-highlight-color: transparent;
             margin-top: 20px; /* Отступ сверху */
         }
         #coin {
@@ -40,6 +44,21 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
+            transition: transform 0.3s ease; /* Плавный переход */
+            animation: bounce 0.5s infinite alternate;
+            user-select: none;
+            pointer-events: none;
+        }
+        #coin-container:active #coin {
+            transform: translate(-50%, -50%) scale(1.1) rotate(10deg);
+        }
+        @keyframes bounce {
+            from {
+                transform: translate(-50%, -50%) translateY(0);
+            }
+            to {
+                transform: translate(-50%, -50%) translateY(-10px);
+            }
         }
         #energy-bar-container {
             display: flex;
@@ -51,7 +70,6 @@
         #energy-status {
             font-size: 1.5em; /* Увеличенный размер текста для шкалы энергии */
             margin-top: 5px; /* Отступ между полосой энергии и текстом */
-            transition: color 0.3s ease; /* Плавный переход цвета */
         }
         #energy-icon {
             font-size: 2em; /* Увеличенный размер иконки энергии */
@@ -63,6 +81,7 @@
             background-color: #444;
             border-radius: 10px;
             overflow: hidden;
+            position: relative;
             margin-top: 10px; /* Отступ между иконкой и полосой энергии */
         }
         #energy-fill {
@@ -119,9 +138,9 @@
         function restoreEnergy() {
             const currentTime = Date.now();
             const elapsedSeconds = Math.floor((currentTime - lastUpdateTime) / 1000);
-            const energyGained = Math.min(elapsedSeconds * 6, ENERGY_MAX - energy); // 30 энергии за 5 секунд = 6 за секунду
+            const energyGained = Math.min(elapsedSeconds * 10, ENERGY_MAX - energy);
             energy += energyGained;
-            lastUpdateTime += energyGained / 6 * 1000; // Обновляем время последнего обновления
+            lastUpdateTime += energyGained / 10 * 1000; // Обновляем время последнего обновления
             localStorage.setItem('lastUpdateTime', lastUpdateTime);
             localStorage.setItem('energy', energy);
             updateEnergyBar();
@@ -137,18 +156,7 @@
                 updateCoinBalance();
                 updateEnergyBar();
                 showFloatingText(event.clientX, event.clientY);
-            } else {
-                highlightEnergyStatus(); // Подсветка, если энергии не хватает
             }
-        }
-
-        // Функция для подсветки энергии
-        function highlightEnergyStatus() {
-            const energyStatus = document.getElementById('energy-status');
-            energyStatus.style.color = 'red'; // Изменение цвета текста на красный
-            setTimeout(() => {
-                energyStatus.style.color = 'white'; // Возврат к исходному цвету
-            }, 300);
         }
 
         // Функция для отображения количества монет
@@ -172,20 +180,29 @@
             const floatingText = document.createElement('div');
             floatingText.innerText = '+1';
             floatingText.className = 'floating-text';
-            floatingText.style.left = (x - 10) + 'px';
-            floatingText.style.top = (y - 20) + 'px';
+            floatingText.style.left = x - 10 + 'px';
+            floatingText.style.top = y - 20 + 'px';
             document.body.appendChild(floatingText);
+
             setTimeout(() => {
                 floatingText.remove();
             }, 1000);
         }
 
-        // Инициализация начальных значений при загрузке страницы
-        window.onload = function() {
-            updateCoinBalance();
-            updateEnergyBar();
-            restoreEnergy(); // Восстановить энергию при загрузке
-        };
+        // Обновляем счёт и энергию при загрузке страницы
+        updateCoinBalance();
+        updateEnergyBar();
+
+        // Обработка многопальцевого касания
+        document.getElementById('coin-container').addEventListener('touchstart', function(event) {
+            for (let touch of event.touches) {
+                incrementCoins({clientX: touch.clientX, clientY: touch.clientY});
+            }
+            event.preventDefault();
+        });
+
+        // Восстанавливаем энергию на загрузке страницы
+        restoreEnergy(); // Вызываем функцию восстановления энергии при загрузке
     </script>
 </body>
 </html>
