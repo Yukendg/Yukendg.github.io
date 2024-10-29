@@ -127,6 +127,8 @@
     </div>
 
     <div id="coin-container" 
+         ontouchstart="startTapping(event)" 
+         ontouchend="stopTapping()"
          onmousedown="startTapping(event)" 
          onmouseup="stopTapping()"
          onmouseleave="stopTapping()">
@@ -202,9 +204,12 @@
         function startTapping(event) {
             event.preventDefault(); // Предотвращаем стандартное поведение
             if (energy >= 5) {
+                const touches = event.touches ? event.touches.length : 1; // Количество касаний
                 const currentTime = Date.now();
                 if (currentTime - lastClickTime > 500) { // Задержка 500 мс между кликами
-                    incrementCoins();
+                    for (let i = 0; i < touches; i++) {
+                        incrementCoins();
+                    }
                     lastClickTime = currentTime;
                 }
             }
