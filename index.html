@@ -166,6 +166,7 @@
         let energy = localStorage.getItem('energy') ? parseInt(localStorage.getItem('energy')) : 1000;
         const ENERGY_MAX = 1000;
         let activeTab = 'home';
+        let tapping = false; // Флаг для отслеживания нажатия
         let lastClickTime = 0; // Время последнего клика
 
         function restoreEnergy() {
@@ -206,9 +207,9 @@
             if (energy >= 5) {
                 const touches = event.touches ? event.touches.length : 1; // Количество касаний
                 const currentTime = Date.now();
-                if (currentTime - lastClickTime > 500) { // Задержка 500 мс между кликами
+                if (currentTime - lastClickTime > 100) { // Уменьшаем задержку между кликами до 100 мс
                     for (let i = 0; i < touches; i++) {
-                        incrementCoins();
+                        incrementCoins(); // Увеличиваем монеты за каждое касание
                     }
                     lastClickTime = currentTime;
                 }
