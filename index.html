@@ -69,8 +69,8 @@
             margin-top: 60px; /* Увеличенный отступ сверху */
         }
         #energy-bar {
-            width: 300px; /* Увеличенная ширина полосы энергии */
-            height: 30px; /* Увеличенная высота полосы энергии */
+            width: 400px; /* Увеличенная ширина полосы энергии */
+            height: 40px; /* Увеличенная высота полосы энергии */
             background-color: #444;
             border-radius: 10px;
             overflow: hidden;
@@ -95,6 +95,10 @@
         #energy-icon {
             font-size: 2em; /* Увеличенный размер иконки энергии */
             margin-right: 5px; /* Отступ между иконкой и текстом */
+            position: absolute; /* Позиционируем иконку относительно бара */
+            left: 10px; /* Отступ слева */
+            top: 50%; /* Центрирование по вертикали */
+            transform: translateY(-50%); /* Центрирование по вертикали */
         }
         .floating-text {
             position: absolute;
@@ -134,13 +138,11 @@
     </div>
 
     <div id="energy-bar-container">
-        <div style="display: flex; align-items: center;"> <!-- Обёртка для иконки энергии -->
-            <div id="energy-icon">⚡</div>
-        </div>
         <div id="energy-bar">
             <div id="energy-fill">
                 <div id="energy-status">1000/1000</div> <!-- Текущая энергия внутри бара -->
             </div>
+            <div id="energy-icon">⚡</div> <!-- Эмодзи внутри полосы энергии -->
         </div>
     </div>
 
@@ -222,13 +224,9 @@
         // Обработка многопальцевого касания
         document.getElementById('coin-container').addEventListener('touchstart', function(event) {
             for (let touch of event.touches) {
-                incrementCoins({clientX: touch.clientX, clientY: touch.clientY});
+                incrementCoins({ clientX: touch.clientX, clientY: touch.clientY });
             }
-            event.preventDefault();
         });
-
-        // Восстанавливаем энергию на загрузке страницы
-        restoreEnergy(); // Вызываем функцию восстановления энергии при загрузке
     </script>
 </body>
 </html>
