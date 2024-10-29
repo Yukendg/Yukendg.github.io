@@ -18,7 +18,7 @@
             user-select: none;
         }
         #balance-container {
-            font-size: 2em; /* Уменьшенный размер текста */
+            font-size: 3em; /* Увеличенный размер текста */
             margin-top: 20px;
             display: flex;
             align-items: center;
@@ -29,8 +29,8 @@
         }
         #coin-container {
             margin: 0 auto;
-            width: 200px;
-            height: 200px;
+            width: 250px; /* Увеличенный размер контейнера */
+            height: 250px; /* Увеличенный размер контейнера */
             position: relative;
             cursor: pointer;
             user-select: none;
@@ -38,7 +38,7 @@
             -webkit-tap-highlight-color: transparent;
         }
         #coin {
-            width: 100%;
+            width: 80%; /* Увеличенный размер монеты */
             position: absolute;
             top: 50%;
             left: 50%;
@@ -61,16 +61,17 @@
         }
         #energy-bar-container {
             display: flex;
+            flex-direction: column; /* Вертикальное расположение */
             align-items: center;
             justify-content: center;
-            margin-top: 10px;
+            margin-top: 30px; /* Увеличенный отступ сверху */
         }
         #energy-icon {
-            font-size: 1.5em;
-            margin-right: 5px;
+            font-size: 2em; /* Увеличенный размер иконки энергии */
+            margin-bottom: 5px; /* Отступ между иконкой и полосой энергии */
         }
         #energy-bar {
-            width: 180px;
+            width: 200px; /* Увеличенная ширина полосы энергии */
             height: 20px;
             background-color: #444;
             border-radius: 10px;
@@ -85,8 +86,8 @@
         }
         .floating-text {
             position: absolute;
-            font-size: 1.2em;
-            color: #FFD700;
+            font-size: 1.5em; /* Увеличенный размер текста */
+            color: #ffffff; /* Цвет текста теперь белый */
             animation: floatUp 1s forwards;
             pointer-events: none;
         }
@@ -100,11 +101,15 @@
                 transform: translateY(-50px);
             }
         }
+        #energy-status {
+            font-size: 1.2em; /* Размер текста для шкалы энергии */
+            margin-top: 5px; /* Отступ между полосой энергии и текстом */
+        }
     </style>
 </head>
 <body>
     <div id="balance-container">
-        <img src="https://raw.githubusercontent.com/yukendg/yukendg.github.io/main/coin.png" alt="Монета" width="40" draggable="false" style="user-select: none; pointer-events: none;">
+        <img src="https://raw.githubusercontent.com/yukendg/yukendg.github.io/main/coin.png" alt="Монета" width="60" draggable="false" style="user-select: none; pointer-events: none;"> <!-- Увеличенный размер монеты -->
         <span id="coin-balance">0</span>
     </div>
 
@@ -117,6 +122,7 @@
         <div id="energy-bar">
             <div id="energy-fill"></div>
         </div>
+        <div id="energy-status">500/1000</div> <!-- Шкала энергии -->
     </div>
 
     <script>
@@ -145,6 +151,7 @@
             const energyFill = document.getElementById('energy-fill');
             energyFill.style.width = (energy / 1000) * 100 + '%';
             energyFill.style.backgroundColor = energy > 0 ? '#28a745' : '#dc3545';
+            document.getElementById('energy-status').innerText = `${energy}/1000`; // Обновление шкалы энергии
         }
 
         // Восстанавливаем энергию каждые 3 секунды
