@@ -171,20 +171,27 @@
 
         function restoreEnergy() {
             const currentTime = Date.now();
-            const lastUpdateTime = localStorage.getItem('lastUpdateTime') ? parseInt(localStorage.getItem('lastUpdateTime')) : Date.now();
+            const lastUpdateTime = localStorage.getItem('lastUpdateTime') ? parseInt(localStorage.getItem('lastUpdateTime')) : currentTime;
+            
+            // Рассчитываем, сколько времени прошло с последнего обновления
             const elapsedSeconds = Math.floor((currentTime - lastUpdateTime) / 1000);
-            if (elapsedSeconds >= 5) {
-                const energyGained = Math.min(30, ENERGY_MAX - energy);
-                energy += energyGained;
-                localStorage.setItem('energy', energy);
-                localStorage.setItem('lastUpdateTime', currentTime);
-                updateEnergyBar();
+
+            // Определяем, сколько энергии можно восстановить за прошедшее время
+            const energyGained = Math.floor(elapsedSeconds / 5) * 30; // Каждые 5 секунд восстанавливается 30 энергии
+            energy += energyGained;
+
+            // Ограничиваем максимальную энергию
+            if (energy > ENERGY_MAX) {
+                energy = ENERGY_MAX;
             }
+
+            // Сохраняем обновленные значения в localStorage
+            localStorage.setItem('energy', energy);
+            localStorage.setItem('lastUpdateTime', currentTime);
+            updateEnergyBar();
         }
 
-        setInterval(() => {
-            restoreEnergy(); // Автоматически восстанавливаем энергию каждую секунду
-        }, 1000); 
+        setInterval(restoreEnergy, 1000); 
 
         function setActiveTab(tab) {
             activeTab = tab;
@@ -241,22 +248,16 @@
             const energyFill = document.getElementById('energy-fill');
             energyFill.style.width = (energy / ENERGY_MAX) * 100 + '%';
             energyFill.style.backgroundColor = energy > 0 ? '#28a745' : '#dc3545';
-            document.getElementById('energy-status').innerText = `${energy}/${ENERGY_MAX}`;}
+            document.getElementById('energy-status').innerText = `${energy}/${ENERGY_MAX}`;
+        }
 
-        document.addEventListener('DOMContentLoaded', function() {
-            updateMenuIcons();
-            updateCoinBalance();
-            updateEnergyBar();
-        });
-        
-        // Функция для обновления времени последнего обновления энергии
-        window.addEventListener('beforeunload', function() {
-            localStorage.setItem('lastUpdateTime', Date.now());
-        });
+        // Первоначальная установка
+        updateCoinBalance();
+        updateEnergyBar();
+        restoreEnergy(); // Восстанавливаем энергию при загрузке
 
-        // Запускаем восстановление энергии сразу после загрузки
-        restoreEnergy();
-
+        // Обновляем меню при загрузке
+        updateMenuIcons();
     </script>
 </body>
 </html>
