@@ -18,34 +18,34 @@
             user-select: none;
         }
         #balance-container {
-            font-size: 3em;
-            margin-top: 150px;
+            font-size: 3em; 
+            margin-top: 150px; 
             display: flex;
             align-items: center;
             justify-content: center;
-            font-weight: bold;
+            font-weight: bold; 
         }
         #coin-balance {
             margin-left: 10px;
         }
         #coin-container {
             margin: 0 auto;
-            width: 250px;
-            height: 250px;
+            width: 250px; 
+            height: 250px; 
             position: relative;
             cursor: pointer;
             user-select: none;
             outline: none;
             -webkit-tap-highlight-color: transparent;
-            margin-top: 20px;
+            margin-top: 20px; 
         }
         #coin {
-            width: 80%;
+            width: 80%; 
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            transition: transform 0.3s ease;
+            transition: transform 0.3s ease; 
             animation: bounce 0.5s infinite alternate;
             user-select: none;
             pointer-events: none;
@@ -63,74 +63,49 @@
         }
         #energy-bar-container {
             display: flex;
-            flex-direction: column;
+            flex-direction: column; 
             align-items: center;
             justify-content: center;
-            margin-top: 60px;
+            margin-top: 60px; 
         }
         #energy-status {
-            font-size: 2em;
-            font-weight: bold;
-            margin-top: 5px;
+            font-size: 2em; 
+            font-weight: bold; 
+            margin-top: 5px; 
         }
         #energy-icon {
-            font-size: 2em;
-            margin-right: 5px;
+            font-size: 2em; 
+            margin-right: 5px; 
         }
         #energy-bar {
-            width: 300px;
-            height: 30px;
+            width: 300px; 
+            height: 30px; 
             background-color: #444;
             border-radius: 10px;
             overflow: hidden;
             position: relative;
-            margin-top: 10px;
+            margin-top: 10px; 
         }
         #energy-fill {
             height: 100%;
             background-color: #28a745;
-            transition: width 0.2s ease-in-out;
-        }
-        .floating-text {
-            position: absolute;
-            font-size: 1.5em;
-            color: #ffffff;
-            animation: floatUp 1s forwards;
-            pointer-events: none;
-        }
-        @keyframes floatUp {
-            0% {
-                opacity: 1;
-                transform: translateY(0);
-            }
-            100% {
-                opacity: 0;
-                transform: translateY(-50px);
-            }
-        }
-        @keyframes blink {
-            0%, 100% {
-                color: #ffffff;
-            }
-            50% {
-                color: #dc3545;
-            }
+            transition: width 0.2s ease-in-out; 
         }
         /* Стили для меню */
         #menu {
             display: flex;
             justify-content: space-around;
             background-color: #444;
-            padding: 10px 0;
+            padding: 5px 0;
             position: absolute;
             bottom: 0;
             width: 100%;
             box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.5);
         }
         .menu-item {
-            font-weight: bold;
             color: #ffffff;
             text-decoration: none;
+            font-weight: bold;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -166,18 +141,18 @@
 
     <!-- Меню -->
     <div id="menu">
-        <div class="menu-item active" id="home" onclick="toggleActive(this)">
-            <img src="home_blue.png" alt="Главная">
+        <a href="#" class="menu-item" id="home" onclick="setActiveTab('home')">
+            <img src="home.png" alt="Главная">
             Главная
-        </div>
-        <div class="menu-item" id="upgrade" onclick="toggleActive(this)">
-            <img src="upgrade_blue.png" alt="Улучшения">
+        </a>
+        <a href="#" class="menu-item" id="upgrade" onclick="setActiveTab('upgrade')">
+            <img src="upgrade.png" alt="Улучшения">
             Улучшения
-        </div>
-        <div class="menu-item" id="wallet" onclick="toggleActive(this)">
-            <img src="wallet_blue.png" alt="Кошелёк">
+        </a>
+        <a href="#" class="menu-item" id="wallet" onclick="setActiveTab('wallet')">
+            <img src="wallet.png" alt="Кошелёк">
             Кошелёк
-        </div>
+        </a>
     </div>
 
     <script>
@@ -185,18 +160,39 @@
         let energy = localStorage.getItem('energy') ? parseInt(localStorage.getItem('energy')) : 1000;
         let lastUpdateTime = localStorage.getItem('lastUpdateTime') ? parseInt(localStorage.getItem('lastUpdateTime')) : Date.now();
         const ENERGY_MAX = 1000;
+        let activeTab = 'home';
 
         function restoreEnergy() {
             const currentTime = Date.now();
             const elapsedSeconds = Math.floor((currentTime - lastUpdateTime) / 1000);
-            if (elapsedSeconds >= 5 && energy < ENERGY_MAX) {
-                const energyGained = Math.min(30, ENERGY_MAX - energy);
+            if (elapsedSeconds >= 5) {
+                const energyGained = Math.min(30, ENERGY_MAX - energy); 
                 energy += energyGained;
-                localStorage.setItem('energy', energy);
-                updateEnergyBar();
                 lastUpdateTime = currentTime;
+                localStorage.setItem('energy', energy);
                 localStorage.setItem('lastUpdateTime', lastUpdateTime);
+                updateEnergyBar();
             }
+        }
+
+        setInterval(restoreEnergy, 1000);
+
+        function setActiveTab(tab) {
+            activeTab = tab;
+            updateMenuIcons();
+        }
+
+        function updateMenuIcons() {
+            document.querySelectorAll('.menu-item').forEach(item => {
+                const img = item.querySelector('img');
+                if (item.id === activeTab) {
+                    img.src = `${item.id}_blue.png`;
+                    item.classList.add('active');
+                } else {
+                    img.src = `${item.id}.png`;
+                    item.classList.remove('active');
+                }
+            });
         }
 
         function incrementCoins(event) {
@@ -219,72 +215,13 @@
             const energyFill = document.getElementById('energy-fill');
             energyFill.style.width = (energy / ENERGY_MAX) * 100 + '%';
             energyFill.style.backgroundColor = energy > 0 ? '#28a745' : '#dc3545';
-            const energyStatus = document.getElementById('energy-status');
-            energyStatus.innerText = `${energy}/${ENERGY_MAX}`;
-            if (energy === 0) {
-                energyStatus.style.animation = 'blink 1s infinite';
-            } else {
-                energyStatus.style.animation = '';
-            }
+            document.getElementById('energy-status').innerText = `${energy}/${ENERGY_MAX}`;
         }
 
-        setInterval(restoreEnergy, 1000);
-
-        function showFloatingText(x, y) {
-            const floatingText = document.createElement('div');
-            floatingText.innerText = '+1';
-            floatingText.className = 'floating-text';
-            floatingText.style.left = x - 10 + 'px';
-            floatingText.style.top = y - 20 + 'px';
-            document.body.appendChild(floatingText);
-            setTimeout(() => {
-                floatingText.remove();
-            }, 1000);
-        }
-
-        updateCoinBalance();
-        updateEnergyBar();
-
-        document.getElementById('coin-container').addEventListener('touchstart', function(event) {
-            for (let touch of event.touches) {
-                incrementCoins({clientX: touch.clientX, clientY: touch.clientY});
-            }
-            event.preventDefault();
-        });
-
-        document.getElementById('coin-container').addEventListener('mousedown', function(event) {
-            incrementCoins({clientX: event.clientX, clientY: event.clientY});
-        });
-
-        function toggleActive(element) {
-            document.querySelectorAll('.menu-item').forEach(item => {
-                item.classList.remove('active');
-            });
-            element.classList.add('active');
-        }
-
-        // Функция для замены иконок на синие при активной странице и обычные при неактивной
-        function updateMenuIcons(isActive) {
-            document.getElementById('home').querySelector('img').src = isActive ? 'home_blue.png' : 'home.png';
-            document.getElementById('upgrade').querySelector('img').src = isActive ? 'upgrade_blue.png' : 'upgrade.png';
-            document.getElementById('wallet').querySelector('img').src = isActive ? 'wallet_blue.png' : 'wallet.png';
-        }
-
-        // Обработка смены видимости страницы
-        document.addEventListener('visibilitychange', function() {
-            if (document.visibilityState === 'visible') {
-                updateMenuIcons(true);
-                lastUpdateTime = Date.now();
-                restoreEnergy();
-            } else {
-                updateMenuIcons(false);
-                localStorage.setItem('lastUpdateTime', Date.now());
-            }
-        });
-
-        // Инициализация иконок при загрузке страницы
         document.addEventListener('DOMContentLoaded', function() {
-            updateMenuIcons(document.visibilityState === 'visible');
+            updateMenuIcons();
+            updateCoinBalance();
+            updateEnergyBar();
         });
     </script>
 </body>
