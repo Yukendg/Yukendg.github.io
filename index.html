@@ -19,7 +19,7 @@
         }
         #balance-container {
             font-size: 3em; /* Увеличенный размер текста */
-            margin-top: 100px; /* Увеличенный отступ сверху */
+            margin-top: 150px; /* Увеличенный отступ сверху */
             display: flex;
             align-items: center;
             justify-content: center;
@@ -44,7 +44,7 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            transition: transform 0.2s ease; /* Плавный переход */
+            transition: transform 0.3s ease; /* Плавный переход */
             animation: bounce 0.5s infinite alternate;
             user-select: none;
             pointer-events: none;
@@ -88,7 +88,7 @@
             height: 100%;
             width: 100%;
             background-color: #28a745;
-            transition: width 0.5s ease-in-out; /* Плавный переход */
+            transition: width 1s ease-in-out; /* Плавный переход */
         }
         .floating-text {
             position: absolute;
@@ -131,7 +131,8 @@
 
     <script>
         let coinCount = localStorage.getItem('coinCount') ? parseInt(localStorage.getItem('coinCount')) : 0;
-        let energy = 1000;
+        let energy = localStorage.getItem('energy') ? parseInt(localStorage.getItem('energy')) : 1000;
+        let energyRestoreInterval;
 
         // Функция для увеличения количества монет
         function incrementCoins(event) {
@@ -139,6 +140,7 @@
                 coinCount++;
                 energy -= 5;
                 localStorage.setItem('coinCount', coinCount);
+                localStorage.setItem('energy', energy);
                 updateCoinBalance();
                 updateEnergyBar();
                 showFloatingText(event.clientX, event.clientY);
@@ -159,13 +161,16 @@
         }
 
         // Восстанавливаем энергию каждые 3 секунды
-        setInterval(() => {
-            if (energy < 1000) {
-                energy += 10;
-                if (energy > 1000) energy = 1000;
-                updateEnergyBar();
-            }
-        }, 3000);
+        function startEnergyRestore() {
+            energyRestoreInterval = setInterval(() => {
+                if (energy < 1000) {
+                    energy += 10;
+                    if (energy > 1000) energy = 1000;
+                    localStorage.setItem('energy', energy); // Сохраняем энергию
+                    updateEnergyBar();
+                }
+            }, 3000);
+        }
 
         // Эффект вылетающего текста +1 при нажатии
         function showFloatingText(x, y) {
@@ -184,6 +189,7 @@
         // Обновляем счёт и энергию при загрузке страницы
         updateCoinBalance();
         updateEnergyBar();
+        startEnergyRestore();
     </script>
 </body>
 </html>
