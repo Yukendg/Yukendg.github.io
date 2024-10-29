@@ -131,6 +131,20 @@
     <script>
         let coinCount = localStorage.getItem('coinCount') ? parseInt(localStorage.getItem('coinCount')) : 0;
         let energy = localStorage.getItem('energy') ? parseInt(localStorage.getItem('energy')) : 1000;
+        let lastUpdateTime = localStorage.getItem('lastUpdateTime') ? parseInt(localStorage.getItem('lastUpdateTime')) : Date.now();
+        const ENERGY_MAX = 1000;
+
+        // Функция для восстановления энергии
+        function restoreEnergy() {
+            const currentTime = Date.now();
+            const elapsedSeconds = Math.floor((currentTime - lastUpdateTime) / 1000);
+            const energyGained = Math.min(elapsedSeconds * 10, ENERGY_MAX - energy);
+            energy += energyGained;
+            lastUpdateTime += energyGained / 10 * 1000; // Обновляем время последнего обновления
+            localStorage.setItem('lastUpdateTime', lastUpdateTime);
+            localStorage.setItem('energy', energy);
+            updateEnergyBar();
+        }
 
         // Функция для увеличения количества монет
         function incrementCoins(event) {
@@ -153,22 +167,13 @@
         // Функция для обновления полосы энергии
         function updateEnergyBar() {
             const energyFill = document.getElementById('energy-fill');
-            energyFill.style.width = (energy / 1000) * 100 + '%';
+            energyFill.style.width = (energy / ENERGY_MAX) * 100 + '%';
             energyFill.style.backgroundColor = energy > 0 ? '#28a745' : '#dc3545';
-            document.getElementById('energy-status').innerText = `${energy}/1000`; // Обновление шкалы энергии
+            document.getElementById('energy-status').innerText = `${energy}/${ENERGY_MAX}`; // Обновление шкалы энергии
         }
 
         // Восстанавливаем энергию каждые 3 секунды
-        function startEnergyRestore() {
-            setInterval(() => {
-                if (energy < 1000) {
-                    energy += 10;
-                    if (energy > 1000) energy = 1000;
-                    localStorage.setItem('energy', energy); // Сохраняем энергию
-                    updateEnergyBar();
-                }
-            }, 3000);
-        }
+        setInterval(restoreEnergy, 3000); // Теперь восстанавливаем энергию каждые 3 секунды
 
         // Эффект вылетающего текста +1 при нажатии
         function showFloatingText(x, y) {
@@ -187,7 +192,6 @@
         // Обновляем счёт и энергию при загрузке страницы
         updateCoinBalance();
         updateEnergyBar();
-        startEnergyRestore();
 
         // Обработка многопальцевого касания
         document.getElementById('coin-container').addEventListener('touchstart', function(event) {
@@ -196,6 +200,9 @@
             }
             event.preventDefault();
         });
+
+        // Восстанавливаем энергию на загрузке страницы
+        restoreEnergy(); // Вызываем функцию восстановления энергии при загрузке
     </script>
 </body>
 </html>
