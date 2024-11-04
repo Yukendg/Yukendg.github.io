@@ -3,13 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Казино Слоты</title>
+    <title>Казино Игры</title>
     <style>
         body {
             font-family: 'Arial', sans-serif;
             background-color: #121212;
             color: #fff;
-            text-align: center;
             margin: 0;
             padding: 0;
         }
@@ -17,6 +16,7 @@
         header {
             background: #ff007f;
             padding: 20px 0;
+            text-align: center;
         }
 
         nav {
@@ -38,6 +38,21 @@
         nav a:hover {
             background: #ff007f;
             color: #fff;
+        }
+
+        .game-container {
+            display: none;
+            margin: 20px auto;
+            max-width: 800px;
+            border: 1px solid #fff;
+            border-radius: 10px;
+            padding: 20px;
+            background: #1a1a1a;
+        }
+
+        .game-header {
+            font-size: 24px;
+            margin-bottom: 20px;
         }
 
         .slot-container {
@@ -78,6 +93,13 @@
         footer {
             margin-top: 20px;
             font-size: 14px;
+            text-align: center;
+        }
+
+        .game-icon {
+            width: 50px;
+            height: 50px;
+            margin-right: 10px;
         }
     </style>
 </head>
@@ -86,34 +108,55 @@
         <h1>Добро пожаловать в Казино!</h1>
     </header>
     <nav>
-        <a href="#slots">Слоты</a>
-        <a href="#roulette">Рулетка</a>
-        <a href="#blackjack">Блэкджек</a>
-        <a href="#poker">Покер</a>
+        <a href="#slots" class="nav-link">Слоты</a>
+        <a href="#roulette" class="nav-link">Рулетка</a>
+        <a href="#blackjack" class="nav-link">Блэкджек</a>
+        <a href="#poker" class="nav-link">Покер</a>
+        <a href="#dice" class="nav-link">Кости</a>
     </nav>
-    <main>
-        <div class="slot-container" id="slots">
+
+    <div id="slots" class="game-container">
+        <div class="game-header">Слоты</div>
+        <div class="slot-container">
             <div class="slot" id="slot1"></div>
             <div class="slot" id="slot2"></div>
             <div class="slot" id="slot3"></div>
         </div>
         <button id="spinButton">Прокрутить</button>
-        <div id="roulette" style="display:none;">
-            <h2>Рулетка</h2>
-            <p>Здесь будет игра в рулетку.</p>
-        </div>
-        <div id="blackjack" style="display:none;">
-            <h2>Блэкджек</h2>
-            <p>Здесь будет игра в блэкджек.</p>
-        </div>
-        <div id="poker" style="display:none;">
-            <h2>Покер</h2>
-            <p>Здесь будет игра в покер.</p>
-        </div>
-    </main>
+    </div>
+
+    <div id="roulette" class="game-container">
+        <div class="game-header">Рулетка</div>
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8e/Roulette_wheel_%28standard%29.png/300px-Roulette_wheel_%28standard%29.png" alt="Рулетка" class="game-icon">
+        <p>Здесь будет игра в рулетку.</p>
+        <button onclick="alert('Игра в рулетку скоро будет доступна!')">Играть в рулетку</button>
+    </div>
+
+    <div id="blackjack" class="game-container">
+        <div class="game-header">Блэкджек</div>
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/38/Blackjack.jpg/300px-Blackjack.jpg" alt="Блэкджек" class="game-icon">
+        <p>Здесь будет игра в блэкджек.</p>
+        <button onclick="alert('Игра в блэкджек скоро будет доступна!')">Играть в блэкджек</button>
+    </div>
+
+    <div id="poker" class="game-container">
+        <div class="game-header">Покер</div>
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d4/Poker_cards.jpg/300px-Poker_cards.jpg" alt="Покер" class="game-icon">
+        <p>Здесь будет игра в покер.</p>
+        <button onclick="alert('Игра в покер скоро будет доступна!')">Играть в покер</button>
+    </div>
+
+    <div id="dice" class="game-container">
+        <div class="game-header">Кости</div>
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/73/Dice_with_dots.svg/1200px-Dice_with_dots.svg.png" alt="Кости" class="game-icon">
+        <p>Здесь будет игра в кости.</p>
+        <button onclick="alert('Игра в кости скоро будет доступна!')">Играть в кости</button>
+    </div>
+
     <footer>
         <p>&copy; 2024 Казино. Все права защищены.</p>
     </footer>
+
     <script>
         const slotSymbols = ['🍒', '🍋', '🍊', '🍉', '⭐', '🍀'];
         const slots = [document.getElementById('slot1'), document.getElementById('slot2'), document.getElementById('slot3')];
@@ -125,30 +168,26 @@
             });
         });
 
-        const navLinks = document.querySelectorAll('nav a');
-        const gameSections = {
-            slots: document.getElementById('slots'),
-            roulette: document.getElementById('roulette'),
-            blackjack: document.getElementById('blackjack'),
-            poker: document.getElementById('poker')
-        };
+        const navLinks = document.querySelectorAll('.nav-link');
+        const gameContainers = document.querySelectorAll('.game-container');
 
         navLinks.forEach(link => {
             link.addEventListener('click', (event) => {
                 event.preventDefault();
-                const selectedGame = link.textContent.toLowerCase();
+                const selectedGame = link.getAttribute('href').substring(1);
                 
                 // Скрыть все секции игр
-                for (const section in gameSections) {
-                    gameSections[section].style.display = 'none';
-                }
+                gameContainers.forEach(container => {
+                    container.style.display = 'none';
+                });
                 
                 // Показать выбранную секцию
-                if (gameSections[selectedGame]) {
-                    gameSections[selectedGame].style.display = 'block';
-                }
+                document.getElementById(selectedGame).style.display = 'block';
             });
         });
+
+        // Показать слоты по умолчанию
+        document.getElementById('slots').style.display = 'block';
     </script>
 </body>
 </html>
