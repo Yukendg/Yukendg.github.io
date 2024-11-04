@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Казино</title>
+    <title>Покер Казино</title>
     <style>
         body {
             font-family: 'Arial', sans-serif;
@@ -16,37 +16,21 @@
 
         header {
             background: #ff0055;
-            padding: 10px 0;
+            padding: 20px 0;
+            text-align: center;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.7);
         }
 
-        nav {
-            display: flex;
-            justify-content: center;
-            background: #232323;
-            padding: 15px 0;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-        }
-
-        nav a {
-            color: #ffffff;
-            text-decoration: none;
-            padding: 15px 25px;
-            border-radius: 5px;
-            margin: 0 10px;
-            font-weight: bold;
-            transition: background 0.3s;
-        }
-
-        nav a:hover {
-            background: #ff007f;
+        header h1 {
+            margin: 0;
+            font-size: 36px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
         }
 
         .game-container {
-            display: none;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
             margin: 20px auto;
             max-width: 900px;
             border-radius: 10px;
@@ -62,22 +46,22 @@
             text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.8);
         }
 
-        .slot-container {
+        .card-container {
             display: flex;
             justify-content: center;
             margin: 20px 0;
         }
 
-        .slot {
+        .card {
             width: 100px;
-            height: 100px;
-            border: 5px solid #ff0055;
+            height: 140px;
             margin: 0 10px;
             display: flex;
             justify-content: center;
             align-items: center;
             font-size: 40px;
-            background: #1a1a1a;
+            background: #ffffff;
+            color: #000000;
             border-radius: 10px;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
         }
@@ -105,74 +89,24 @@
             font-size: 14px;
             text-align: center;
         }
-
-        .game-icon {
-            width: 50px;
-            height: 50px;
-            margin-right: 10px;
-        }
-
-        /* Анимация для заголовка игр */
-        .game-header {
-            animation: fadeIn 0.5s;
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-            }
-            to {
-                opacity: 1;
-            }
-        }
     </style>
 </head>
 <body>
 
-    <nav>
-        <a href="#slots" class="nav-link">Слоты</a>
-        <a href="#roulette" class="nav-link">Рулетка</a>
-        <a href="#blackjack" class="nav-link">Блэкджек</a>
-        <a href="#poker" class="nav-link">Покер</a>
-        <a href="#dice" class="nav-link">Кости</a>
-    </nav>
+    <header>
+        <h1>Покер Казино</h1>
+    </header>
 
-    <div id="slots" class="game-container">
-        <div class="game-header">Слоты</div>
-        <div class="slot-container">
-            <div class="slot" id="slot1"></div>
-            <div class="slot" id="slot2"></div>
-            <div class="slot" id="slot3"></div>
+    <div class="game-container">
+        <div class="game-header">Игра в покер</div>
+        <div class="card-container">
+            <div class="card" id="card1">♠️</div>
+            <div class="card" id="card2">♣️</div>
+            <div class="card" id="card3">♦️</div>
+            <div class="card" id="card4">♥️</div>
+            <div class="card" id="card5">♠️</div>
         </div>
-        <button id="spinButton">Прокрутить</button>
-    </div>
-
-    <div id="roulette" class="game-container">
-        <div class="game-header">Рулетка</div>
-        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8e/Roulette_wheel_%28standard%29.png/300px-Roulette_wheel_%28standard%29.png" alt="Рулетка" class="game-icon">
-        <p>Здесь будет игра в рулетку.</p>
-        <button onclick="alert('Игра в рулетку скоро будет доступна!')">Играть в рулетку</button>
-    </div>
-
-    <div id="blackjack" class="game-container">
-        <div class="game-header">Блэкджек</div>
-        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/38/Blackjack.jpg/300px-Blackjack.jpg" alt="Блэкджек" class="game-icon">
-        <p>Здесь будет игра в блэкджек.</p>
-        <button onclick="alert('Игра в блэкджек скоро будет доступна!')">Играть в блэкджек</button>
-    </div>
-
-    <div id="poker" class="game-container">
-        <div class="game-header">Покер</div>
-        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d4/Poker_cards.jpg/300px-Poker_cards.jpg" alt="Покер" class="game-icon">
-        <p>Здесь будет игра в покер.</p>
-        <button onclick="alert('Игра в покер скоро будет доступна!')">Играть в покер</button>
-    </div>
-
-    <div id="dice" class="game-container">
-        <div class="game-header">Кости</div>
-        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/73/Dice_with_dots.svg/1200px-Dice_with_dots.svg.png" alt="Кости" class="game-icon">
-        <p>Здесь будет игра в кости.</p>
-        <button onclick="alert('Игра в кости скоро будет доступна!')">Играть в кости</button>
+        <button id="dealButton">Раздать карты</button>
     </div>
 
     <footer>
@@ -180,36 +114,20 @@
     </footer>
 
     <script>
-        const slotSymbols = ['🍒', '🍋', '🍊', '🍉', '⭐', '🍀'];
-        const slots = [document.getElementById('slot1'), document.getElementById('slot2'), document.getElementById('slot3')];
-
-        document.getElementById('spinButton').addEventListener('click', () => {
-            slots.forEach(slot => {
-                const randomSymbol = slotSymbols[Math.floor(Math.random() * slotSymbols.length)];
-                slot.textContent = randomSymbol;
-            });
+        const cardSuits = ['♠️', '♣️', '♦️', '♥️'];
+        const cardValues = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'];
+        
+        document.getElementById('dealButton').addEventListener('click', () => {
+            const cards = [];
+            for (let i = 0; i < 5; i++) {
+                const suit = cardSuits[Math.floor(Math.random() * cardSuits.length)];
+                const value = cardValues[Math.floor(Math.random() * cardValues.length)];
+                cards.push(`${value}${suit}`);
+            }
+            for (let i = 0; i < 5; i++) {
+                document.getElementById(`card${i + 1}`).textContent = cards[i];
+            }
         });
-
-        const navLinks = document.querySelectorAll('.nav-link');
-        const gameContainers = document.querySelectorAll('.game-container');
-
-        navLinks.forEach(link => {
-            link.addEventListener('click', (event) => {
-                event.preventDefault();
-                const selectedGame = link.getAttribute('href').substring(1);
-                
-                // Скрыть все секции игр
-                gameContainers.forEach(container => {
-                    container.style.display = 'none';
-                });
-                
-                // Показать выбранную секцию
-                document.getElementById(selectedGame).style.display = 'block';
-            });
-        });
-
-        // Показать слоты по умолчанию
-        document.getElementById('slots').style.display = 'block';
     </script>
 </body>
 </html>
