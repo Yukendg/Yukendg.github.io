@@ -10,11 +10,34 @@
             background-color: #121212;
             color: #fff;
             text-align: center;
+            margin: 0;
+            padding: 0;
         }
 
         header {
             background: #ff007f;
             padding: 20px 0;
+        }
+
+        nav {
+            display: flex;
+            justify-content: center;
+            background: #1a1a1a;
+            padding: 10px 0;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            padding: 15px 20px;
+            transition: background 0.3s, color 0.3s;
+            border-radius: 5px;
+        }
+
+        nav a:hover {
+            background: #ff007f;
+            color: #fff;
         }
 
         .slot-container {
@@ -45,6 +68,7 @@
             cursor: pointer;
             border-radius: 5px;
             transition: background 0.3s;
+            margin: 20px 0;
         }
 
         button:hover {
@@ -61,13 +85,31 @@
     <header>
         <h1>Добро пожаловать в Казино!</h1>
     </header>
+    <nav>
+        <a href="#slots">Слоты</a>
+        <a href="#roulette">Рулетка</a>
+        <a href="#blackjack">Блэкджек</a>
+        <a href="#poker">Покер</a>
+    </nav>
     <main>
-        <div class="slot-container">
+        <div class="slot-container" id="slots">
             <div class="slot" id="slot1"></div>
             <div class="slot" id="slot2"></div>
             <div class="slot" id="slot3"></div>
         </div>
         <button id="spinButton">Прокрутить</button>
+        <div id="roulette" style="display:none;">
+            <h2>Рулетка</h2>
+            <p>Здесь будет игра в рулетку.</p>
+        </div>
+        <div id="blackjack" style="display:none;">
+            <h2>Блэкджек</h2>
+            <p>Здесь будет игра в блэкджек.</p>
+        </div>
+        <div id="poker" style="display:none;">
+            <h2>Покер</h2>
+            <p>Здесь будет игра в покер.</p>
+        </div>
     </main>
     <footer>
         <p>&copy; 2024 Казино. Все права защищены.</p>
@@ -80,6 +122,31 @@
             slots.forEach(slot => {
                 const randomSymbol = slotSymbols[Math.floor(Math.random() * slotSymbols.length)];
                 slot.textContent = randomSymbol;
+            });
+        });
+
+        const navLinks = document.querySelectorAll('nav a');
+        const gameSections = {
+            slots: document.getElementById('slots'),
+            roulette: document.getElementById('roulette'),
+            blackjack: document.getElementById('blackjack'),
+            poker: document.getElementById('poker')
+        };
+
+        navLinks.forEach(link => {
+            link.addEventListener('click', (event) => {
+                event.preventDefault();
+                const selectedGame = link.textContent.toLowerCase();
+                
+                // Скрыть все секции игр
+                for (const section in gameSections) {
+                    gameSections[section].style.display = 'none';
+                }
+                
+                // Показать выбранную секцию
+                if (gameSections[selectedGame]) {
+                    gameSections[selectedGame].style.display = 'block';
+                }
             });
         });
     </script>
