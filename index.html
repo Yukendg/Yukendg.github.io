@@ -41,11 +41,7 @@
             font-weight: bold;
             color: #58a6ff;
             cursor: pointer;
-        }
-        .logo img {
-            width: 40px;
-            height: 40px;
-            margin-right: 10px;
+            margin-right: 20px; /* Добавлено для отступа */
         }
 
         /* Бургер-меню */
@@ -63,20 +59,7 @@
             background: #c9d1d9;
         }
         nav {
-            display: flex;
-            gap: 30px;
-        }
-        nav a {
-            color: #c9d1d9;
-            text-decoration: none;
-            font-size: 18px;
-            transition: color 0.3s;
-        }
-        nav a:hover {
-            color: #58a6ff;
-        }
-        nav.open {
-            display: flex;
+            display: none; /* Скрываем по умолчанию */
             position: fixed;
             top: 0;
             right: 0;
@@ -88,9 +71,21 @@
             justify-content: center;
             gap: 20px;
             box-shadow: -5px 0 15px rgba(0, 0, 0, 0.5);
+            transform: translateX(100%); /* Начальное положение вне экрана */
+            transition: transform 0.5s ease-in-out; /* Плавное открытие/закрытие */
         }
-        nav.open a {
+        nav.open {
+            transform: translateX(0); /* Открытое положение */
+            display: flex;
+        }
+        nav a {
+            color: #c9d1d9;
+            text-decoration: none;
             font-size: 24px;
+            transition: color 0.3s;
+        }
+        nav a:hover {
+            color: #58a6ff;
         }
         .close-menu {
             color: #fff;
@@ -194,7 +189,6 @@
     <!-- Шапка -->
     <header>
         <div class="logo">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/1/1c/Yu_icon_Logo.svg" alt="Logo"> <!-- Новая иконка -->
             Yukendg
         </div>
         <div class="menu-toggle" id="menu-toggle">
@@ -253,13 +247,9 @@
         const closeMenu = document.getElementById('close-menu');
         menuToggle.addEventListener('click', () => {
             nav.classList.add('open');
-            menuToggle.style.display = 'none';
-            closeMenu.style.display = 'block';
         });
         closeMenu.addEventListener('click', () => {
             nav.classList.remove('open');
-            closeMenu.style.display = 'none';
-            menuToggle.style.display = 'flex';
         });
 
         // Голосовой помощник
