@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Yukendg - Разработчик</title>
+    <title>Yukendg - Веб-разработчик</title>
     <style>
         /* Общий стиль */
         * {
@@ -13,18 +13,21 @@
             scroll-behavior: smooth;
         }
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Arial', sans-serif;
             line-height: 1.6;
+            background: #f8f9fa;
+            color: #333;
         }
         header {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
-            background: #333;
+            background: #222;
             color: #fff;
             padding: 10px 20px;
             z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         }
         nav {
             display: flex;
@@ -36,6 +39,7 @@
             text-decoration: none;
             margin: 0 15px;
             font-size: 18px;
+            transition: color 0.3s;
         }
         nav a:hover {
             color: #00bcd4;
@@ -45,9 +49,17 @@
         section {
             padding: 100px 20px;
             min-height: 100vh;
+            opacity: 0;
+            transform: translateY(50px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        section.show {
+            opacity: 1;
+            transform: translateY(0);
         }
         .hero {
-            background: #f4f4f4;
+            background: linear-gradient(to right, #00bcd4, #4caf50);
+            color: #fff;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -55,18 +67,25 @@
         }
         .hero h1 {
             font-size: 50px;
-            color: #333;
+            margin-bottom: 20px;
         }
         .about {
-            background: #333;
-            color: #fff;
+            background: #fff;
+            text-align: center;
+            padding: 60px 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         }
         .about h2 {
             margin-bottom: 20px;
+            color: #00bcd4;
         }
         .contact {
-            background: #00bcd4;
+            background: #333;
             color: #fff;
+            text-align: center;
+        }
+        .contact h2 {
+            margin-bottom: 20px;
         }
         .contact ul {
             list-style: none;
@@ -76,28 +95,20 @@
             font-size: 18px;
         }
         .contact ul li a {
-            color: #fff;
+            color: #00bcd4;
             text-decoration: none;
+            font-size: 24px;
         }
         .contact ul li a:hover {
             text-decoration: underline;
         }
 
-        /* Стиль кнопки вверх */
-        .scroll-top {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: #333;
-            color: #fff;
-            border: none;
-            padding: 10px 15px;
-            border-radius: 5px;
-            cursor: pointer;
-            display: none;
-        }
-        .scroll-top.show {
-            display: block;
+        /* Иконки */
+        .contact ul li img {
+            width: 40px;
+            height: 40px;
+            vertical-align: middle;
+            margin-right: 10px;
         }
     </style>
 </head>
@@ -117,14 +128,16 @@
     <!-- Главная -->
     <section id="home" class="hero">
         <h1>Привет, я Yukendg</h1>
-        <p>Создаю современные сайты и приложения</p>
+        <p>Создаю профессиональные сайты и приложения</p>
     </section>
 
     <!-- Обо мне -->
     <section id="about" class="about">
         <h2>Обо мне</h2>
-        <p>Я веб-разработчик с опытом создания современных сайтов, ориентированных на производительность и удобство пользователей. 
-        Использую HTML, CSS, JavaScript и другие технологии. Работаю над каждым проектом с вниманием к деталям и последними трендами в мире IT.</p>
+        <p>
+            Я веб-разработчик с большим опытом в создании современных сайтов и приложений. Моя цель — разрабатывать проекты, которые впечатляют клиентов и их пользователей.
+            В своей работе использую передовые технологии и постоянно обучаюсь новым подходам.
+        </p>
     </section>
 
     <!-- Контакты -->
@@ -132,28 +145,32 @@
         <h2>Контакты</h2>
         <p>Свяжитесь со мной:</p>
         <ul>
-            <li>Telegram: <a href="https://t.me/Yukendg" target="_blank">@Yukendg</a></li>
+            <li>
+                <a href="https://t.me/Yukendg" target="_blank">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg" alt="Telegram">
+                    Telegram
+                </a>
+            </li>
             <li>Email: <a href="mailto:example@example.com">example@example.com</a></li>
         </ul>
     </section>
 
-    <!-- Кнопка "Вверх" -->
-    <button class="scroll-top" id="scrollTop">Вверх</button>
-
     <script>
-        // Показ кнопки "Вверх" при скролле
-        const scrollTopButton = document.getElementById('scrollTop');
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 300) {
-                scrollTopButton.classList.add('show');
-            } else {
-                scrollTopButton.classList.remove('show');
-            }
-        });
+        // Появление секций при прокрутке
+        const sections = document.querySelectorAll('section');
+        const options = {
+            threshold: 0.1,
+        };
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('show');
+                }
+            });
+        }, options);
 
-        // Скролл к началу страницы при нажатии на кнопку
-        scrollTopButton.addEventListener('click', () => {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+        sections.forEach(section => {
+            observer.observe(section);
         });
     </script>
 </body>
