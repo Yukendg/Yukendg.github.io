@@ -45,7 +45,7 @@
 
         /* Бургер-меню */
         .menu-toggle {
-            display: flex;
+            display: none; /* Скрываем на десктопе */
             flex-direction: column;
             gap: 5px;
             cursor: pointer;
@@ -186,7 +186,7 @@
                 display: none;
             }
             header {
-                justify-content: space-between; /* Изменено для центрирования на маленьких экранах */
+                justify-content: space-between;
             }
         }
 
@@ -253,24 +253,21 @@
 
         menuToggle.addEventListener('click', () => {
             nav.classList.add('open');
-            menuToggle.style.display = 'none'; // Прячем бургер при открытии меню
+            menuToggle.style.display = 'none'; // Убираем бургер
             closeMenu.classList.add('open');
         });
 
         closeMenu.addEventListener('click', () => {
             nav.classList.remove('open');
-            menuToggle.style.display = 'flex'; // Показываем бургер при закрытии меню
+            menuToggle.style.display = 'flex'; // Показываем бургер-меню
             closeMenu.classList.remove('open');
         });
 
         // Голосовой помощник
-        const assistantBtn = document.getElementById('assistant-btn');
-        assistantBtn.addEventListener('click', () => {
-            if ('speechSynthesis' in window) {
-                const message = new SpeechSynthesisUtterance("Привет, я ваш голосовой помощник. Чем могу помочь?");
-                message.lang = 'ru-RU';
-                speechSynthesis.speak(message);
-            }
+        const assistantButton = document.getElementById('assistant-btn');
+        assistantButton.addEventListener('click', () => {
+            const utterance = new SpeechSynthesisUtterance('Yukendg is the best web developer');
+            speechSynthesis.speak(utterance);
         });
     </script>
 </body>
