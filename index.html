@@ -3,19 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Yukendg - Веб-разработчик</title>
+    <title>Yukendg</title>
     <style>
         /* Общий стиль */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            scroll-behavior: smooth;
         }
         body {
             font-family: 'Arial', sans-serif;
-            line-height: 1.6;
-            background: #f8f9fa;
-            color: #333;
+            background: #121212;
+            color: #fff;
             overflow-x: hidden;
         }
 
@@ -25,14 +25,13 @@
             top: 0;
             left: 0;
             width: 100%;
-            background: #222;
-            color: #fff;
-            padding: 10px 20px;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 15px 30px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             z-index: 1000;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
         }
         .logo {
             font-size: 24px;
@@ -48,63 +47,52 @@
 
         /* Бургер-меню */
         .menu-toggle {
-            cursor: pointer;
-            display: flex;
+            display: none;
             flex-direction: column;
             gap: 5px;
+            cursor: pointer;
         }
         .menu-toggle span {
-            display: block;
             width: 25px;
             height: 3px;
             background: #fff;
         }
-        .nav-links {
-            position: fixed;
-            top: 0;
-            right: -100%;
-            width: 200px;
-            height: 100vh;
-            background: #333;
+        nav {
             display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            transition: right 0.3s ease;
-            z-index: 999;
+            gap: 30px;
         }
-        .nav-links a {
+        nav a {
             color: #fff;
             text-decoration: none;
-            margin: 10px 0;
             font-size: 18px;
             transition: color 0.3s;
         }
-        .nav-links a:hover {
+        nav a:hover {
             color: #00bcd4;
         }
-        .nav-links.open {
-            right: 0;
-        }
 
-        /* Главная секция */
+        /* Главный экран */
         .hero {
+            height: 100vh;
+            background: linear-gradient(to right, #1d1d1d, #121212);
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            height: 100vh;
-            background: linear-gradient(to right, #00bcd4, #4caf50);
-            color: #fff;
             text-align: center;
+            padding: 0 20px;
         }
         .hero h1 {
             font-size: 48px;
             margin-bottom: 20px;
         }
+        .hero p {
+            font-size: 18px;
+            margin-bottom: 30px;
+        }
         .hero button {
-            background: #fff;
-            color: #222;
+            background: #00bcd4;
+            color: #fff;
             border: none;
             padding: 15px 30px;
             font-size: 18px;
@@ -114,21 +102,66 @@
             transition: background 0.3s;
         }
         .hero button:hover {
-            background: #00bcd4;
-            color: #fff;
+            background: #0097a7;
         }
 
-        /* Анимация текста */
-        .about, .contact {
-            text-align: center;
+        /* Блоки контента */
+        section {
             padding: 100px 20px;
+            text-align: center;
             opacity: 0;
             transform: translateY(50px);
             transition: opacity 0.6s ease-out, transform 0.6s ease-out;
         }
-        .about.show, .contact.show {
+        section.show {
             opacity: 1;
             transform: translateY(0);
+        }
+        .about {
+            background: #1d1d1d;
+        }
+        .about h2 {
+            font-size: 36px;
+            margin-bottom: 20px;
+            color: #00bcd4;
+        }
+        .about p {
+            font-size: 18px;
+            color: #bbb;
+        }
+        .contact {
+            background: #121212;
+        }
+        .contact img {
+            width: 60px;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+        .contact img:hover {
+            transform: scale(1.1);
+        }
+
+        /* Адаптивность */
+        @media (max-width: 768px) {
+            .menu-toggle {
+                display: flex;
+            }
+            nav {
+                display: none;
+                position: fixed;
+                top: 0;
+                right: 0;
+                height: 100vh;
+                width: 200px;
+                background: #222;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                z-index: 999;
+            }
+            nav.open {
+                display: flex;
+            }
         }
     </style>
 </head>
@@ -144,35 +177,39 @@
             <span></span>
             <span></span>
         </div>
-        <div class="nav-links" id="nav-links">
+        <nav id="nav">
             <a href="#home">Главная</a>
             <a href="#about">Обо мне</a>
             <a href="#contact">Связь</a>
-        </div>
+        </nav>
     </header>
 
     <!-- Главная -->
     <section id="home" class="hero">
         <h1>Кто такой Yukendg?</h1>
+        <p>Профессиональный разработчик веб-приложений</p>
         <button id="assistant-btn">Узнать</button>
     </section>
 
     <!-- Обо мне -->
     <section id="about" class="about">
         <h2>Обо мне</h2>
-        <p>Я веб-разработчик с большим опытом в создании современных сайтов и приложений. Моя цель — разрабатывать проекты, которые впечатляют клиентов и их пользователей.</p>
+        <p>
+            Я создаю современные, удобные и быстрые веб-приложения, используя последние технологии. 
+            Моя цель — улучшать ваш бизнес через качественные IT-решения.
+        </p>
     </section>
 
     <!-- Контакты -->
     <section id="contact" class="contact">
         <a href="https://t.me/Yukendg" target="_blank">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg" alt="Telegram" width="60">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg" alt="Telegram">
         </a>
     </section>
 
     <script>
-        // Анимация появления секций
-        const sections = document.querySelectorAll('.about, .contact');
+        // Появление секций при прокрутке
+        const sections = document.querySelectorAll('section');
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
@@ -185,9 +222,9 @@
 
         // Бургер-меню
         const menuToggle = document.getElementById('menu-toggle');
-        const navLinks = document.getElementById('nav-links');
+        const nav = document.getElementById('nav');
         menuToggle.addEventListener('click', () => {
-            navLinks.classList.toggle('open');
+            nav.classList.toggle('open');
         });
 
         // Голосовой помощник
