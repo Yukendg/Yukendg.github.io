@@ -48,10 +48,11 @@
 
         /* Бургер-меню */
         .menu-toggle {
-            display: none;
+            display: flex;
             flex-direction: column;
             gap: 5px;
             cursor: pointer;
+            z-index: 999;
         }
         .menu-toggle span {
             width: 25px;
@@ -84,7 +85,9 @@
             justify-content: center;
             gap: 20px;
             box-shadow: -5px 0 15px rgba(0, 0, 0, 0.5);
-            z-index: 999;
+        }
+        nav.open a {
+            font-size: 24px;
         }
 
         /* Главная секция */
