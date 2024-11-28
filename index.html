@@ -19,30 +19,7 @@
             color: #333;
         }
         header {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            background: #222;
-            color: #fff;
-            padding: 10px 20px;
-            z-index: 1000;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        }
-        nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        nav a {
-            color: #fff;
-            text-decoration: none;
-            margin: 0 15px;
-            font-size: 18px;
-            transition: color 0.3s;
-        }
-        nav a:hover {
-            color: #00bcd4;
+            display: none; /* Убираем навигацию */
         }
 
         /* Стиль секций */
@@ -83,48 +60,22 @@
             background: #333;
             color: #fff;
             text-align: center;
-        }
-        .contact h2 {
-            margin-bottom: 20px;
-        }
-        .contact ul {
-            list-style: none;
-        }
-        .contact ul li {
-            margin: 10px 0;
-            font-size: 18px;
-        }
-        .contact ul li a {
-            color: #00bcd4;
-            text-decoration: none;
-            font-size: 24px;
-        }
-        .contact ul li a:hover {
-            text-decoration: underline;
+            padding: 50px 0;
         }
 
-        /* Иконки */
-        .contact ul li img {
-            width: 40px;
-            height: 40px;
-            vertical-align: middle;
-            margin-right: 10px;
+        /* Иконка Telegram */
+        .contact img {
+            width: 60px;
+            height: 60px;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+        .contact img:hover {
+            transform: scale(1.1);
         }
     </style>
 </head>
 <body>
-    <!-- Навигация -->
-    <header>
-        <nav>
-            <div>Yukendg</div>
-            <div>
-                <a href="#home">Главная</a>
-                <a href="#about">Обо мне</a>
-                <a href="#contact">Контакты</a>
-            </div>
-        </nav>
-    </header>
-
     <!-- Главная -->
     <section id="home" class="hero">
         <h1>Привет, я Yukendg</h1>
@@ -142,17 +93,9 @@
 
     <!-- Контакты -->
     <section id="contact" class="contact">
-        <h2>Контакты</h2>
-        <p>Свяжитесь со мной:</p>
-        <ul>
-            <li>
-                <a href="https://t.me/Yukendg" target="_blank">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg" alt="Telegram">
-                    Telegram
-                </a>
-            </li>
-            <li>Email: <a href="mailto:example@example.com">example@example.com</a></li>
-        </ul>
+        <a href="https://t.me/Yukendg" target="_blank">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg" alt="Telegram">
+        </a>
     </section>
 
     <script>
