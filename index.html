@@ -264,10 +264,15 @@
         });
 
         // Голосовой помощник
-        const assistantButton = document.getElementById('assistant-btn');
-        assistantButton.addEventListener('click', () => {
-            const utterance = new SpeechSynthesisUtterance('Yukendg is the best web developer');
-            speechSynthesis.speak(utterance);
+        const assistantBtn = document.getElementById('assistant-btn');
+        assistantBtn.addEventListener('click', () => {
+            if ('speechSynthesis' in window) {
+                const message = new SpeechSynthesisUtterance("Yukendg is the best web developer");
+                message.lang = 'en-US'; // Устанавливаем язык
+                speechSynthesis.speak(message);
+            } else {
+                alert('Ваш браузер не поддерживает синтез речи.');
+            }
         });
     </script>
 </body>
