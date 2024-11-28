@@ -29,7 +29,7 @@
             background: rgba(13, 17, 23, 0.95);
             padding: 10px 20px;
             display: flex;
-            justify-content: space-between;
+            justify-content: space-around; /* Изменено для центрирования */
             align-items: center;
             z-index: 1000;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
@@ -41,8 +41,6 @@
             font-weight: bold;
             color: #58a6ff;
             cursor: pointer;
-            margin-right: auto; /* Автоматический отступ справа, центрирует в доступном пространстве */
-            margin-left: 20px; /* Отступ слева для баланса */
         }
 
         /* Бургер-меню */
@@ -53,10 +51,6 @@
             cursor: pointer;
             z-index: 999;
             transition: transform 0.3s;
-            display: flex; /* Показываем по умолчанию */
-        }
-        .menu-toggle.open {
-            display: none; /* Скрываем полоски при открытии меню */
         }
         .menu-toggle span {
             width: 25px;
@@ -93,13 +87,14 @@
             color: #58a6ff;
         }
         .close-menu {
-            color: #fff;
-            font-size: 30px;
+            display: none; /* Скрыто по умолчанию */
             position: absolute;
             top: 20px;
             right: 20px;
             cursor: pointer;
-            display: none; /* Скрываем крестик по умолчанию */
+            font-size: 30px;
+            color: white;
+            z-index: 1001; /* Чтобы крестик был поверх меню */
         }
         .close-menu.open {
             display: block; /* Показываем крестик при открытии меню */
@@ -189,6 +184,9 @@
             }
             nav {
                 display: none;
+            }
+            header {
+                justify-content: space-between; /* Изменено для центрирования на маленьких экранах */
             }
         }
 
