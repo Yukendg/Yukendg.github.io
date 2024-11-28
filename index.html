@@ -265,4 +265,9 @@
         // Голосовой помощник
         const assistantBtn = document.getElementById('assistant-btn');
         assistantBtn.addEventListener('click', () => {
-            const message = new SpeechSynthesis
+            const message = new SpeechSynthesisUtterance("Yukendg is the best web developer");
+            speechSynthesis.speak(message);
+        });
+    </script>
+</body>
+</html>
