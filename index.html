@@ -17,6 +17,7 @@
             background: #0d1117;
             color: #c9d1d9;
             overflow-x: hidden;
+            transition: background-color 0.5s ease;
         }
 
         /* Шапка */
@@ -39,6 +40,7 @@
             font-size: 24px;
             font-weight: bold;
             color: #58a6ff;
+            cursor: pointer;
         }
         .logo img {
             width: 40px;
@@ -53,6 +55,7 @@
             gap: 5px;
             cursor: pointer;
             z-index: 999;
+            transition: transform 0.3s;
         }
         .menu-toggle span {
             width: 25px;
@@ -89,6 +92,14 @@
         nav.open a {
             font-size: 24px;
         }
+        .close-menu {
+            color: #fff;
+            font-size: 30px;
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            cursor: pointer;
+        }
 
         /* Главная секция */
         .hero {
@@ -100,11 +111,14 @@
             text-align: center;
             background: linear-gradient(to bottom, #0d1117, #161b22);
             padding: 0 20px;
+            position: relative;
+            z-index: 1;
         }
         .hero h1 {
             font-size: 48px;
             color: #58a6ff;
             margin-bottom: 20px;
+            text-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
         }
         .hero p {
             font-size: 18px;
@@ -120,10 +134,11 @@
             font-weight: bold;
             cursor: pointer;
             border-radius: 5px;
-            transition: background 0.3s;
+            transition: background 0.3s, transform 0.3s;
         }
         .hero button:hover {
             background: #1f6feb;
+            transform: scale(1.05);
         }
 
         /* Блоки контента */
@@ -143,6 +158,7 @@
             margin-top: 20px;
             padding: 50px;
             border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
         }
         .about h2, .contact h2 {
             font-size: 36px;
@@ -171,13 +187,14 @@
                 display: none;
             }
         }
+
     </style>
 </head>
 <body>
     <!-- Шапка -->
     <header>
         <div class="logo">
-            <img src="https://cdn-icons-png.flaticon.com/512/739/739249.png" alt="Logo">
+            <img src="https://cdn-icons-png.flaticon.com/512/747/747376.png" alt="Logo">
             Yukendg
         </div>
         <div class="menu-toggle" id="menu-toggle">
@@ -189,6 +206,7 @@
             <a href="#home">Главная</a>
             <a href="#about">Обо мне</a>
             <a href="#contact">Связь</a>
+            <div class="close-menu" id="close-menu">×</div>
         </nav>
     </header>
 
@@ -225,31 +243,26 @@
                     entry.target.classList.add('show');
                 }
             });
-        }, { threshold: 0.1 });
+        }, { threshold: 0.2 });
 
         sections.forEach(section => observer.observe(section));
 
         // Бургер-меню
         const menuToggle = document.getElementById('menu-toggle');
         const nav = document.getElementById('nav');
+        const closeMenu = document.getElementById('close-menu');
         menuToggle.addEventListener('click', () => {
-            nav.classList.toggle('open');
+            nav.classList.add('open');
+            menuToggle.style.display = 'none';
+            closeMenu.style.display = 'block';
         });
-
-        // Закрытие бургер-меню при выборе пункта
-        nav.querySelectorAll('a').forEach(link => {
-            link.addEventListener('click', () => {
-                nav.classList.remove('open');
-            });
+        closeMenu.addEventListener('click', () => {
+            nav.classList.remove('open');
+            closeMenu.style.display = 'none';
+            menuToggle.style.display = 'flex';
         });
 
         // Голосовой помощник
         const assistantBtn = document.getElementById('assistant-btn');
         assistantBtn.addEventListener('click', () => {
-            const message = new SpeechSynthesisUtterance("Yukendg is the best web developer");
-            message.lang = 'en-US';
-            speechSynthesis.speak(message);
-        });
-    </script>
-</body>
-</html>
+            const message = new SpeechSynthesis
