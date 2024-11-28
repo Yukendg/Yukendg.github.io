@@ -41,7 +41,8 @@
             font-weight: bold;
             color: #58a6ff;
             cursor: pointer;
-            margin-right: 20px; /* Добавлено для отступа */
+            margin-right: auto; /* Автоматический отступ справа, центрирует в доступном пространстве */
+            margin-left: 20px; /* Отступ слева для баланса */
         }
 
         /* Бургер-меню */
@@ -52,6 +53,10 @@
             cursor: pointer;
             z-index: 999;
             transition: transform 0.3s;
+            display: flex; /* Показываем по умолчанию */
+        }
+        .menu-toggle.open {
+            display: none; /* Скрываем полоски при открытии меню */
         }
         .menu-toggle span {
             width: 25px;
@@ -94,6 +99,10 @@
             top: 20px;
             right: 20px;
             cursor: pointer;
+            display: none; /* Скрываем крестик по умолчанию */
+        }
+        .close-menu.open {
+            display: block; /* Показываем крестик при открытии меню */
         }
 
         /* Главная секция */
@@ -188,19 +197,17 @@
 <body>
     <!-- Шапка -->
     <header>
-        <div class="logo">
-            Yukendg
-        </div>
+        <div class="logo">Yukendg</div>
         <div class="menu-toggle" id="menu-toggle">
             <span></span>
             <span></span>
             <span></span>
         </div>
+        <div class="close-menu" id="close-menu">×</div>  <!-- Крестик для закрытия -->
         <nav id="nav">
             <a href="#home">Главная</a>
             <a href="#about">Обо мне</a>
             <a href="#contact">Связь</a>
-            <div class="close-menu" id="close-menu">×</div>
         </nav>
     </header>
 
@@ -245,11 +252,17 @@
         const menuToggle = document.getElementById('menu-toggle');
         const nav = document.getElementById('nav');
         const closeMenu = document.getElementById('close-menu');
+
         menuToggle.addEventListener('click', () => {
             nav.classList.add('open');
+            menuToggle.classList.add('open');
+            closeMenu.classList.add('open');
         });
+
         closeMenu.addEventListener('click', () => {
             nav.classList.remove('open');
+            menuToggle.classList.remove('open');
+            closeMenu.classList.remove('open');
         });
 
         // Голосовой помощник
