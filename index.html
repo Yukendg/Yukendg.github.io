@@ -10,110 +10,191 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            scroll-behavior: smooth;
         }
         body {
             font-family: 'Arial', sans-serif;
             line-height: 1.6;
             background: #f8f9fa;
             color: #333;
-        }
-        header {
-            display: none; /* Убираем навигацию */
+            overflow-x: hidden;
         }
 
-        /* Стиль секций */
-        section {
-            padding: 100px 20px;
-            min-height: 100vh;
-            opacity: 0;
-            transform: translateY(50px);
-            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
-        }
-        section.show {
-            opacity: 1;
-            transform: translateY(0);
-        }
-        .hero {
-            background: linear-gradient(to right, #00bcd4, #4caf50);
+        /* Шапка */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: #222;
             color: #fff;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+        }
+        .logo img {
+            width: 40px;
+            height: 40px;
+            margin-right: 10px;
+        }
+
+        /* Бургер-меню */
+        .menu-toggle {
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+        .menu-toggle span {
+            display: block;
+            width: 25px;
+            height: 3px;
+            background: #fff;
+        }
+        .nav-links {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 200px;
+            height: 100vh;
+            background: #333;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
+            transition: right 0.3s ease;
+            z-index: 999;
         }
-        .hero h1 {
-            font-size: 50px;
-            margin-bottom: 20px;
+        .nav-links a {
+            color: #fff;
+            text-decoration: none;
+            margin: 10px 0;
+            font-size: 18px;
+            transition: color 0.3s;
         }
-        .about {
-            background: #fff;
-            text-align: center;
-            padding: 60px 20px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        }
-        .about h2 {
-            margin-bottom: 20px;
+        .nav-links a:hover {
             color: #00bcd4;
         }
-        .contact {
-            background: #333;
-            color: #fff;
-            text-align: center;
-            padding: 50px 0;
+        .nav-links.open {
+            right: 0;
         }
 
-        /* Иконка Telegram */
-        .contact img {
-            width: 60px;
-            height: 60px;
-            cursor: pointer;
-            transition: transform 0.3s;
+        /* Главная секция */
+        .hero {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(to right, #00bcd4, #4caf50);
+            color: #fff;
+            text-align: center;
         }
-        .contact img:hover {
-            transform: scale(1.1);
+        .hero h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+        .hero button {
+            background: #fff;
+            color: #222;
+            border: none;
+            padding: 15px 30px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background 0.3s;
+        }
+        .hero button:hover {
+            background: #00bcd4;
+            color: #fff;
+        }
+
+        /* Анимация текста */
+        .about, .contact {
+            text-align: center;
+            padding: 100px 20px;
+            opacity: 0;
+            transform: translateY(50px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        .about.show, .contact.show {
+            opacity: 1;
+            transform: translateY(0);
         }
     </style>
 </head>
 <body>
+    <!-- Шапка -->
+    <header>
+        <div class="logo">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/8/84/Example.svg" alt="Logo">
+            Yukendg
+        </div>
+        <div class="menu-toggle" id="menu-toggle">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <div class="nav-links" id="nav-links">
+            <a href="#home">Главная</a>
+            <a href="#about">Обо мне</a>
+            <a href="#contact">Связь</a>
+        </div>
+    </header>
+
     <!-- Главная -->
     <section id="home" class="hero">
-        <h1>Привет, я Yukendg</h1>
-        <p>Создаю профессиональные сайты и приложения</p>
+        <h1>Кто такой Yukendg?</h1>
+        <button id="assistant-btn">Узнать</button>
     </section>
 
     <!-- Обо мне -->
     <section id="about" class="about">
         <h2>Обо мне</h2>
-        <p>
-            Я веб-разработчик с большим опытом в создании современных сайтов и приложений. Моя цель — разрабатывать проекты, которые впечатляют клиентов и их пользователей.
-            В своей работе использую передовые технологии и постоянно обучаюсь новым подходам.
-        </p>
+        <p>Я веб-разработчик с большим опытом в создании современных сайтов и приложений. Моя цель — разрабатывать проекты, которые впечатляют клиентов и их пользователей.</p>
     </section>
 
     <!-- Контакты -->
     <section id="contact" class="contact">
         <a href="https://t.me/Yukendg" target="_blank">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg" alt="Telegram">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg" alt="Telegram" width="60">
         </a>
     </section>
 
     <script>
-        // Появление секций при прокрутке
-        const sections = document.querySelectorAll('section');
-        const options = {
-            threshold: 0.1,
-        };
-        const observer = new IntersectionObserver((entries, observer) => {
+        // Анимация появления секций
+        const sections = document.querySelectorAll('.about, .contact');
+        const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('show');
                 }
             });
-        }, options);
+        }, { threshold: 0.1 });
 
-        sections.forEach(section => {
-            observer.observe(section);
+        sections.forEach(section => observer.observe(section));
+
+        // Бургер-меню
+        const menuToggle = document.getElementById('menu-toggle');
+        const navLinks = document.getElementById('nav-links');
+        menuToggle.addEventListener('click', () => {
+            navLinks.classList.toggle('open');
+        });
+
+        // Голосовой помощник
+        const assistantBtn = document.getElementById('assistant-btn');
+        assistantBtn.addEventListener('click', () => {
+            const message = new SpeechSynthesisUtterance("Yukendg is the best web developer");
+            speechSynthesis.speak(message);
         });
     </script>
 </body>
