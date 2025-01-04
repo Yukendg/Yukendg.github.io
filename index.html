@@ -36,7 +36,7 @@
             font-size: 28px;
             font-weight: bold;
             color: #66fcf1;
-            animation: fadeIn 2s ease-in-out;
+            text-align: center;
         }
         .menu {
             position: absolute;
@@ -109,7 +109,7 @@
             transform: scale(1.1);
         }
 
-        /* Эффект взрыва */
+        /* Взрыв и анимация персонажа */
         .explosion {
             position: fixed;
             top: 0;
@@ -121,96 +121,92 @@
             display: none;
             justify-content: center;
             align-items: center;
-            animation: fadeIn 0.5s ease-in-out;
+            animation: explode 2s ease-out;
+        }
+        .explosion img {
+            width: 100px;
+            transform: scale(0);
+            animation: popUp 2s ease forwards;
+            animation-delay: 1s;
         }
         .explosion span {
-            color: #ffffff;
-            font-size: 48px;
+            font-size: 24px;
             font-weight: bold;
-        }
-
-        /* Связь */
-        .contact {
-            padding: 100px 20px;
-            text-align: center;
-        }
-        .contact h2 {
-            font-size: 36px;
-            margin-bottom: 20px;
-            color: #66fcf1;
-        }
-        .contact a img {
-            width: 60px;
-            cursor: pointer;
-            transition: transform 0.3s;
-        }
-        .contact a img:hover {
-            transform: scale(1.1);
+            color: white;
+            animation: fadeIn 2s ease-in-out;
+            animation-delay: 2s;
         }
 
         /* Анимации */
-        @keyframes fadeIn {
-            from {
+        @keyframes explode {
+            0% {
+                transform: scale(0);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(2);
                 opacity: 0;
             }
-            to {
-                opacity: 1;
+        }
+
+        @keyframes popUp {
+            0% {
+                transform: scale(0);
+            }
+            100% {
+                transform: scale(1);
             }
         }
     </style>
 </head>
 <body>
-    <!-- Шапка -->
     <header>
         <div class="logo">Yukendg</div>
-        <div class="menu" id="menu-toggle">
+        <div class="menu" id="menu">
             <span></span>
             <span></span>
             <span></span>
         </div>
         <nav id="nav">
             <a href="#home">Главная</a>
+            <a href="#about">О нас</a>
             <a href="#contact">Связь</a>
         </nav>
     </header>
 
-    <!-- Главная -->
-    <section id="home" class="hero">
-        <h1>Загадка Yukendg</h1>
-        <button id="explode-btn">Узнать тайну</button>
+    <section class="hero" id="home">
+        <h1>Добро пожаловать в мир Yukendg</h1>
+        <button id="explodeButton">Разрушить</button>
     </section>
 
-    <!-- Связь -->
-    <section id="contact" class="contact">
+    <section id="contact">
         <h2>Связь</h2>
         <a href="https://t.me/Yukendg" target="_blank">
-            <img src="https://cdn-icons-png.flaticon.com/512/906/906377.png" alt="Telegram">
+            Telegram
         </a>
     </section>
 
-    <!-- Эффект взрыва -->
     <div class="explosion" id="explosion">
-        <span>Soon...</span>
+        <img src="character.png" alt="Character">
+        <span>Yukendg 2025</span>
     </div>
 
     <script>
-        // Бургер-меню
-        const menuToggle = document.getElementById('menu-toggle');
+        const menu = document.getElementById('menu');
         const nav = document.getElementById('nav');
-        menuToggle.addEventListener('click', () => {
-            const isOpen = nav.style.right === '0px';
-            nav.style.right = isOpen ? '-100%' : '0';
+        const explosion = document.getElementById('explosion');
+        const explodeButton = document.getElementById('explodeButton');
+
+        menu.addEventListener('click', () => {
+            const navOpen = nav.style.right === '0px';
+            nav.style.right = navOpen ? '-100%' : '0';
         });
 
-        // Взрыв
-        const explodeBtn = document.getElementById('explode-btn');
-        const explosion = document.getElementById('explosion');
-        explodeBtn.addEventListener('click', () => {
+        explodeButton.addEventListener('click', () => {
             explosion.style.display = 'flex';
             setTimeout(() => {
-                document.body.style.background = '#000';
-                explosion.innerHTML = '<span style="color: #ffffff;">Soon...</span>';
-            }, 2000);
+                explosion.style.display = 'none';
+            }, 5000); // Убирает взрыв через 5 секунд
         });
     </script>
 </body>
