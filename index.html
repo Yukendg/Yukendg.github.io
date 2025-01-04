@@ -38,6 +38,7 @@
             height: 200px;
             border-radius: 50%;
             background-color: #000;
+            cursor: pointer;
             animation: pulse 3s infinite;
         }
 
@@ -100,27 +101,6 @@
             letter-spacing: 1px;
         }
 
-        .tap-message {
-            position: absolute;
-            top: 20%;
-            font-size: 2rem;
-            font-weight: bold;
-            text-transform: uppercase;
-            letter-spacing: 5px;
-            color: #fff;
-            cursor: pointer;
-            animation: fadeIn 1s forwards;
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-            }
-            to {
-                opacity: 1;
-            }
-        }
-
         .hidden {
             display: none;
         }
@@ -130,17 +110,15 @@
     <div class="container">
         <div class="circle"></div>
         <div class="glitch">?????</div>
-        <div class="tap-message">TAP!!!</div>
     </div>
     <footer>
         by Yukendg
     </footer>
     <script>
-        document.querySelector('.tap-message').addEventListener('click', function() {
+        document.querySelector('.circle').addEventListener('click', function() {
             // Скрыть все элементы
             document.querySelector('.circle').classList.add('hidden');
             document.querySelector('.glitch').classList.add('hidden');
-            document.querySelector('.tap-message').classList.add('hidden');
 
             // Показать сообщение через 3 секунды
             setTimeout(function() {
