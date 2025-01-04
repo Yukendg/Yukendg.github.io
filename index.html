@@ -73,27 +73,10 @@
                 transform: translate(-50%, -50%) skew(0deg);
             }
         }
-
-        footer {
-            text-align: center;
-            padding: 10px;
-            background-color: #1a1a1a;
-            color: #fff;
-            font-size: 1rem;
-            letter-spacing: 1px;
-            position: absolute;
-            bottom: 0;
-            width: 100%;
-        }
     </style>
 </head>
 <body>
-    <div class="circle">
-        <div class="glitch">Glitch Effect</div>
-    </div>
-    <footer>
-        by Yukendg
-    </footer>
+    <div class="circle"></div>
     <script>
         document.querySelector('.circle').addEventListener('click', function(event) {
             // Проверяем, что клик произошёл внутри круга
@@ -109,7 +92,10 @@
             // Если клик произошёл внутри круга
             if (distance <= radius) {
                 // Показать глитч-эффект
-                const glitch = document.querySelector('.glitch');
+                const glitch = document.createElement('div');
+                glitch.classList.add('glitch');
+                glitch.textContent = 'Glitch Effect';
+                circle.appendChild(glitch);
                 glitch.style.display = 'block';
 
                 // Плавно удалить круг
