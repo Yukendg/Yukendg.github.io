@@ -39,7 +39,6 @@
             border-radius: 50%;
             background-color: #000;
             cursor: pointer;
-            animation: pulse 3s infinite;
         }
 
         .glitch {
@@ -54,21 +53,7 @@
             color: #fff;
             text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #fff, 0 0 20px #f39c12, 0 0 30px #f39c12, 0 0 40px #f39c12, 0 0 50px #f39c12;
             animation: glitch 1.5s infinite;
-        }
-
-        @keyframes pulse {
-            0% {
-                transform: scale(0.8);
-                opacity: 0.5;
-            }
-            50% {
-                transform: scale(1);
-                opacity: 1;
-            }
-            100% {
-                transform: scale(0.8);
-                opacity: 0.5;
-            }
+            display: none;
         }
 
         @keyframes glitch {
@@ -92,6 +77,26 @@
             }
         }
 
+        .contact {
+            position: absolute;
+            bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: #fff;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 1s, transform 1s;
+        }
+
+        .contact a {
+            margin-left: 10px;
+            font-size: 2rem;
+            color: #fff;
+            text-decoration: none;
+        }
+
         footer {
             text-align: center;
             padding: 10px;
@@ -109,7 +114,11 @@
 <body>
     <div class="container">
         <div class="circle"></div>
-        <div class="glitch">?????</div>
+        <div class="glitch">Yukendg 2025</div>
+        <div class="contact">
+            <span>Contact with me</span>
+            <a href="https://t.me/Yukendg" target="_blank">📱</a>
+        </div>
     </div>
     <footer>
         by Yukendg
@@ -118,12 +127,12 @@
         document.querySelector('.circle').addEventListener('click', function() {
             // Скрыть все элементы
             document.querySelector('.circle').classList.add('hidden');
-            document.querySelector('.glitch').classList.add('hidden');
+            document.querySelector('.glitch').classList.remove('hidden');
 
             // Показать сообщение через 3 секунды
             setTimeout(function() {
-                document.querySelector('.glitch').textContent = 'Yukendg 2025';
-                document.querySelector('.glitch').classList.remove('hidden');
+                document.querySelector('.contact').style.opacity = 1;
+                document.querySelector('.contact').style.transform = 'translateY(0)';
             }, 3000);
         });
     </script>
