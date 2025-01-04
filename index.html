@@ -37,20 +37,22 @@
             width: 200px;
             height: 200px;
             border-radius: 50%;
-            background: radial-gradient(circle, rgba(255, 255, 255, 0.1), rgba(0, 0, 0, 0.7));
+            background-color: #000;
             animation: pulse 3s infinite;
         }
 
-        .circle:nth-child(1) {
-            animation-delay: 0s;
-        }
-
-        .circle:nth-child(2) {
-            animation-delay: 1s;
-        }
-
-        .circle:nth-child(3) {
-            animation-delay: 2s;
+        .glitch {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 3rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 5px;
+            color: #fff;
+            text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #fff, 0 0 20px #f39c12, 0 0 30px #f39c12, 0 0 40px #f39c12, 0 0 50px #f39c12;
+            animation: glitch 1.5s infinite;
         }
 
         @keyframes pulse {
@@ -66,20 +68,6 @@
                 transform: scale(0.8);
                 opacity: 0.5;
             }
-        }
-
-        .glitch {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 3rem;
-            font-weight: bold;
-            text-transform: uppercase;
-            letter-spacing: 5px;
-            color: #fff;
-            text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #fff, 0 0 20px #f39c12, 0 0 30px #f39c12, 0 0 40px #f39c12, 0 0 50px #f39c12;
-            animation: glitch 1.5s infinite;
         }
 
         @keyframes glitch {
@@ -111,24 +99,54 @@
             font-size: 1rem;
             letter-spacing: 1px;
         }
+
+        .tap-message {
+            position: absolute;
+            top: 20%;
+            font-size: 2rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 5px;
+            color: #fff;
+            cursor: pointer;
+            animation: fadeIn 1s forwards;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        .hidden {
+            display: none;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="circle"></div>
-        <div class="circle"></div>
-        <div class="circle"></div>
         <div class="glitch">?????</div>
+        <div class="tap-message">TAP!!!</div>
     </div>
     <footer>
         by Yukendg
     </footer>
     <script>
-        // Генерация случайных цветов для кругов
-        const circles = document.querySelectorAll('.circle');
-        circles.forEach(circle => {
-            const randomColor = `hsl(${Math.random() * 360}, 100%, 50%)`;
-            circle.style.background = randomColor;
+        document.querySelector('.tap-message').addEventListener('click', function() {
+            // Скрыть все элементы
+            document.querySelector('.circle').classList.add('hidden');
+            document.querySelector('.glitch').classList.add('hidden');
+            document.querySelector('.tap-message').classList.add('hidden');
+
+            // Показать сообщение через 3 секунды
+            setTimeout(function() {
+                document.querySelector('.glitch').textContent = 'Yukendg 2025';
+                document.querySelector('.glitch').classList.remove('hidden');
+            }, 3000);
         });
     </script>
 </body>
