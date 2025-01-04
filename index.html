@@ -20,21 +20,12 @@
             overflow: hidden;
             height: 100vh;
             display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
-
-        .container {
-            position: relative;
-            width: 100%;
-            height: 100%;
-            display: flex;
             justify-content: center;
             align-items: center;
         }
 
         .circle {
-            position: absolute;
+            position: relative;
             width: 200px;
             height: 200px;
             border-radius: 50%;
@@ -43,12 +34,20 @@
             display: flex;
             justify-content: center;
             align-items: center;
+        }
+
+        .glitch {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
             font-size: 3rem;
             font-weight: bold;
             text-transform: uppercase;
             letter-spacing: 5px;
             color: #fff;
             text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #fff, 0 0 20px #f39c12, 0 0 30px #f39c12, 0 0 40px #f39c12, 0 0 50px #f39c12;
+            display: none;
             animation: glitch 1.5s infinite;
         }
 
@@ -73,21 +72,6 @@
             }
         }
 
-        .glitch-effect {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 3rem;
-            font-weight: bold;
-            text-transform: uppercase;
-            letter-spacing: 5px;
-            color: #fff;
-            text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #fff, 0 0 20px #f39c12, 0 0 30px #f39c12, 0 0 40px #f39c12, 0 0 50px #f39c12;
-            display: none;
-            animation: glitch 1.5s infinite;
-        }
-
         footer {
             text-align: center;
             padding: 10px;
@@ -99,23 +83,39 @@
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="circle">???</div>
-        <div class="glitch-effect">Glitch Effect</div>
+    <div class="circle">
+        <div class="glitch">Glitch Effect</div>
     </div>
     <footer>
         by Yukendg
     </footer>
     <script>
-        document.querySelector('.circle').addEventListener('click', function() {
-            // Показать глитч-эффект
-            const glitchEffect = document.querySelector('.glitch-effect');
-            glitchEffect.style.display = 'block';
+        document.querySelector('.circle').addEventListener('click', function(event) {
+            // Проверяем, что клик произошёл внутри круга
+            const circle = document.querySelector('.circle');
+            const rect = circle.getBoundingClientRect();
+            const x = event.clientX - rect.left;
+            const y = event.clientY - rect.top;
+            const radius = rect.width / 2;
 
-            // Скрыть глитч-эффект через 3 секунды
-            setTimeout(function() {
-                glitchEffect.style.display = 'none';
-            }, 3000);
+            // Вычисляем расстояние от центра до точки клика
+            const distance = Math.sqrt(Math.pow(x - radius, 2) + Math.pow(y - radius, 2));
+
+            // Если клик произошёл внутри круга
+            if (distance <= radius) {
+                // Показать глитч-эффект
+                const glitch = document.querySelector('.glitch');
+                glitch.style.display = 'block';
+
+                // Плавно удалить круг
+                circle.style.transition = 'opacity 1s';
+                circle.style.opacity = '0';
+
+                // Удалить круг из DOM после анимации
+                setTimeout(function() {
+                    circle.remove();
+                }, 1000);
+            }
         });
     </script>
 </body>
