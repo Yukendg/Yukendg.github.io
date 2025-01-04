@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Тайны Yukendg</title>
+    <title>Тайна Yukendg</title>
     <style>
         /* Общие стили */
         * {
@@ -14,64 +14,42 @@
         }
         body {
             font-family: 'Poppins', sans-serif;
-            background: radial-gradient(circle, #0b0c10, #1c1f26);
-            color: #e4e4e7;
+            background: linear-gradient(135deg, #0d0d0d, #232526);
+            color: #e0e0e0;
             overflow-x: hidden;
         }
 
-        /* Анимации */
-        @keyframes text-glow {
-            0% {
-                text-shadow: 0 0 10px #00ffab, 0 0 20px #00ffab, 0 0 30px #00ffab;
-            }
-            50% {
-                text-shadow: 0 0 20px #a5ffeb, 0 0 40px #a5ffeb, 0 0 60px #a5ffeb;
-            }
-            100% {
-                text-shadow: 0 0 10px #00ffab, 0 0 20px #00ffab, 0 0 30px #00ffab;
-            }
-        }
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        /* Эффекты */
+        /* Шапка */
         header {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
-            background: rgba(0, 0, 0, 0.85);
-            padding: 15px 20px;
+            background: transparent;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            padding: 20px 30px;
             z-index: 1000;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.6);
         }
         .logo {
             font-size: 28px;
             font-weight: bold;
-            color: #00ffab;
-            animation: text-glow 2s infinite alternate;
+            color: #e0e0e0;
+            animation: fadeIn 2s ease-in-out;
+        }
+        .menu {
             cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
         }
-        nav a {
-            font-size: 18px;
-            margin-left: 20px;
-            color: #e4e4e7;
-            text-decoration: none;
-            position: relative;
-        }
-        nav a:hover {
-            color: #00ffab;
+        .menu span {
+            width: 30px;
+            height: 4px;
+            background: #e0e0e0;
+            border-radius: 2px;
+            animation: slideIn 2s ease-in-out;
         }
 
         /* Главная секция */
@@ -82,82 +60,65 @@
             justify-content: center;
             align-items: center;
             text-align: center;
-            animation: fadeIn 2s ease-in-out;
         }
         .hero h1 {
-            font-size: 64px;
+            font-size: 72px;
             font-weight: bold;
-            color: #e4e4e7;
-            text-shadow: 0 0 15px #00ffab;
-        }
-        .hero p {
-            font-size: 20px;
-            margin: 20px 0;
-            color: #a5ffeb;
+            animation: fadeIn 2s ease-in-out;
         }
         .hero button {
-            background: transparent;
-            border: 2px solid #00ffab;
-            color: #00ffab;
+            margin-top: 20px;
             padding: 15px 30px;
             font-size: 20px;
             font-weight: bold;
+            color: #0d0d0d;
+            background: #e0e0e0;
+            border: none;
             border-radius: 5px;
             cursor: pointer;
-            transition: background 0.3s, transform 0.3s;
+            transition: background 0.3s ease, transform 0.3s ease;
         }
         .hero button:hover {
-            background: #00ffab;
-            color: #0b0c10;
+            background: #d4af37;
             transform: scale(1.1);
         }
 
-        /* Разделы */
-        section {
-            padding: 100px 20px;
-            text-align: center;
-        }
-        .about, .contact {
-            background: rgba(10, 10, 20, 0.95);
-            margin: 20px auto;
-            border-radius: 10px;
-            padding: 50px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.7);
-        }
-        .about h2, .contact h2 {
-            font-size: 36px;
-            margin-bottom: 20px;
-            color: #00ffab;
-            text-shadow: 0 0 10px #00ffab;
-        }
-        .about p, .contact p {
-            font-size: 18px;
-            color: #e4e4e7;
-        }
-
-        /* Пасхалка */
-        .easter-egg {
+        /* Эффект взрыва */
+        .explosion {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: #0d0d0d;
+            z-index: 2000;
             display: none;
-            font-size: 24px;
-            color: #a5ffeb;
-            text-shadow: 0 0 10px #00ffab;
-            margin-top: 30px;
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 0.5s ease-in-out;
         }
-        .contact a {
-            color: #00ffab;
-            text-decoration: none;
+        .explosion span {
+            color: #e0e0e0;
+            font-size: 48px;
+            font-weight: bold;
         }
 
-        /* Footer */
-        footer {
-            text-align: center;
-            padding: 20px;
-            background: rgba(0, 0, 0, 0.9);
-            color: #e4e4e7;
-            font-size: 14px;
+        /* Анимации */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
         }
-        footer span {
-            color: #00ffab;
+        @keyframes slideIn {
+            from {
+                transform: translateX(-50%);
+            }
+            to {
+                transform: translateX(0);
+            }
         }
     </style>
 </head>
@@ -165,48 +126,35 @@
     <!-- Шапка -->
     <header>
         <div class="logo">Yukendg</div>
-        <nav>
-            <a href="#home">Главная</a>
-            <a href="#about">О Yukendg</a>
-            <a href="#contact">Контакты</a>
-        </nav>
+        <div class="menu">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
     </header>
 
     <!-- Главная -->
-    <section id="home" class="hero">
-        <h1>Добро пожаловать в тайну Yukendg</h1>
-        <p>Сайт, который знает больше, чем ты думаешь.</p>
-        <button id="discover">Узнать больше</button>
+    <section class="hero">
+        <h1>Тайна Yukendg</h1>
+        <button id="explode-btn">Взрыв</button>
     </section>
 
-    <!-- Раздел о Yukendg -->
-    <section id="about" class="about">
-        <h2>Тайна мастера</h2>
-        <p>
-            Yukendg — создатель сайта, который оставляет только вопросы.  
-            Ты готов узнать больше? Нажми на кнопку.
-        </p>
-        <div id="easter-egg" class="easter-egg">Пасхалка: Если ты это нашёл, ты на верном пути...</div>
-    </section>
-
-    <!-- Контакты -->
-    <section id="contact" class="contact">
-        <h2>Контакты</h2>
-        <p>Свяжись с Yukendg, если ты готов к разгадке.</p>
-        <a href="https://t.me/Yukendg" target="_blank">Написать Yukendg</a>
-    </section>
-
-    <!-- Footer -->
-    <footer>
-        <p>by <span>Yukendg</span></p>
-    </footer>
+    <!-- Эффект взрыва -->
+    <div class="explosion" id="explosion">
+        <span>Soon...</span>
+    </div>
 
     <script>
-        const button = document.getElementById('discover');
-        const easterEgg = document.getElementById('easter-egg');
+        const explodeBtn = document.getElementById('explode-btn');
+        const explosion = document.getElementById('explosion');
 
-        button.addEventListener('click', () => {
-            easterEgg.style.display = 'block';
+        explodeBtn.addEventListener('click', () => {
+            // Плавный эффект взрыва
+            explosion.style.display = 'flex';
+            setTimeout(() => {
+                document.body.style.background = '#000';
+                explosion.innerHTML = '<span style="color: #d4af37;">Soon...</span>';
+            }, 2000);
         });
     </script>
 </body>
