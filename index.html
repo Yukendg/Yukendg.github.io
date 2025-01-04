@@ -1,330 +1,179 @@
-const express = require('express');
-const mongoose = require('mongoose');
-const nodemailer = require('nodemailer');
-const crypto = require('crypto');
-const bcrypt = require('bcryptjs');
-const bodyParser = require('body-parser');
-const path = require('path');
-
-const app = express();
-const port = 3000;
-
-// Подключаемся к базе данных
-mongoose.connect('mongodb://localhost:27017/userdb', {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-}).then(() => {
-  console.log('Connected to MongoDB');
-}).catch(err => {
-  console.log('Error connecting to MongoDB', err);
-});
-
-// Модель пользователя
-const userSchema = new mongoose.Schema({
-  email: { type: String, required: true, unique: true },
-  password: { type: String, required: true },
-  verificationCode: { type: String },
-  isVerified: { type: Boolean, default: false },
-  resetPasswordCode: { type: String }
-});
-const User = mongoose.model('User', userSchema);
-
-// Мидлвары
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
-
-// Настройки Nodemailer
-const transporter = nodemailer.createTransport({
-  service: 'gmail',
-  auth: {
-    user: 'your-email@gmail.com', // Вставь свой email
-    pass: 'your-email-password' // Вставь свой пароль
-  }
-});
-
-// Главная страница с регистрацией, логином и восстановлением пароля
-app.get('/', (req, res) => {
-  res.send(`
-    <!DOCTYPE html>
-    <html lang="en">
-    <head>
-      <meta charset="UTF-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <title>Authentication System</title>
-      <style>
-        body {
-          font-family: Arial, sans-serif;
-          background-color: #f4f4f9;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          height: 100vh;
-          margin: 0;
-        }
-        .container {
-          background-color: #fff;
-          padding: 20px;
-          border-radius: 8px;
-          box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-          width: 300px;
-        }
-        h1 {
-          text-align: center;
-        }
-        form {
-          display: flex;
-          flex-direction: column;
-        }
-        label {
-          margin: 10px 0 5px;
-        }
-        input {
-          padding: 8px;
-          margin-bottom: 15px;
-          border-radius: 4px;
-          border: 1px solid #ccc;
-        }
-        button {
-          background-color: #007bff;
-          color: white;
-          padding: 10px;
-          border: none;
-          border-radius: 4px;
-          cursor: pointer;
-        }
-        button:hover {
-          background-color: #0056b3;
-        }
-        nav {
-          text-align: center;
-          margin-top: 20px;
-        }
-        nav a {
-          margin: 0 10px;
-          text-decoration: none;
-          color: #007bff;
-        }
-      </style>
-    </head>
-    <body>
-      <div class="container">
-        <h1>Welcome to the Authentication System</h1>
-        <nav>
-          <a href="javascript:void(0)" onclick="showRegisterForm()">Register</a>
-          <a href="javascript:void(0)" onclick="showLoginForm()">Login</a>
-          <a href="javascript:void(0)" onclick="showForgotPasswordForm()">Forgot Password</a>
-        </nav>
-        <div id="form-container"></div>
-      </div>
-
-      <script>
-        function showRegisterForm() {
-          document.getElementById('form-container').innerHTML = `
-            <h2>Register</h2>
-            <form id="register-form">
-              <label for="email">Email:</label>
-              <input type="email" id="email" name="email" required>
-              <label for="password">Password:</label>
-              <input type="password" id="password" name="password" required>
-              <button type="submit">Register</button>
-            </form>
-            <script>
-              document.getElementById('register-form').addEventListener('submit', async (e) => {
-                e.preventDefault();
-                const email = document.getElementById('email').value;
-                const password = document.getElementById('password').value;
-                const response = await fetch('/register', {
-                  method: 'POST',
-                  headers: { 'Content-Type': 'application/json' },
-                  body: JSON.stringify({ email, password })
-                });
-                const data = await response.json();
-                alert(data.message);
-              });
-            </script>
-          `;
-        }
-
-        function showLoginForm() {
-          document.getElementById('form-container').innerHTML = `
-            <h2>Login</h2>
-            <form id="login-form">
-              <label for="email">Email:</label>
-              <input type="email" id="email" name="email" required>
-              <label for="password">Password:</label>
-              <input type="password" id="password" name="password" required>
-              <button type="submit">Login</button>
-            </form>
-            <script>
-              document.getElementById('login-form').addEventListener('submit', async (e) => {
-                e.preventDefault();
-                const email = document.getElementById('email').value;
-                const password = document.getElementById('password').value;
-                const response = await fetch('/login', {
-                  method: 'POST',
-                  headers: { 'Content-Type': 'application/json' },
-                  body: JSON.stringify({ email, password })
-                });
-                const data = await response.json();
-                alert(data.message);
-              });
-            </script>
-          `;
-        }
-
-        function showForgotPasswordForm() {
-          document.getElementById('form-container').innerHTML = `
-            <h2>Forgot Password</h2>
-            <form id="forgot-password-form">
-              <label for="email">Email:</label>
-              <input type="email" id="email" name="email" required>
-              <button type="submit">Send Reset Code</button>
-            </form>
-            <script>
-              document.getElementById('forgot-password-form').addEventListener('submit', async (e) => {
-                e.preventDefault();
-                const email = document.getElementById('email').value;
-                const response = await fetch('/forgot-password', {
-                  method: 'POST',
-                  headers: { 'Content-Type': 'application/json' },
-                  body: JSON.stringify({ email })
-                });
-                const data = await response.json();
-                alert(data.message);
-              });
-            </script>
-          `;
-        }
-      </script>
-    </body>
-    </html>
-  `);
-});
-
-// Регистрация
-app.post('/register', async (req, res) => {
-  const { email, password } = req.body;
-
-  const existingUser = await User.findOne({ email });
-  if (existingUser) {
-    return res.status(400).json({ message: 'User already exists' });
-  }
-
-  const hashedPassword = await bcrypt.hash(password, 10);
-  const verificationCode = crypto.randomBytes(20).toString('hex');
-
-  const newUser = new User({
-    email,
-    password: hashedPassword,
-    verificationCode
-  });
-
-  await newUser.save();
-
-  const mailOptions = {
-    from: 'your-email@gmail.com',
-    to: email,
-    subject: 'Email Verification',
-    text: `Please verify your email using the following code: ${verificationCode}`
-  };
-
-  transporter.sendMail(mailOptions, (error, info) => {
-    if (error) {
-      return res.status(500).json({ message: 'Error sending verification email' });
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Authentication System</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f9;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
     }
-    res.status(200).json({ message: 'Verification code sent to email' });
-  });
-});
 
-// Подтверждение почты
-app.post('/verify-email', async (req, res) => {
-  const { email, verificationCode } = req.body;
-
-  const user = await User.findOne({ email });
-  if (!user) {
-    return res.status(400).json({ message: 'User not found' });
-  }
-
-  if (user.verificationCode === verificationCode) {
-    user.isVerified = true;
-    await user.save();
-    res.status(200).json({ message: 'Email verified successfully' });
-  } else {
-    res.status(400).json({ message: 'Invalid verification code' });
-  }
-});
-
-// Вход
-app.post('/login', async (req, res) => {
-  const { email, password } = req.body;
-
-  const user = await User.findOne({ email });
-  if (!user) {
-    return res.status(400).json({ message: 'User not found' });
-  }
-
-  if (!user.isVerified) {
-    return res.status(400).json({ message: 'Please verify your email first' });
-  }
-
-  const isMatch = await bcrypt.compare(password, user.password);
-  if (!isMatch) {
-    return res.status(400).json({ message: 'Invalid credentials' });
-  }
-
-  res.status(200).json({ message: 'Login successful' });
-});
-
-// Восстановление пароля
-app.post('/forgot-password', async (req, res) => {
-  const { email } = req.body;
-
-  const user = await User.findOne({ email });
-  if (!user) {
-    return res.status(400).json({ message: 'User not found' });
-  }
-
-  const resetPasswordCode = crypto.randomBytes(20).toString('hex');
-  user.resetPasswordCode = resetPasswordCode;
-  await user.save();
-
-  const mailOptions = {
-    from: 'your-email@gmail.com',
-    to: email,
-    subject: 'Password Reset',
-    text: `Use the following code to reset your password: ${resetPasswordCode}`
-  };
-
-  transporter.sendMail(mailOptions, (error, info) => {
-    if (error) {
-      return res.status(500).json({ message: 'Error sending password reset email' });
+    .container {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      width: 300px;
     }
-    res.status(200).json({ message: 'Password reset code sent to email' });
-  });
-});
 
-// Сброс пароля
-app.post('/reset-password', async (req, res) => {
-  const { email, resetPasswordCode, newPassword } = req.body;
+    h1 {
+      text-align: center;
+    }
 
-  const user = await User.findOne({ email });
-  if (!user) {
-    return res.status(400).json({ message: 'User not found' });
-  }
+    form {
+      display: flex;
+      flex-direction: column;
+    }
 
-  if (user.resetPasswordCode !== resetPasswordCode) {
-    return res.status(400).json({ message: 'Invalid reset password code' });
-  }
+    label {
+      margin: 10px 0 5px;
+    }
 
-  const hashedPassword = await bcrypt.hash(newPassword, 10);
-  user.password = hashedPassword;
-  user.resetPasswordCode = undefined;
-  await user.save();
+    input {
+      padding: 8px;
+      margin-bottom: 15px;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+    }
 
-  res.status(200).json({ message: 'Password reset successful' });
-});
+    button {
+      background-color: #007bff;
+      color: white;
+      padding: 10px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
 
-// Запуск сервера
-app.listen(port, () => {
-  console.log(`Server running at http://localhost:${port}`);
-});
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    nav {
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    nav a {
+      margin: 0 10px;
+      text-decoration: none;
+      color: #007bff;
+    }
+  </style>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
+</head>
+<body>
+  <div class="container">
+    <h1>Welcome to the Authentication System</h1>
+    <nav>
+      <a href="javascript:void(0)" onclick="showRegisterForm()">Register</a>
+      <a href="javascript:void(0)" onclick="showLoginForm()">Login</a>
+      <a href="javascript:void(0)" onclick="showForgotPasswordForm()">Forgot Password</a>
+    </nav>
+
+    <div id="form-container"></div>
+  </div>
+
+  <script>
+    // Firebase configuration
+    const firebaseConfig = {
+      apiKey: "your-api-key",               // Вставьте свой API-ключ из Firebase
+      authDomain: "your-auth-domain.firebaseapp.com",
+      projectId: "your-project-id",
+      storageBucket: "your-project-id.appspot.com",
+      messagingSenderId: "your-messaging-sender-id",
+      appId: "your-app-id"
+    };
+
+    // Initialize Firebase
+    const app = firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+
+    function showRegisterForm() {
+      document.getElementById('form-container').innerHTML = `
+        <h2>Register</h2>
+        <form id="register-form">
+          <label for="email">Email:</label>
+          <input type="email" id="email" name="email" required>
+          <label for="password">Password:</label>
+          <input type="password" id="password" name="password" required>
+          <button type="submit">Register</button>
+        </form>
+        <script>
+          document.getElementById('register-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            
+            try {
+              await auth.createUserWithEmailAndPassword(email, password);
+              alert('Registration successful');
+            } catch (error) {
+              alert('Error: ' + error.message);
+            }
+          });
+        </script>
+      `;
+    }
+
+    function showLoginForm() {
+      document.getElementById('form-container').innerHTML = `
+        <h2>Login</h2>
+        <form id="login-form">
+          <label for="email">Email:</label>
+          <input type="email" id="email" name="email" required>
+          <label for="password">Password:</label>
+          <input type="password" id="password" name="password" required>
+          <button type="submit">Login</button>
+        </form>
+        <script>
+          document.getElementById('login-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            
+            try {
+              await auth.signInWithEmailAndPassword(email, password);
+              alert('Login successful');
+            } catch (error) {
+              alert('Error: ' + error.message);
+            }
+          });
+        </script>
+      `;
+    }
+
+    function showForgotPasswordForm() {
+      document.getElementById('form-container').innerHTML = `
+        <h2>Forgot Password</h2>
+        <form id="forgot-password-form">
+          <label for="email">Email:</label>
+          <input type="email" id="email" name="email" required>
+          <button type="submit">Send Reset Code</button>
+        </form>
+        <script>
+          document.getElementById('forgot-password-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('email').value;
+            
+            try {
+              await auth.sendPasswordResetEmail(email);
+              alert('Password reset email sent');
+            } catch (error) {
+              alert('Error: ' + error.message);
+            }
+          });
+        </script>
+      `;
+    }
+  </script>
+</body>
+</html>
