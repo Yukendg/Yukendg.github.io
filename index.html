@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Yukendg: Разъёб</title>
+    <title>Тайны Yukendg</title>
     <style>
         /* Общие стили */
         * {
@@ -13,88 +13,65 @@
             scroll-behavior: smooth;
         }
         body {
-            font-family: 'Roboto', sans-serif;
-            background: linear-gradient(135deg, #03001e, #7303c0, #ec38bc);
-            color: #ffffff;
+            font-family: 'Poppins', sans-serif;
+            background: radial-gradient(circle, #0b0c10, #1c1f26);
+            color: #e4e4e7;
             overflow-x: hidden;
         }
 
         /* Анимации */
-        @keyframes gradient-flow {
+        @keyframes text-glow {
             0% {
-                background-position: 0% 50%;
+                text-shadow: 0 0 10px #00ffab, 0 0 20px #00ffab, 0 0 30px #00ffab;
             }
             50% {
-                background-position: 100% 50%;
+                text-shadow: 0 0 20px #a5ffeb, 0 0 40px #a5ffeb, 0 0 60px #a5ffeb;
             }
             100% {
-                background-position: 0% 50%;
+                text-shadow: 0 0 10px #00ffab, 0 0 20px #00ffab, 0 0 30px #00ffab;
             }
         }
         @keyframes fadeIn {
             from {
                 opacity: 0;
-                transform: scale(0.9);
+                transform: translateY(20px);
             }
             to {
                 opacity: 1;
-                transform: scale(1);
-            }
-        }
-        @keyframes slideIn {
-            from {
-                transform: translateY(100px);
-                opacity: 0;
-            }
-            to {
                 transform: translateY(0);
-                opacity: 1;
             }
         }
 
         /* Эффекты */
-        body {
-            background-size: 200% 200%;
-            animation: gradient-flow 6s infinite ease-in-out;
-        }
         header {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
-            background: rgba(0, 0, 0, 0.8);
-            padding: 20px;
+            background: rgba(0, 0, 0, 0.85);
+            padding: 15px 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             z-index: 1000;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.7);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.6);
         }
         .logo {
             font-size: 28px;
             font-weight: bold;
-            color: #ff0077;
-            text-shadow: 0 0 15px #ff0077, 0 0 30px #ff0077;
+            color: #00ffab;
+            animation: text-glow 2s infinite alternate;
+            cursor: pointer;
         }
         nav a {
             font-size: 18px;
             margin-left: 20px;
-            color: #ffffff;
+            color: #e4e4e7;
             text-decoration: none;
             position: relative;
         }
-        nav a::after {
-            content: '';
-            position: absolute;
-            left: 0;
-            bottom: -5px;
-            width: 0%;
-            height: 2px;
-            background: #ff0077;
-            transition: width 0.3s ease-in-out;
-        }
-        nav a:hover::after {
-            width: 100%;
+        nav a:hover {
+            color: #00ffab;
         }
 
         /* Главная секция */
@@ -105,69 +82,70 @@
             justify-content: center;
             align-items: center;
             text-align: center;
-            animation: fadeIn 1.5s ease-in-out;
+            animation: fadeIn 2s ease-in-out;
         }
         .hero h1 {
-            font-size: 72px;
+            font-size: 64px;
             font-weight: bold;
-            color: #ffffff;
-            text-shadow: 0 0 20px #ff0077, 0 0 40px #7303c0;
-            animation: slideIn 1.5s ease-in-out;
+            color: #e4e4e7;
+            text-shadow: 0 0 15px #00ffab;
         }
         .hero p {
-            font-size: 22px;
+            font-size: 20px;
             margin: 20px 0;
-            color: #ffffff;
+            color: #a5ffeb;
         }
         .hero button {
-            background: linear-gradient(90deg, #ff0077, #7303c0);
-            border: none;
-            color: #fff;
+            background: transparent;
+            border: 2px solid #00ffab;
+            color: #00ffab;
             padding: 15px 30px;
             font-size: 20px;
             font-weight: bold;
-            border-radius: 50px;
-            box-shadow: 0 0 15px #ff0077;
+            border-radius: 5px;
             cursor: pointer;
-            transition: transform 0.3s, box-shadow 0.3s;
+            transition: background 0.3s, transform 0.3s;
         }
         .hero button:hover {
+            background: #00ffab;
+            color: #0b0c10;
             transform: scale(1.1);
-            box-shadow: 0 0 30px #ff0077;
         }
 
         /* Разделы */
         section {
             padding: 100px 20px;
             text-align: center;
-            animation: fadeIn 2s ease-in-out;
         }
         .about, .contact {
-            background: rgba(0, 0, 0, 0.8);
+            background: rgba(10, 10, 20, 0.95);
             margin: 20px auto;
             border-radius: 10px;
+            padding: 50px;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.7);
         }
         .about h2, .contact h2 {
-            font-size: 40px;
+            font-size: 36px;
             margin-bottom: 20px;
-            color: #ff0077;
-            text-shadow: 0 0 10px #ff0077, 0 0 20px #7303c0;
+            color: #00ffab;
+            text-shadow: 0 0 10px #00ffab;
         }
         .about p, .contact p {
             font-size: 18px;
-            color: #ffffff;
+            color: #e4e4e7;
         }
 
-        /* Контакты */
-        .contact img {
-            width: 80px;
-            margin: 10px;
-            transition: transform 0.3s, box-shadow 0.3s;
+        /* Пасхалка */
+        .easter-egg {
+            display: none;
+            font-size: 24px;
+            color: #a5ffeb;
+            text-shadow: 0 0 10px #00ffab;
+            margin-top: 30px;
         }
-        .contact img:hover {
-            transform: scale(1.2);
-            box-shadow: 0 0 20px #ff0077;
+        .contact a {
+            color: #00ffab;
+            text-decoration: none;
         }
 
         /* Footer */
@@ -175,11 +153,11 @@
             text-align: center;
             padding: 20px;
             background: rgba(0, 0, 0, 0.9);
-            color: #ffffff;
+            color: #e4e4e7;
             font-size: 14px;
         }
         footer span {
-            color: #ff0077;
+            color: #00ffab;
         }
     </style>
 </head>
@@ -196,31 +174,40 @@
 
     <!-- Главная -->
     <section id="home" class="hero">
-        <h1>Welcome to Yukendg's World</h1>
-        <p>Это не просто сайт. Это портал в магию веба.</p>
-        <button>Начать путешествие</button>
+        <h1>Добро пожаловать в тайну Yukendg</h1>
+        <p>Сайт, который знает больше, чем ты думаешь.</p>
+        <button id="discover">Узнать больше</button>
     </section>
 
     <!-- Раздел о Yukendg -->
     <section id="about" class="about">
-        <h2>Почему Yukendg разъёб?</h2>
+        <h2>Тайна мастера</h2>
         <p>
-            Мастер, который делает сайты, выносящие мозг.  
-            Эффекты, дизайн, магия — всё на высшем уровне.
+            Yukendg — создатель сайта, который оставляет только вопросы.  
+            Ты готов узнать больше? Нажми на кнопку.
         </p>
+        <div id="easter-egg" class="easter-egg">Пасхалка: Если ты это нашёл, ты на верном пути...</div>
     </section>
 
     <!-- Контакты -->
     <section id="contact" class="contact">
-        <h2>Связаться</h2>
-        <a href="https://t.me/Yukendg" target="_blank">
-            <img src="https://cdn-icons-png.flaticon.com/512/906/906377.png" alt="Telegram">
-        </a>
+        <h2>Контакты</h2>
+        <p>Свяжись с Yukendg, если ты готов к разгадке.</p>
+        <a href="https://t.me/Yukendg" target="_blank">Написать Yukendg</a>
     </section>
 
     <!-- Footer -->
     <footer>
-        <p>by Yukendg</p>
+        <p>by <span>Yukendg</span></p>
     </footer>
+
+    <script>
+        const button = document.getElementById('discover');
+        const easterEgg = document.getElementById('easter-egg');
+
+        button.addEventListener('click', () => {
+            easterEgg.style.display = 'block';
+        });
+    </script>
 </body>
 </html>
