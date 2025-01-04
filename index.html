@@ -3,79 +3,70 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Тайна Yukendg</title>
+    <title>Yukendg Bio</title>
     <style>
         /* Общие стили */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            scroll-behavior: smooth;
         }
         body {
-            font-family: 'Poppins', sans-serif;
-            background: linear-gradient(145deg, #0b0c10, #1f2833);
-            color: #c5c6c7;
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #1c1c1e, #313133);
+            color: #f4f4f5;
             overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        /* Анимации */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+        @keyframes slideUp {
+            from {
+                transform: translateY(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
         }
 
         /* Шапка */
         header {
             position: fixed;
             top: 0;
-            left: 0;
             width: 100%;
-            background: transparent;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 15px 30px;
             display: flex;
-            justify-content: center;
+            justify-content: space-between;
             align-items: center;
-            padding: 20px 30px;
             z-index: 1000;
         }
         .logo {
             font-size: 28px;
             font-weight: bold;
             color: #66fcf1;
-            text-align: center;
         }
         .menu {
-            position: absolute;
-            right: 20px;
-            top: 20px;
-            cursor: pointer;
             display: flex;
             flex-direction: column;
             gap: 5px;
+            cursor: pointer;
         }
         .menu span {
             width: 30px;
             height: 4px;
             background: #66fcf1;
             border-radius: 2px;
-            transition: transform 0.3s ease;
-        }
-        nav {
-            position: fixed;
-            top: 0;
-            right: -100%;
-            width: 300px;
-            height: 100vh;
-            background: #1f2833;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            gap: 20px;
-            transition: right 0.5s ease-in-out;
-        }
-        nav a {
-            color: #66fcf1;
-            text-decoration: none;
-            font-size: 24px;
-            transition: color 0.3s;
-        }
-        nav a:hover {
-            color: #45a29e;
         }
 
         /* Главная секция */
@@ -86,128 +77,87 @@
             justify-content: center;
             align-items: center;
             text-align: center;
+            animation: fadeIn 2s ease-in-out;
         }
         .hero h1 {
-            font-size: 64px;
-            font-weight: bold;
-            animation: fadeIn 2s ease-in-out;
+            font-size: 48px;
+            color: #66fcf1;
+            margin-bottom: 20px;
         }
-        .hero button {
-            margin-top: 20px;
-            padding: 15px 30px;
+        .hero p {
             font-size: 20px;
-            font-weight: bold;
-            color: #0b0c10;
-            background: #66fcf1;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background 0.3s ease, transform 0.3s ease;
-        }
-        .hero button:hover {
-            background: #45a29e;
-            transform: scale(1.1);
+            max-width: 600px;
         }
 
-        /* Взрыв и анимация персонажа */
-        .explosion {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            background: radial-gradient(circle, rgba(255,0,0,1) 0%, rgba(0,0,0,1) 70%);
-            z-index: 2000;
-            display: none;
-            justify-content: center;
-            align-items: center;
-            animation: explode 2s ease-out;
+        /* Секции */
+        section {
+            padding: 100px 20px;
+            text-align: center;
+            animation: slideUp 2s ease-in-out;
         }
-        .explosion img {
-            width: 100px;
-            transform: scale(0);
-            animation: popUp 2s ease forwards;
-            animation-delay: 1s;
+        .about, .contact {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            margin: 20px auto;
+            max-width: 800px;
+            padding: 50px;
         }
-        .explosion span {
-            font-size: 24px;
-            font-weight: bold;
-            color: white;
-            animation: fadeIn 2s ease-in-out;
-            animation-delay: 2s;
+        .about h2, .contact h2 {
+            color: #66fcf1;
+            margin-bottom: 20px;
         }
-
-        /* Анимации */
-        @keyframes explode {
-            0% {
-                transform: scale(0);
-                opacity: 1;
-            }
-            100% {
-                transform: scale(2);
-                opacity: 0;
-            }
+        .contact a {
+            color: #66fcf1;
+            text-decoration: none;
+            font-size: 20px;
+            transition: color 0.3s;
+        }
+        .contact a:hover {
+            color: #45a29e;
         }
 
-        @keyframes popUp {
-            0% {
-                transform: scale(0);
-            }
-            100% {
-                transform: scale(1);
-            }
+        /* Футер */
+        footer {
+            text-align: center;
+            padding: 20px;
+            background: #0b0c10;
+            color: #c5c6c7;
         }
     </style>
 </head>
 <body>
+    <!-- Шапка -->
     <header>
         <div class="logo">Yukendg</div>
-        <div class="menu" id="menu">
+        <div class="menu">
             <span></span>
             <span></span>
             <span></span>
         </div>
-        <nav id="nav">
-            <a href="#home">Главная</a>
-            <a href="#about">О нас</a>
-            <a href="#contact">Связь</a>
-        </nav>
     </header>
 
-    <section class="hero" id="home">
-        <h1>Добро пожаловать в мир Yukendg</h1>
-        <button id="explodeButton">Разрушить</button>
+    <!-- Главная -->
+    <section class="hero">
+        <h1>Yukendg</h1>
+        <p>Создаю уникальные сайты и проекты. Каждый дизайн — это сочетание креатива, опыта и современных технологий.</p>
     </section>
 
-    <section id="contact">
+    <!-- Обо мне -->
+    <section id="about" class="about">
+        <h2>Обо мне</h2>
+        <p>Меня зовут Yukendg, и я — разработчик с опытом создания как минималистичных, так и сложных, насыщенных анимацией сайтов. В своих проектах я стремлюсь объединить эстетику, функциональность и технологические инновации.</p>
+    </section>
+
+    <!-- Связь -->
+    <section id="contact" class="contact">
         <h2>Связь</h2>
-        <a href="https://t.me/Yukendg" target="_blank">
-            Telegram
-        </a>
+        <p>Если вы хотите сотрудничать, свяжитесь со мной:</p>
+        <a href="https://t.me/Yukendg" target="_blank">Мой Telegram</a>
     </section>
 
-    <div class="explosion" id="explosion">
-        <img src="character.png" alt="Character">
-        <span>Yukendg 2025</span>
-    </div>
-
-    <script>
-        const menu = document.getElementById('menu');
-        const nav = document.getElementById('nav');
-        const explosion = document.getElementById('explosion');
-        const explodeButton = document.getElementById('explodeButton');
-
-        menu.addEventListener('click', () => {
-            const navOpen = nav.style.right === '0px';
-            nav.style.right = navOpen ? '-100%' : '0';
-        });
-
-        explodeButton.addEventListener('click', () => {
-            explosion.style.display = 'flex';
-            setTimeout(() => {
-                explosion.style.display = 'none';
-            }, 5000); // Убирает взрыв через 5 секунд
-        });
-    </script>
+    <!-- Футер -->
+    <footer>
+        <p>© 2025 Yukendg</p>
+    </footer>
 </body>
 </html>
