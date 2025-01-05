@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Glitch Circle</title>
+    <title>Interactive Circle</title>
     <style>
         /* Общий сброс стилей */
         * {
@@ -26,13 +26,7 @@
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            position: relative;
             overflow: hidden;
-        }
-
-        .container {
-            text-align: center;
-            position: relative;
         }
 
         .tap {
@@ -41,7 +35,7 @@
             color: #fff;
             text-transform: uppercase;
             font-family: 'Courier New', Courier, monospace;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
             transition: opacity 1s ease-in-out;
         }
 
@@ -53,17 +47,8 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            margin-bottom: 20px;
-            position: relative;
             cursor: pointer;
             transition: opacity 1s ease-in-out;
-        }
-
-        .glitch {
-            font-size: 36px;
-            font-weight: bold;
-            color: #fff;
-            text-transform: uppercase;
         }
 
         .hidden {
@@ -71,24 +56,25 @@
             pointer-events: none;
         }
 
-        /* Появление текста и иконки */
-        .text {
+        /* Анимация плавного появления */
+        .text, .telegram {
             opacity: 0;
+            animation: fade-in 1s forwards;
+        }
+
+        .text {
             font-size: 24px;
             font-weight: bold;
             color: #fff;
             text-transform: uppercase;
-            margin: 10px 0;
-            animation: fade-in 2s forwards;
+            margin: 20px 0 10px 0;
+            animation-delay: 2s;
         }
 
         .telegram {
             width: 50px;
             height: 50px;
-            margin-top: 20px;
-            opacity: 0;
-            animation: fade-in 2s forwards;
-            animation-delay: 2s;
+            animation-delay: 3s;
         }
 
         .telegram img {
@@ -105,13 +91,9 @@
     </style>
 </head>
 <body>
-    <div class="container" id="container">
-        <div class="tap" id="tap">TAP</div>
-        <div class="circle" id="circle">
-            <span class="glitch">???</span>
-        </div>
-    </div>
-    <div class="text" id="contact">Contact</div>
+    <div class="tap" id="tap">TAP</div>
+    <div class="circle" id="circle"></div>
+    <div class="text" id="by-yukendg">By Yukendg</div>
     <div class="telegram" id="telegram">
         <a href="https://t.me/Yukendg" target="_blank">
             <img src="https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg" alt="Telegram">
@@ -121,20 +103,29 @@
     <script>
         const circle = document.getElementById('circle');
         const tap = document.getElementById('tap');
-        const container = document.getElementById('container');
-        const contact = document.getElementById('contact');
+        const byYukendg = document.getElementById('by-yukendg');
         const telegram = document.getElementById('telegram');
 
+        // Скрываем текст "By Yukendg" и иконку Telegram до клика
+        byYukendg.style.display = 'none';
+        telegram.style.display = 'none';
+
         circle.addEventListener('click', () => {
-            // Убираем круг, "TAP" и вопросительные знаки
+            // Убираем круг и надпись TAP
             circle.classList.add('hidden');
             tap.classList.add('hidden');
 
-            // Через 2 секунды показываем "Contact" и иконку Telegram
+            // Показываем "By Yukendg" через 2 секунды
             setTimeout(() => {
-                contact.style.animation = 'fade-in 2s forwards';
-                telegram.style.animation = 'fade-in 2s forwards';
+                byYukendg.style.display = 'block';
+                byYukendg.style.animation = 'fade-in 1s forwards';
             }, 2000);
+
+            // Показываем иконку Telegram через 3 секунды
+            setTimeout(() => {
+                telegram.style.display = 'block';
+                telegram.style.animation = 'fade-in 1s forwards';
+            }, 3000);
         });
     </script>
 </body>
