@@ -17,15 +17,26 @@
             color: #fff;
             font-family: 'Arial', sans-serif;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            flex-direction: column;
+            position: relative;
+            overflow: hidden;
         }
 
         .container {
             text-align: center;
             position: relative;
+        }
+
+        .tap {
+            font-size: 24px;
+            font-weight: bold;
+            color: #fff;
+            text-transform: uppercase;
+            font-family: 'Courier New', Courier, monospace;
+            margin-bottom: 20px;
         }
 
         .circle {
@@ -43,55 +54,18 @@
         .glitch {
             font-size: 36px;
             font-weight: bold;
-            position: relative;
             color: #fff;
             text-transform: uppercase;
             animation: glitch 1.5s infinite;
-        }
-
-        .glitch::before,
-        .glitch::after {
-            content: attr(data-text);
-            position: absolute;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background: none;
-            overflow: hidden;
-            animation: glitch 1.5s infinite;
-        }
-
-        .glitch::before {
-            color: #ff0000;
-            z-index: -1;
-            clip-path: inset(0 0 50% 0);
-        }
-
-        .glitch::after {
-            color: #00ffea;
-            z-index: -1;
-            clip-path: inset(50% 0 0 0);
         }
 
         @keyframes glitch {
             0%, 100% {
-                transform: translate(0);
+                opacity: 1;
             }
-            33% {
-                transform: translate(-2px, 2px);
+            50% {
+                opacity: 0.5;
             }
-            66% {
-                transform: translate(2px, -2px);
-            }
-        }
-
-        .tap {
-            font-size: 24px;
-            font-weight: bold;
-            color: #fff;
-            text-transform: uppercase;
-            margin-top: -20px;
         }
 
         footer {
@@ -107,10 +81,10 @@
 </head>
 <body>
     <div class="container">
-        <div class="circle">
-            <span class="glitch" data-text="???">???</span>
-        </div>
         <div class="tap">TAP</div>
+        <div class="circle">
+            <span class="glitch">???</span>
+        </div>
     </div>
     <footer>
         By Yukendg
