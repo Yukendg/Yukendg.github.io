@@ -36,12 +36,12 @@
         }
 
         .tap {
-            font-size: 36px; /* Увеличен размер текста */
+            font-size: 36px;
             font-weight: bold;
             color: #fff;
             text-transform: uppercase;
             font-family: 'Courier New', Courier, monospace;
-            margin-bottom: 30px; /* Поднято над кругом */
+            margin-bottom: 30px;
         }
 
         .circle {
@@ -54,6 +54,7 @@
             align-items: center;
             margin-bottom: 20px;
             position: relative;
+            cursor: pointer;
         }
 
         .glitch {
@@ -61,66 +62,89 @@
             font-weight: bold;
             color: #fff;
             text-transform: uppercase;
-            position: relative;
-            animation: glitch-effect 2s infinite;
         }
 
-        .glitch::before,
-        .glitch::after {
-            content: "???";
-            position: absolute;
-            left: 0;
-            top: 0;
+        /* Анимация тряски экрана */
+        @keyframes shake {
+            0%, 100% { transform: translate(0, 0); }
+            25% { transform: translate(5px, 0); }
+            50% { transform: translate(-5px, 0); }
+            75% { transform: translate(5px, 0); }
+        }
+
+        /* Появление текста */
+        .text {
+            opacity: 0;
+            font-size: 24px;
+            font-weight: bold;
             color: #fff;
-            z-index: -1;
+            text-transform: uppercase;
+            margin: 10px 0;
+            animation: fade-in 2s forwards;
         }
 
-        .glitch::before {
-            color: #ff0000;
-            animation: glitch-shift 1s infinite;
-            transform: translate(-2px, -2px);
+        .text.contact {
+            font-size: 20px;
+            animation-delay: 2s;
         }
 
-        .glitch::after {
-            color: #00ffea;
-            animation: glitch-shift 1s infinite;
-            transform: translate(2px, 2px);
+        @keyframes fade-in {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
 
-        @keyframes glitch-shift {
-            0%, 100% {
-                transform: translate(0, 0);
-            }
-            25% {
-                transform: translate(2px, -2px);
-            }
-            50% {
-                transform: translate(-2px, 2px);
-            }
-            75% {
-                transform: translate(1px, -1px);
-            }
+        .telegram {
+            width: 50px;
+            height: 50px;
+            margin-top: 20px;
+            opacity: 0;
+            animation: fade-in 3s forwards;
+            animation-delay: 4s;
         }
 
-        @keyframes glitch-effect {
-            0% {
-                opacity: 1;
-            }
-            50% {
-                opacity: 0.7;
-            }
-            100% {
-                opacity: 1;
-            }
+        .telegram img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            cursor: pointer;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="tap">TAP</div>
-        <div class="circle">
+        <div class="circle" id="circle">
             <span class="glitch">???</span>
         </div>
+        <div class="text" id="by-yukendg">By Yukendg</div>
+        <div class="text contact" id="contact">Contact</div>
+        <div class="telegram" id="telegram">
+            <a href="https://t.me/Yukendg" target="_blank">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg" alt="Telegram">
+            </a>
+        </div>
     </div>
+
+    <script>
+        const circle = document.getElementById('circle');
+        const byYukendg = document.getElementById('by-yukendg');
+        const contact = document.getElementById('contact');
+        const telegram = document.getElementById('telegram');
+
+        circle.addEventListener('click', () => {
+            // Тряска экрана
+            document.body.style.animation = 'shake 0.5s';
+
+            // Сброс анимации после завершения
+            setTimeout(() => {
+                document.body.style.animation = '';
+            }, 500);
+
+            // Плавное отображение текста и кнопки
+            byYukendg.style.animation = 'fade-in 2s forwards';
+            contact.style.animation = 'fade-in 2s forwards';
+            telegram.style.animation = 'fade-in 3s forwards';
+        });
+    </script>
 </body>
 </html>
