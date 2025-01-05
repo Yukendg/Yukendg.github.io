@@ -31,12 +31,12 @@
         }
 
         .tap {
-            font-size: 24px;
+            font-size: 32px; /* Увеличен размер текста */
             font-weight: bold;
             color: #fff;
             text-transform: uppercase;
             font-family: 'Courier New', Courier, monospace;
-            margin-bottom: 20px;
+            margin-bottom: 30px; /* Поднято над кругом */
         }
 
         .circle {
@@ -56,26 +56,41 @@
             font-weight: bold;
             color: #fff;
             text-transform: uppercase;
+            position: relative;
             animation: glitch 1.5s infinite;
+        }
+
+        .glitch::before,
+        .glitch::after {
+            content: "???";
+            position: absolute;
+            left: 0;
+            top: 0;
+            color: #fff;
+            animation: glitch 1.5s infinite;
+            z-index: -1;
+        }
+
+        .glitch::before {
+            transform: translate(-2px, -2px);
+            opacity: 0.8;
+        }
+
+        .glitch::after {
+            transform: translate(2px, 2px);
+            opacity: 0.8;
         }
 
         @keyframes glitch {
             0%, 100% {
-                opacity: 1;
+                transform: translate(0, 0);
             }
-            50% {
-                opacity: 0.5;
+            33% {
+                transform: translate(2px, -2px);
             }
-        }
-
-        footer {
-            position: absolute;
-            bottom: 10px;
-            width: 100%;
-            text-align: center;
-            font-size: 14px;
-            color: #fff;
-            font-family: 'Courier New', Courier, monospace;
+            66% {
+                transform: translate(-2px, 2px);
+            }
         }
     </style>
 </head>
@@ -86,8 +101,5 @@
             <span class="glitch">???</span>
         </div>
     </div>
-    <footer>
-        By Yukendg
-    </footer>
 </body>
 </html>
