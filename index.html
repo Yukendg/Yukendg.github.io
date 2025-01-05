@@ -33,6 +33,7 @@
             align-items: center;
             min-height: 100vh;
             overflow: hidden;
+            position: relative;
         }
 
         .tap {
@@ -43,6 +44,8 @@
             font-family: 'Courier New', Courier, monospace;
             margin-bottom: 20px;
             transition: opacity 1s ease-in-out;
+            position: absolute;
+            top: 40%;
         }
 
         .circle {
@@ -121,9 +124,23 @@
             from { opacity: 0; }
             to { opacity: 1; }
         }
+
+        /* Зона для тапов */
+        .tap-zone {
+            width: 200px;
+            height: 200px;
+            position: absolute;
+            top: 30%;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 10;
+        }
     </style>
 </head>
 <body>
+    <!-- Зона для клика -->
+    <div class="tap-zone" id="tap-zone"></div>
+
     <div class="tap" id="tap">TAP</div>
     <div class="circle" id="circle">
         <span class="glitch">???</span>
@@ -140,12 +157,13 @@
         const tap = document.getElementById('tap');
         const byYukendg = document.getElementById('by-yukendg');
         const telegram = document.getElementById('telegram');
+        const tapZone = document.getElementById('tap-zone');
 
         // Скрываем текст "By Yukendg" и иконку Telegram до клика
         byYukendg.style.display = 'none';
         telegram.style.display = 'none';
 
-        circle.addEventListener('click', () => {
+        tapZone.addEventListener('click', () => {
             // Убираем круг и надпись TAP
             circle.classList.add('hidden');
             tap.classList.add('hidden');
