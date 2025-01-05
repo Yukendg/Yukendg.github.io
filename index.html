@@ -13,11 +13,14 @@
         }
 
         /* Защита от выделения и копирования */
-        body, .circle, .telegram a, .glitch {
+        body, .circle, .telegram a, .glitch, .telegram img {
             user-select: none;
             -webkit-user-select: none;
             -ms-user-select: none;
             -moz-user-select: none;
+            -webkit-touch-callout: none; /* Для iOS */
+            -webkit-user-drag: none; /* Для iOS */
+            -moz-user-select: none; /* Для Firefox */
         }
 
         body {
@@ -52,7 +55,6 @@
             align-items: center;
             cursor: pointer;
             transition: opacity 1s ease-in-out;
-            user-select: none;
         }
 
         .glitch {
