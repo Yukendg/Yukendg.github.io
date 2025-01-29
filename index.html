@@ -3,22 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Yuki</title>
+    <title>Веб-разработчик | xoaes</title>
     <style>
         /* Общие стили */
         body {
-            font-family: 'Arial', sans-serif;
-            background-color: #1a1a1a;
+            font-family: 'Poppins', sans-serif;
+            background-color: #0d0d0d;
             color: #ffffff;
             margin: 0;
             padding: 0;
             overflow-x: hidden;
         }
 
+        /* Подключение красивого шрифта */
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
         /* Шапка сайта */
         header {
             text-align: center;
-            padding: 50px 20px;
+            padding: 100px 20px;
             background: linear-gradient(135deg, #6a11cb, #2575fc);
             color: white;
             position: relative;
@@ -26,14 +29,16 @@
         }
 
         header h1 {
-            font-size: 3rem;
+            font-size: 4rem;
             margin: 0;
             animation: fadeIn 2s ease-in-out;
+            font-weight: 700;
         }
 
         header p {
-            font-size: 1.2rem;
+            font-size: 1.5rem;
             animation: fadeIn 3s ease-in-out;
+            font-weight: 300;
         }
 
         /* Анимация появления */
@@ -44,21 +49,26 @@
 
         /* Основной контент */
         .content {
-            padding: 20px;
+            padding: 50px 20px;
             max-width: 1200px;
             margin: 0 auto;
+            text-align: center;
         }
 
         .content h2 {
-            font-size: 2rem;
+            font-size: 2.5rem;
             color: #6a11cb;
             animation: slideInLeft 1s ease-in-out;
+            font-weight: 600;
         }
 
         .content p {
-            font-size: 1rem;
-            line-height: 1.6;
+            font-size: 1.2rem;
+            line-height: 1.8;
             animation: slideInRight 1s ease-in-out;
+            font-weight: 300;
+            max-width: 800px;
+            margin: 0 auto;
         }
 
         /* Анимация текста */
@@ -72,42 +82,29 @@
             to { transform: translateX(0); opacity: 1; }
         }
 
-        /* Картинки */
-        .image-container {
-            display: flex;
-            justify-content: space-around;
-            flex-wrap: wrap;
-            margin-top: 30px;
-        }
-
-        .image-container img {
-            width: 300px;
-            height: auto;
-            border-radius: 10px;
-            margin: 10px;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .image-container img:hover {
-            transform: scale(1.1);
-            box-shadow: 0 0 20px rgba(106, 17, 203, 0.7);
-        }
-
-        /* Кнопка Telegram */
+        /* Иконка Telegram */
         .telegram-link {
             display: inline-block;
             margin-top: 30px;
-            padding: 10px 20px;
-            background: #2575fc;
-            color: white;
+            font-size: 2rem;
+            color: #2575fc;
             text-decoration: none;
-            border-radius: 5px;
-            font-size: 1.2rem;
-            transition: background 0.3s ease;
+            transition: color 0.3s ease, transform 0.3s ease;
         }
 
         .telegram-link:hover {
-            background: #6a11cb;
+            color: #6a11cb;
+            transform: scale(1.2);
+        }
+
+        /* Анимация иконки */
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .telegram-link i {
+            animation: float 3s ease-in-out infinite;
         }
 
         /* Подвал */
@@ -123,41 +120,50 @@
             font-size: 0.9rem;
             color: #666;
         }
+
+        /* Дополнительные анимации */
+        .animated-text {
+            display: inline-block;
+            animation: textGlow 2s infinite alternate;
+        }
+
+        @keyframes textGlow {
+            from { text-shadow: 0 0 10px #6a11cb, 0 0 20px #6a11cb; }
+            to { text-shadow: 0 0 20px #2575fc, 0 0 40px #2575fc; }
+        }
     </style>
+    <!-- Иконки FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
     <header>
-        <h1>Yuki</h1>
-        <p></p>
+        <h1 class="animated-text">Web developer</h1>
+        <p>Creator websites</p>
     </header>
 
     <div class="content">
-        <h2>О Yuki</h2>
-        <p>Yuki the best web developer</p>
+        <h2>Обо мне</h2>
+        <p>
+            xoaes the best web developer
+        </p>
 
-        <div class="image-container">
-            <img src="https://via.placeholder.com/300" alt="Yuki Image 1">
-            <img src="https://via.placeholder.com/300" alt="Yuki Image 2">
-            <img src="https://via.placeholder.com/300" alt="Yuki Image 3">
-        </div>
-
-        <a href="https://t.me/xoaes" class="telegram-link">Связаться со мной в Telegram</a>
+        <!-- Иконка Telegram -->
+        <a href="https://t.me/xoaes" class="telegram-link" target="_blank">
+            <i class="fab fa-telegram-plane"></i>
+        </a>
     </div>
 
     <footer>
-        <p>&copy; Yuki</p>
+        <p>&copy; xoaes</p>
     </footer>
 
     <script>
         // Добавим немного интерактивности
-        const images = document.querySelectorAll('.image-container img');
-        images.forEach(img => {
-            img.addEventListener('mouseover', () => {
-                img.style.transform = 'scale(1.1)';
-            });
-            img.addEventListener('mouseout', () => {
-                img.style.transform = 'scale(1)';
-            });
+        const telegramIcon = document.querySelector('.telegram-link i');
+        telegramIcon.addEventListener('mouseover', () => {
+            telegramIcon.style.animation = 'none';
+            telegramIcon.offsetHeight; // Триггер рефлоу
+            telegramIcon.style.animation = null;
         });
     </script>
 </body>
